@@ -1,2 +1,4 @@
-package controller.homepage;public class SearchBarServlet {
+package controller.homepage;
+
+public class SearchBarServlet {
 }

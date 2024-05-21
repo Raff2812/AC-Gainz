@@ -1,2 +1,4 @@
-package controller.utente;public class LogoutServlet {
+package controller.utente;
+
+public class LogoutServlet {
 }

@@ -1,2 +1,4 @@
-package controller.utente;public class RegistrazioneServlet {
+package controller.utente;
+
+public class RegistrazioneServlet {
 }

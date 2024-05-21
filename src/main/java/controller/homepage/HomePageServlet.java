@@ -1,2 +1,4 @@
-package controller;public class HomePageServlet {
+package controller.homepage;
+
+public class HomePageServlet {
 }

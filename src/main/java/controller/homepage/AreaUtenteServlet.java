@@ -1,2 +1,4 @@
-package controller.homepage;public class AreaUtenteServlet {
+package controller.homepage;
+
+public class AreaUtenteServlet {
 }

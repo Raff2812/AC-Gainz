@@ -1,2 +1,4 @@
-package controller.utente;public class LoginServlet {
+package controller.utente;
+
+public class LoginServlet {
 }

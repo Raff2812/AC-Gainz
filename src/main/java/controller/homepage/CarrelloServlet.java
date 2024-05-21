@@ -1,2 +1,4 @@
-package controller.homepage;public class CarrelloServlet {
+package controller.homepage;
+
+public class CarrelloServlet {
 }
