@@ -6,11 +6,11 @@
     font-family:"sans-serif";
     box-sizing: border-box;
 }
-
 body{
     background: #fefefe;
-    color: aqua;
 }
+
+
 
 /*sfondo dell'header*/
 header{
@@ -18,13 +18,15 @@ header{
     width: 100%;
     background: black;
 }
-
 /*posizionamento dei contenuti dell'header*/
 header .container{
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
+
+
+
 
 /* valori del logo*/
 .logo{
@@ -33,7 +35,6 @@ header .container{
     font-weight: bold;
     color: #fefefe;
 }
-
 /*forma della barra di ricerca*/
 .search-bar{
     margin-top: 10px;
@@ -50,10 +51,9 @@ header .container{
     font-size: 20px;
     color: black;
 }
-header .carrello{
-    display: flex;
-    align-items: center;
-}
+
+
+
 
 /* il container dove andra il contenuto del dropdown */
 .utente{
@@ -72,7 +72,10 @@ header .carrello{
     border: none;
     border-radius: 35px;
 }
-
+.dropbutton:hover {
+    transition: 0.2s;
+    color: black;
+}
 /* tabella del dropdown (nascosto di default) */
 .dropdown-content {
     display: none;
@@ -83,7 +86,6 @@ header .carrello{
     box-shadow: black 2px 2px 2px 2px;
     border-radius: 10px;
 }
-
 /* Singoli link all'interno del dropdown */
 .dropdown-content a {
     color: black;
@@ -95,11 +97,32 @@ header .carrello{
     border-radius: 10px;
 }
 /* cambia colore quando passi un un link del contenuto */
-.dropdown-content a:hover {background-color: orangered;}
-
+.dropdown-content a:hover {
+    background-color: orangered;
+}
 .show {
     display: block;
 }
+
+
+
+
+header .carrello{
+    display: flex;
+    align-items: center;
+}
+.carrello a{
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 35px;
+    background-color: orangered;
+}
+.carrello a:hover{
+    transition: 0.2s;
+    color: black;
+}
+
 
 
 /*gestione della lista*/
@@ -111,12 +134,11 @@ header .lista ul{
     align-items: center;
     justify-content: space-between;
 }
-
 /* gestione del singolo elemento della lista*/
 .lista ul li a{
     color: #fefefe;
     font-size: 15px;
-    padding: 5px 20px 5px 20px;
+    padding: 5px 20px;
     border-radius: 40px;
     transition: 0.2s;
     margin-left: 70px;
@@ -125,4 +147,132 @@ header .lista ul{
 .lista ul li a:hover{
     color: black;
     background: orangered;
+}
+
+
+
+
+/* Stile per il burger menu */
+.burger-menu {
+    display: none;
+    font-size: 30px;
+    color: white;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+
+
+
+
+
+
+/* Media Queries per la responsività */
+
+/* Schermi piccoli (smartphone) */
+@media (max-width: 900px) {
+    .logo {
+        font-size: 25px;
+        margin-left: 10px;
+    }
+
+    .search-bar {
+        padding: 10px 30px;
+    }
+
+    .search-bar input[type="search"] {
+        width: 150px;
+        font-size: 14px;
+    }
+
+    .utente {
+        margin-right: 20px;
+        margin-left: 0;
+    }
+
+    .carrello a {
+        padding: 5px 10px;
+    }
+
+    .lista{
+        background-color: black;
+
+    }
+
+    .lista ul {
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+        display: none; /* Nascondi il menu di default */
+    }
+
+    .lista ul li {
+        text-align: center;
+        margin: 10px 0;
+    }
+
+    .burger-menu {
+        display: block; /* Mostra il burger menu */
+    }
+
+    .burger-menu .line{
+        width: 30px;
+        height: 3px;
+        background: #fefefe;
+        margin: 6px 0;
+    }
+
+    .showburger {
+        display: flex; /* Mostra il menu quando il burger menu è cliccato */
+        flex-direction: column;
+    }
+
+    .lista
+    {
+        display: none;
+        opacity: 0;
+    }
+
+    .showlista{
+        display: block;
+        opacity: 1;
+    }
+}
+
+/* Schermi medi (tablet) */
+@media (min-width: 901px) and (max-width: 1320px) {
+    .logo {
+        font-size: 40px;
+        margin-left: 10px;
+    }
+
+    .search-bar {
+        padding: 10px 80px;
+    }
+
+    .search-bar input[type="search"] {
+        width: 300px;
+        font-size: 18px;
+    }
+
+    .utente {
+        margin-right: 50px;
+        margin-left: 0;
+    }
+
+    .carrello a {
+        padding: 5px 15px;
+    }
+
+    .lista ul {
+        margin: 20px;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .lista ul li a {
+        font-size: 14px;
+        padding: 5px 15px;
+        margin: 5px 0;
+    }
 }

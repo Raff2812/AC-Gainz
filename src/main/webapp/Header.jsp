@@ -13,11 +13,18 @@
 <body>
     <header>
         <div class="container">
+            <div class="burger-menu" onclick="toggleMenu()">
+                <div class="line"></div>
+                <div class="line"></div>
+                <div class="line"></div>
+            </div>
             <div class="logo">AC-Gainz</div>
             <div class="search-bar">
                 <input type="search" placeholder="Search">
             </div>
-            <div class="carrello">carrello </div>
+            <div class="carrello">
+               <a href="">Carrello</a>
+            </div>
             <div class="utente">
                 <button onclick="myFunction()" class="dropbutton">Utente</button>
                 <div id="myDropdown" class="dropdown-content">
@@ -27,13 +34,14 @@
             </div>
         </div>
 
-        <div class="lista">
+        <div class="lista" id="lista">
             <ul>
                 <li>
                     <a href="">Tutto</a>
                 </li>
                 <li>
                     <a href="">Proteine</a>
+                    <!--<button formaction="" name="">proteine</button>-->
                 </li>
                 <li>
                     <a href="">Farine</a>
@@ -66,6 +74,14 @@
                     }
                 }
             }
+        }
+
+
+
+        //da modificare
+        function toggleMenu() {
+            var menu = document.getElementById("lista");
+            menu.classList.toggle("showlista");
         }
     </script>
 </body>
