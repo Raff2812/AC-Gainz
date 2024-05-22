@@ -6,9 +6,25 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class UtenteDAO {
+
+    public Utente doRetrieveByEmailAndPassword(String email, String password) throws SQLException {
+        try (Connection con = ConPool.getConnection()){
+            PreparedStatement preparedStatement = con.prepareStatement("SELECT email,password,nome,cognome,codice_fiscale,data_di_nascita,indirizzo,numero_di_cellulare,poteri FROM utente WHERE email=? AND password = SHA1(?)");
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+
+                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8),resultSet.getInt(9));
+                return u;
+            }
+        }
+        return null;
+    }
 
     public Utente doRetrieveByEmail(String email)
     {
@@ -36,12 +52,16 @@ public class UtenteDAO {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO utente (email,password,nome,cognome,codice_fiscale,data_di_nascita,indirizzo,numero_di_cellulare,poteri) VALUES(?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
+            utente.setPassword(utente.getPassword());
             ps.setString(1, utente.getEmail());
             ps.setString(2, utente.getPassword());
             ps.setString(3, utente.getNome());
             ps.setString(4, utente.getCognome());
             ps.setString(5, utente.getCodiceFiscale());
-            ps.setDate(6, utente.getDataNascita());
+            Date utilDate = utente.getDataNascita();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+            ps.setDate(6, sqlDate);
             ps.setString(7, utente.getIndirizzo());
             ps.setString(8, utente.getTelefono());
             ps.setInt(9, utente.getPoteri());

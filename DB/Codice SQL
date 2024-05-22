@@ -1,0 +1,15 @@
+create database if not exists ProgettoTSW;
+use ProgettoTSW;
+
+create table if not exists utente(
+  email varchar(100) primary key,
+  password varchar(63),
+  nome varchar(40),
+  cognome varchar(40),
+  codice_fiscale varchar(16),
+  data_di_nascita date,
+  indirizzo varchar(255),
+  numero_di_cellulare varchar(20),
+  poteri int
+);
+
