@@ -11,6 +11,8 @@
     <title>Title</title>
 </head>
 <body>
-<a href="Header.jsp">clicca</a>
+<%-- <%@ include file="WEB-INF/results/Registrazione.jsp"%> --%>
+<a href="Registrazione.jsp">Registrazione</a><br>
+<a href="Login.jsp">Login</a><br>
 </body>
 </html>
