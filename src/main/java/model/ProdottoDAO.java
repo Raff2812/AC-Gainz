@@ -18,7 +18,7 @@ public class ProdottoDAO {
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                Prodotto p=new Prodotto(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
+                Prodotto p=new Prodotto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
                 return p;
             }
             return null;
@@ -35,7 +35,7 @@ public class ProdottoDAO {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantita,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1,prodotto.getIdProdotto());
+            ps.setString(1,prodotto.getIdProdotto());
             ps.setString(2, prodotto.getNome());
             ps.setString(3, prodotto.getDescrizione());
             ps.setFloat(4, prodotto.getPrezzo());
@@ -74,7 +74,7 @@ public class ProdottoDAO {
 
             while (rs.next()){
                 p = new Prodotto();
-                p.setIdProdotto(rs.getInt(1));
+                p.setIdProdotto(rs.getString(1));
                 p.setNome(rs.getString(2));
                 p.setDescrizione(rs.getString(3));
                 p.setPrezzo(rs.getFloat(4));
@@ -90,8 +90,8 @@ public class ProdottoDAO {
                 p.setSconto(rs.getInt(14));
 
 
-                if(!prodotti.contains(p))
-                    prodotti.add(p);
+
+                prodotti.add(p);
 
             }
                     connection.close();
@@ -120,7 +120,7 @@ public class ProdottoDAO {
             while(rs.next()) {
 
                 p = new Prodotto();
-                p.setIdProdotto(rs.getInt(1));
+                p.setIdProdotto(rs.getString(1));
                 p.setNome(rs.getString(2));
                 p.setDescrizione(rs.getString(3));
                 p.setPrezzo(rs.getFloat(4));

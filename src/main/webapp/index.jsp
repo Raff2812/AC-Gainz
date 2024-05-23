@@ -14,5 +14,10 @@
 <%-- <%@ include file="WEB-INF/results/Registrazione.jsp"%> --%>
 <a href="Registrazione.jsp">Registrazione</a><br>
 <a href="Login.jsp">Login</a><br>
+<form action="prova" method="post">
+    <input type="text" name="categoria" placeholder="inserisci categoria">
+    <input type="submit" value="GO">
+
+</form>
 </body>
 </html>
