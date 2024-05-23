@@ -87,16 +87,16 @@ public class CarrelloDAO {
         }
     }
 
-    public void doUpdateCustomer(DettaglioOrdine o){
+    public void doUpdateCarrello(Carrello o){
 
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();
-            String query = "update dettaglio_ordine set id_dettaglio_ordine='" + o.getIdDettaglioOrdine() +
-                    "', id_ordine='" + o.getIdOrdine() +
+            String query = "update dettaglio_ordine set id_carrello ='" + o.getIdCarrello() +
+                    "', emailUtente='" + o.getEmailUtente() +
                     "', id_prodotto='" + o.getIdProdotto() +
                     "', quantita='"+ o.getQuantita() +
                     "', prezzo="+ o.getPrezzo()
-                    + " where id_dettaglio_ordine=" + o.getIdDettaglioOrdine() + ";";
+                    + " where id_carrello =" + o.getIdCarrello() + ";";
             st.executeUpdate(query);
         }
         catch (SQLException e) {

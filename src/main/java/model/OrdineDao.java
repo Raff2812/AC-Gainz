@@ -86,7 +86,7 @@ public class OrdineDao {
         }
     }
 
-    public void doUpdateCustomer(Ordine o){
+    public void doUpdateOrder(Ordine o){
 
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();

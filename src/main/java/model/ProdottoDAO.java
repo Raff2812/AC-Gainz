@@ -57,6 +57,50 @@ public class ProdottoDAO {
         }
     }
 
+
+    public List<Prodotto> doRetrieveByCategory(String categoria){
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+
+        PreparedStatement preparedStatement;
+        ResultSet rs;
+
+        Prodotto p;
+
+        try (Connection connection = ConPool.getConnection()){
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM prodotto where categoria = ?");
+            preparedStatement.setString(1, categoria);
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                p = new Prodotto();
+                p.setIdProdotto(rs.getInt(1));
+                p.setNome(rs.getString(2));
+                p.setDescrizione(rs.getString(3));
+                p.setPrezzo(rs.getFloat(4));
+                p.setQuantita(rs.getInt(5));
+                p.setCategoria(rs.getString(6));
+                p.setGusto(rs.getString(7));
+                p.setCalorie(rs.getFloat(8));
+                p.setGrassi(rs.getFloat(9));
+                p.setCarboidrati(rs.getFloat(10));
+                p.setProteine(rs.getFloat(11));
+                p.setPeso(rs.getInt(12));
+                p.setImmagine(rs.getString(13));
+                p.setSconto(rs.getInt(14));
+
+
+                if(!prodotti.contains(p))
+                    prodotti.add(p);
+
+            }
+                    connection.close();
+                    return prodotti;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Prodotto> doRetrieveAll(){
 
         ArrayList<Prodotto> prodotti = new ArrayList<>();
@@ -91,7 +135,8 @@ public class ProdottoDAO {
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
 
-                prodotti.add(p);
+                if(!prodotti.contains(p))
+                    prodotti.add(p);
             }
 
             con.close();
