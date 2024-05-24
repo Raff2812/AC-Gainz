@@ -1,3 +1,5 @@
+<%@ page import="model.Prodotto" %>
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: luigiauriemma
@@ -43,8 +45,6 @@
     <input type="date" name="dataDiNascita" id="dataDiNascita" placeholder="Data di nascita" required><br>
     <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required><br>
     <input type="text" name="numCellullare" id="numCellulare" placeholder="numCellulare" required><br>
-    <input type="text" name="poteri" id="poteri" placeholder="1 o 0" required> <br>
-
     <input type="submit" >
 </form>
 </div>

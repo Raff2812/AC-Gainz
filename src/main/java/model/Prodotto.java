@@ -1,7 +1,7 @@
 package model;
 
 public class Prodotto {
-    private int idProdotto;
+    private String idProdotto;
     private String nome;
     private String descrizione;
     private String gusto;
@@ -21,7 +21,7 @@ public class Prodotto {
 
     }
 
-    public Prodotto(int idProdotto, String nome, String descrizione, float prezzo,int quantita,String categoria,String gusto,float calorie,float grassi,float carboidrati,float proteine,int peso,String immagine,int sconto) {
+    public Prodotto(String idProdotto, String nome, String descrizione, float prezzo,int quantita,String categoria,String gusto,float calorie,float grassi,float carboidrati,float proteine,int peso,String immagine,int sconto) {
         this.idProdotto = idProdotto;
         this.nome = nome;
         this.descrizione = descrizione;
@@ -54,11 +54,11 @@ public class Prodotto {
         this.carboidrati = carboidrati;
     }
 
-    public int getIdProdotto() {
+    public String getIdProdotto() {
         return idProdotto;
     }
 
-    public void setIdProdotto(int idProdotto) {
+    public void setIdProdotto(String idProdotto) {
         this.idProdotto = idProdotto;
     }
 

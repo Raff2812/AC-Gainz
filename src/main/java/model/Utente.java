@@ -16,12 +16,12 @@ public class Utente {
 
     private String indirizzo;
     private String telefono;
-    private int poteri;
+    private boolean poteri;
 
     public Utente()
     {}
 
-    public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono, int poteri) {
+    public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono) {
         this.email = email;
         this.password = password;
         this.nome = nome;
@@ -30,7 +30,7 @@ public class Utente {
         this.dataNascita = dataNascita;
         this.indirizzo = indirizzo;
         this.telefono = telefono;
-        this.poteri = poteri;
+        this.poteri = false;
     }
 
     public String getEmail() {
@@ -106,11 +106,11 @@ public class Utente {
         this.telefono = telefono;
     }
 
-    public int getPoteri() {
+    public boolean getPoteri() {
         return poteri;
     }
 
-    public void setPoteri(int poteri) {
+    public void setPoteri(boolean poteri) {
         this.poteri = poteri;
     }
 }

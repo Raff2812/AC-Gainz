@@ -46,9 +46,8 @@ public class RegistrazioneServlet extends HttpServlet {
 
         String indirizzo = request.getParameter("indirizzo");
         String numCellulare = request.getParameter("numCellulare");
-        int poteri = Integer.parseInt(request.getParameter("poteri"));
 
-        Utente x = new Utente(email, password, nome, cognome, codiceFiscale, dataDiNascita, indirizzo, numCellulare, poteri);
+        Utente x = new Utente(email, password, nome, cognome, codiceFiscale, dataDiNascita, indirizzo, numCellulare);
         utenteDAO.doSave(x);
 
         HttpSession session = request.getSession();

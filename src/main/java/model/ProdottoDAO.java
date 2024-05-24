@@ -18,7 +18,7 @@ public class ProdottoDAO {
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                Prodotto p=new Prodotto(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
+                Prodotto p=new Prodotto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
                 return p;
             }
             return null;
@@ -35,7 +35,7 @@ public class ProdottoDAO {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantita,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1,prodotto.getIdProdotto());
+            ps.setString(1,prodotto.getIdProdotto());
             ps.setString(2, prodotto.getNome());
             ps.setString(3, prodotto.getDescrizione());
             ps.setFloat(4, prodotto.getPrezzo());
@@ -57,6 +57,94 @@ public class ProdottoDAO {
         }
     }
 
+
+    public List<Prodotto> doRetrieveByCriteria(String attribute, String value){
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+
+        PreparedStatement preparedStatement;
+        ResultSet rs;
+
+        Prodotto p;
+
+        try (Connection connection = ConPool.getConnection()){
+
+            preparedStatement = connection.prepareStatement("SELECT * FROM prodotto where " + attribute +" = ?");
+            preparedStatement.setString(1, value);
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                p = new Prodotto();
+                p.setIdProdotto(rs.getString(1));
+                p.setNome(rs.getString(2));
+                p.setDescrizione(rs.getString(3));
+                p.setPrezzo(rs.getFloat(4));
+                p.setQuantita(rs.getInt(5));
+                p.setCategoria(rs.getString(6));
+                p.setGusto(rs.getString(7));
+                p.setCalorie(rs.getFloat(8));
+                p.setGrassi(rs.getFloat(9));
+                p.setCarboidrati(rs.getFloat(10));
+                p.setProteine(rs.getFloat(11));
+                p.setPeso(rs.getInt(12));
+                p.setImmagine(rs.getString(13));
+                p.setSconto(rs.getInt(14));
+
+                prodotti.add(p);
+
+            }
+                    connection.close();
+                    return prodotti;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Prodotto> doRetrieveByCriteriaRange(String attribute, int from, int to){
+        ArrayList<Prodotto> prodotti = new ArrayList<>();
+
+        PreparedStatement preparedStatement;
+        ResultSet rs;
+
+        Prodotto p;
+
+        try (Connection connection = ConPool.getConnection()){
+
+            preparedStatement = connection.prepareStatement(
+                    "SELECT * FROM prodotto where " +
+                            attribute + " >= ? " + " and " + attribute + " <= ?");
+            preparedStatement.setInt(1, from);
+            preparedStatement.setInt(2, to);
+
+            rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                p = new Prodotto();
+                p.setIdProdotto(rs.getString(1));
+                p.setNome(rs.getString(2));
+                p.setDescrizione(rs.getString(3));
+                p.setPrezzo(rs.getFloat(4));
+                p.setQuantita(rs.getInt(5));
+                p.setCategoria(rs.getString(6));
+                p.setGusto(rs.getString(7));
+                p.setCalorie(rs.getFloat(8));
+                p.setGrassi(rs.getFloat(9));
+                p.setCarboidrati(rs.getFloat(10));
+                p.setProteine(rs.getFloat(11));
+                p.setPeso(rs.getInt(12));
+                p.setImmagine(rs.getString(13));
+                p.setSconto(rs.getInt(14));
+
+                prodotti.add(p);
+
+            }
+            connection.close();
+            return prodotti;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public List<Prodotto> doRetrieveAll(){
 
         ArrayList<Prodotto> prodotti = new ArrayList<>();
@@ -76,7 +164,7 @@ public class ProdottoDAO {
             while(rs.next()) {
 
                 p = new Prodotto();
-                p.setIdProdotto(rs.getInt(1));
+                p.setIdProdotto(rs.getString(1));
                 p.setNome(rs.getString(2));
                 p.setDescrizione(rs.getString(3));
                 p.setPrezzo(rs.getFloat(4));
@@ -90,6 +178,7 @@ public class ProdottoDAO {
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
+
 
                 prodotti.add(p);
             }

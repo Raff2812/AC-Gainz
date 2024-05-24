@@ -19,7 +19,7 @@ public class UtenteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
 
-                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8),resultSet.getInt(9));
+                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8));
                 return u;
             }
         }
@@ -35,7 +35,7 @@ public class UtenteDAO {
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8),resultSet.getInt(9));
+                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8));
                 return u;
             }
             return null;
@@ -50,7 +50,7 @@ public class UtenteDAO {
     public void doSave(Utente utente) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO utente (email,password,nome,cognome,codice_fiscale,data_di_nascita,indirizzo,numero_di_cellulare,poteri) VALUES(?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO utente (email,password,nome,cognome,codice_fiscale,data_di_nascita,indirizzo,numero_di_cellulare) VALUES(?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             utente.setPassword(utente.getPassword());
             ps.setString(1, utente.getEmail());
@@ -64,7 +64,6 @@ public class UtenteDAO {
             ps.setDate(6, sqlDate);
             ps.setString(7, utente.getIndirizzo());
             ps.setString(8, utente.getTelefono());
-            ps.setInt(9, utente.getPoteri());
             if (ps.executeUpdate() != 1) {
                 throw new RuntimeException("INSERT error.");
             }
@@ -107,7 +106,7 @@ public class UtenteDAO {
                 p.setIndirizzo(rs.getString(7));
 
                 p.setTelefono(rs.getString(8));
-                p.setPoteri(rs.getInt(9));
+                p.setPoteri(rs.getBoolean(9));
 
                 utenti.add(p);
             }
