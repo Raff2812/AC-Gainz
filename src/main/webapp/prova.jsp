@@ -17,7 +17,7 @@
 
     for(Prodotto p: products){
 %>
-        <%=p.getIdProdotto()%> <%= p.getNome()%> <%= p.getCategoria()%> <%= p.getPrezzo()%> <br>
+<%=p.getIdProdotto()%> <%= p.getNome()%> <%= p.getCategoria()%> <%= p.getPrezzo()%> <br>
 
 <%
     }

@@ -18,9 +18,11 @@
                 <div class="line"></div>
                 <div class="line"></div>
             </div>
-            <div class="logo">AC-Gainz</div>
+            <div class="logo">
+               <a href="index.jsp" >AC-Gainz</a>
+            </div>
             <div class="search-bar">
-                <input type="search" placeholder="Search">
+                <input type="search" placeholder="Search..">
             </div>
             <div class="carrello">
                <a href="">Carrello</a>
@@ -28,8 +30,8 @@
             <div class="utente">
                 <button onclick="myFunction()" class="dropbutton">Utente</button>
                 <div id="myDropdown" class="dropdown-content">
-                    <a href="#">Login</a>
-                    <a href="#">Register</a>
+                    <a href="Login.jsp">Login</a>
+                    <a href="Registrazione.jsp">Register</a>
                 </div>
             </div>
         </div>
@@ -41,7 +43,6 @@
                 </li>
                 <li>
                     <a href="">Proteine</a>
-                    <!--<button formaction="" name="">proteine</button>-->
                 </li>
                 <li>
                     <a href="">Farine</a>

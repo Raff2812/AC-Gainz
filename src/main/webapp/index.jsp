@@ -9,19 +9,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>AC-Gainz HomePage</title>
 </head>
 <body>
-<%-- <%@ include file="WEB-INF/results/Registrazione.jsp"%> --%>
-<a href="Registrazione.jsp">Registrazione</a><br>
-<a href="Login.jsp">Login</a><br>
+ <%@ include file="Header.jsp"%>
 <form action="prova" method="post">
-    <!--<input type="text" name="attributo" placeholder="inserisci attributo">
-    <input type="text" name="valore" placeholder="inserisci valore">-->
 
     <select name="attributo">
         <option value="calorie">Calorie</option>
-        <option value="quantità">Quantità</option>
+        <option value="quantita">Quantità</option>
         <option value="prezzo">Prezzo</option>
         <option value="peso">Peso</option>
     </select>
@@ -31,9 +27,6 @@
         <option value="200 - 300">200 - 300</option>
         <option value="300 - 400">300 - 400</option>
     </select>
-
-
-
     <input type="submit" value="GO">
 </form>
 <%

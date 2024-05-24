@@ -44,7 +44,7 @@
     <input type="text" name="codiceFiscale" id="codiceFiscale" placeholder="Codice Fiscale" required><br>
     <input type="date" name="dataDiNascita" id="dataDiNascita" placeholder="Data di nascita" required><br>
     <input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required><br>
-    <input type="text" name="numCellullare" id="numCellulare" placeholder="numCellulare" required><br>
+    <input type="text" name="numCellulare" id="numCellulare" placeholder="numCellulare" required><br>
     <input type="submit" >
 </form>
 </div>
