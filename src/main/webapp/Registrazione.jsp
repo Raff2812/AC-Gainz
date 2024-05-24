@@ -1,3 +1,5 @@
+<%@ page import="model.Prodotto" %>
+<%@ page import="java.util.List" %>
 <%--
   Created by IntelliJ IDEA.
   User: luigiauriemma
