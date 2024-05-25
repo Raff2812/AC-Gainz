@@ -55,7 +55,7 @@ header .container{
 }
 .search-bar input[type="search"]{
     width: 400px;
-    padding: 3px;
+    padding-left: 0;
     border: none;
     outline: none;
     background:transparent;
@@ -199,7 +199,23 @@ header .lista ul li{ padding-bottom: 20px;
 }
 
 
+.custom_button{
+    background-color: #fefefe;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    padding: 5px 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+    margin-left: 70px;
+    margin-right: 70px;
+    border-color: transparent;
+}
 
+.custom_button:hover{
+    color: black;
+    background: orangered;
+}
 
 
 

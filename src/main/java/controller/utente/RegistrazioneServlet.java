@@ -50,11 +50,12 @@ public class RegistrazioneServlet extends HttpServlet {
         Utente x = new Utente(email, password, nome, cognome, codiceFiscale, dataDiNascita, indirizzo, numCellulare);
         utenteDAO.doSave(x);
 
+
+        //Stessa cosa fatta su LoginServlet
         HttpSession session = request.getSession();
         session.setAttribute("Utente", x);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("AreaUtente.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
         requestDispatcher.forward(request, response);
-
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         doGet(request, response);

@@ -1,4 +1,4 @@
-package controller.utente;
+package controller.homepage;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -30,9 +30,10 @@ public class provaProducts extends HttpServlet {
         }
         else products = p.doRetrieveByCriteria(attributo, valore);
 
-        request.setAttribute("productsByCategoria", products);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("Filter.jsp");
+        request.setAttribute("productsByCriteria", products);
+
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
         requestDispatcher.forward(request, response);
 
     }

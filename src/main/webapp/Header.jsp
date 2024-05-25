@@ -1,7 +1,30 @@
+<%@ page import="model.Utente" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
+
+    <%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
+         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
+         dell'utente--%>
+    <script>
+        function isLogged() {
+            const userLoggedIn = <%= session.getAttribute("Utente") != null %>;
+            if (userLoggedIn) {
+                document.getElementById("utente").innerHTML = `
+                    <form action="AreaUtente.jsp" method="post">
+                        <input type="hidden" name="areaPersonale" value="areaPersonale">
+                        <button type="submit" class="custom_button">Area Personale</button>  <%-- qui mi definisco una classe custom_button per personalizzare il buttone
+                                                                                                      vedere in Header.cc --%>
+                    </form>
+                `;
+            }
+        }
+        window.onload = isLogged;
+    </script>
+
+
+
 </head>
 <body>
 <header>
@@ -20,7 +43,7 @@
         <div class="carrello">
             <a href="">Carrello</a>
         </div>
-        <div class="utente">
+        <div class="utente" id="utente">
             <button onclick="myFunction()" class="dropbutton">Utente</button>
             <div id="myDropdown" class="dropdown-content">
                 <a href="Login.jsp">Login</a>
@@ -108,6 +131,7 @@
         xhr.send(category += "");
     }
 </script> --%>
+
 
 
     <script>

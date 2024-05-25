@@ -18,9 +18,12 @@
     String indirizzo = x.getIndirizzo();
 %>
 
-
-
 <p style="color: blue"> Ciao <%= email %> </p> <br>
+
+<form action="logOut" method="post">
+    <button type="submit" name="LogOut" style="color: red" >Log Out</button>
+</form>
+
 
 
 </body>
