@@ -32,7 +32,7 @@ public class provaProducts extends HttpServlet {
 
         request.setAttribute("productsByCategoria", products);
 
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("prova.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("Filter.jsp");
         requestDispatcher.forward(request, response);
 
     }

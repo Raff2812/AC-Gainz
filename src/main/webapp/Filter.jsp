@@ -13,7 +13,7 @@
 </head>
 <body>
 <%
-    List<Prodotto> products = (List<Prodotto>) request.getAttribute("productsByCategoria");
+    List<Prodotto> products = (List<Prodotto>) request.getAttribute("productsByCriteria");
 
     for(Prodotto p: products){
 %>

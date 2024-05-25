@@ -23,7 +23,7 @@ header{
     width: 100%;
     background: var(--backgroud-color-header);
     box-shadow: #36454F 2px 2px 2px 2px;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 /*posizionamento dei contenuti dell'header*/
 header .container{
@@ -31,6 +31,7 @@ header .container{
     align-items: center;
     justify-content: space-between;
 }
+
 
 
 
@@ -136,16 +137,24 @@ header .carrello{
 
 
 
+
+
+header .lista{
+   margin-top: -10px;
+}
 /*gestione della lista*/
 header .lista ul{
     margin-left: 40px;
     margin-right: 40px;
     margin-top: 30px;
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-/* gestione del singolo elemento della lista*/
+header .lista ul li{ padding-bottom: 20px;
+}
+/* gestione del singolo elemento della lista
 .lista ul li a{
     color: black;
     font-size: 15px;
@@ -154,8 +163,25 @@ header .lista ul{
     transition: 0.2s;
     margin-left: 70px;
     margin-right: 70px;
+    margin-bottom: 20px;
 }
 .lista ul li a:hover{
+    color: black;
+    background: orangered;
+}*/
+.lista ul li button{
+    background-color: #fefefe;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    padding: 5px 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+    margin-left: 70px;
+    margin-right: 70px;
+    border-color: transparent;
+}
+.lista ul li button:hover{
     color: black;
     background: orangered;
 }

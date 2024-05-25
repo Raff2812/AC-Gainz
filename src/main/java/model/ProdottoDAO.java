@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 public class ProdottoDAO {
 
     public Prodotto doRetrieveById(int id)
@@ -59,6 +61,10 @@ public class ProdottoDAO {
 
 
     public List<Prodotto> doRetrieveByCriteria(String attribute, String value){
+        if(Objects.equals(value, "Tutto"))
+            doRetrieveAll();
+
+
         ArrayList<Prodotto> prodotti = new ArrayList<>();
 
         PreparedStatement preparedStatement;
