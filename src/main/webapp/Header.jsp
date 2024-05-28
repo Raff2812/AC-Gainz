@@ -3,49 +3,27 @@
 <html>
 <head>
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
-
-    <%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
-         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
-         dell'utente--%>
-    <script>
-        function isLogged() {
-            const userLoggedIn = <%= session.getAttribute("Utente") != null %>;
-            if (userLoggedIn) {
-                document.getElementById("utente").innerHTML = `
-                    <form action="AreaUtente.jsp" method="post">
-                        <input type="hidden" name="areaPersonale" value="areaPersonale">
-                        <button type="submit" class="custom_button">Area Personale</button>  <%-- qui mi definisco una classe custom_button per personalizzare il buttone
-                                                                                                      vedere in Header.cc --%>
-                    </form>
-                `;
-            }
-        }
-        window.onload = isLogged;
-    </script>
-
-
-
 </head>
 <body>
 <header>
-    <div class="container">
-        <div class="burger-menu" onclick="toggleMenu()">
-            <div class="line"></div>
-            <div class="line"></div>
-            <div class="line"></div>
+    <div class="header-container">
+        <div class="header-burger-menu" onclick="toggleMenu()">
+            <div class="header-line"></div>
+            <div class="header-line"></div>
+            <div class="header-line"></div>
         </div>
-        <div class="logo">
+        <div class="header-logo">
             <a href="index.jsp" >AC-Gainz</a>
         </div>
-        <div class="search-bar">
+        <div class="header-search-bar">
             <input type="search" placeholder="Search..">
         </div>
-        <div class="carrello">
+        <div class="header-carrello">
             <a href="">Carrello</a>
         </div>
-        <div class="utente" id="utente">
-            <button onclick="myFunction()" class="dropbutton">Utente</button>
-            <div id="myDropdown" class="dropdown-content">
+        <div class="header-utente" id="utente">
+            <button onclick="myFunction()" class="header-dropbutton">Utente</button>
+            <div id="myDropdown" class="header-dropdown-content">
                 <a href="Login.jsp">Login</a>
                 <a href="Registrazione.jsp">Register</a>
             </div>
@@ -54,7 +32,7 @@
 
 
 
-    <div class="lista" id="lista">
+    <div class="header-lista" id="lista">
         <ul>
             <li>
                 <form action="index.jsp" method="post">
@@ -86,81 +64,54 @@
                     <button type="submit">Salse</button>
                 </form>
             </li>
-
-
-        </ul>
-
-
-
-
-    </div>
-
-  <%--  <div class="lista" id="lista">
-        <ul>
-            <li>
-                <a href="index.jsp">Tutto</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" onclick="sendCategory('Proteine')">Proteine</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" onclick="sendCategory('Farine')">Farine</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" onclick="sendCategory('Barrette')">Barrette</a>
-            </li>
-            <li>
-                <a href="javascript:void(0);" onclick="sendCategory('Salse')">Salse</a>
-            </li>
         </ul>
     </div>
-</header> --%>
-
-
-<%-- <script>
-    function sendCategory(category) {
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "filter", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState === 4 && xhr.status === 200) {
-                // Puoi gestire la risposta qui se necessario
-                console.log(xhr.responseText);
-            }
-        };
-        xhr.send(category += "");
-    }
-</script> --%>
-
+</header>
 
 
     <script>
         /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
         function myFunction() {
-            document.getElementById("myDropdown").classList.toggle("show");
+            document.getElementById("myDropdown").classList.toggle("header-show");
         }
-
         // chiudi il dropdown se l'utente clicca all'esterno del riquadro
         window.onclick = function(event) {
-            if (!event.target.matches('.dropbutton')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
+            if (!event.target.matches('.header-dropbutton')) {
+                var dropdowns = document.getElementsByClassName("header-dropdown-content");
                 var i;
                 for (i = 0; i < dropdowns.length; i++) {
                     var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
+                    if (openDropdown.classList.contains('header-show')) {
+                        openDropdown.classList.remove('header-show');
                     }
                 }
             }
         }
-
-
-
-        //da modificare
         function toggleMenu() {
             var menu = document.getElementById("lista");
-            menu.classList.toggle("showlista");
+            menu.classList.toggle("header-showlista");
         }
+    </script>
+
+
+
+<%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
+         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
+         dell'utente--%>
+    <script>
+        function isLogged() {
+            const userLoggedIn = <%= session.getAttribute("Utente") != null %>;
+            if (userLoggedIn) {
+                document.getElementById("utente").innerHTML = `
+                    <form action="AreaUtente.jsp" method="post">
+                        <input type="hidden" name="areaPersonale" value="areaPersonale">
+                        <button type="submit" class="header-custom_button">Area Personale</button>  <%-- qui mi definisco una classe custom_button per personalizzare il buttone
+                                                                                                      vedere in Header.cc --%>
+                    </form>
+                `;
+            }
+        }
+        window.onload = isLogged;
     </script>
 </body>
 </html>

@@ -15,9 +15,12 @@
  <%@ include file="Header.jsp"%>
 
 
+
+
+
+
  <%-- se sei arrivato qui leggendo a partire dai commenti di HomePage, leggi i commenti di Header.jsp --%>
 <form action="prova" method="post">
-
     <select name="attributo">
         <option value="calorie">Calorie</option>
         <option value="quantita">Quantità</option>
@@ -32,8 +35,6 @@
     </select>
     <input type="submit" value="GO">
 </form>
-
-
 <%
     List<Prodotto> prodottoList = (List<Prodotto>) application.getAttribute("Products");
     for(Prodotto p: prodottoList){
@@ -42,5 +43,12 @@
 <%
     }
 %>
+
+
+
+
+
+
+ <%@ include file="Footer.jsp"%>
 </body>
 </html>

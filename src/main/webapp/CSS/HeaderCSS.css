@@ -11,10 +11,6 @@
     font-family:"Inter";
     box-sizing: border-box;
 }
-body{
-    background: white;
-}
-
 
 
 /*sfondo dell'header*/
@@ -23,10 +19,10 @@ header{
     width: 100%;
     background: var(--backgroud-color-header);
     box-shadow: #36454F 2px 2px 2px 2px;
-    margin-bottom: 2px;
+    margin-bottom: 20px;
 }
 /*posizionamento dei contenuti dell'header*/
-header .container{
+header .header-container{
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -37,7 +33,7 @@ header .container{
 
 
 /* valori del logo*/
-.logo a{
+.header-logo a{
     margin-left: 15px;
     font-size: 60px;
     font-weight: bold;
@@ -46,14 +42,14 @@ header .container{
 ;
 }
 /*forma della barra di ricerca*/
-.search-bar{
+.header-search-bar{
     margin-top: 10px;
     border: 1px solid black;
     background-color: white;
     border-radius: 40px;
     padding: 13px 100px;
 }
-.search-bar input[type="search"]{
+.header-search-bar input[type="search"]{
     width: 400px;
     padding-left: 0;
     border: none;
@@ -67,7 +63,7 @@ header .container{
 
 
 /* il container dove andra il contenuto del dropdown */
-.utente{
+.header-utente{
     position: relative;
     display: inline-block;
     align-items: center;
@@ -75,7 +71,7 @@ header .container{
     margin-left: -50px;
 }
 /* Dropdown Button */
-.dropbutton {
+.header-dropbutton {
     background-color: orangered;
     color: white;
     padding: 10px 20px 10px 20px;
@@ -83,12 +79,12 @@ header .container{
     border: none;
     border-radius: 35px;
 }
-.dropbutton:hover {
+.header-dropbutton:hover {
     transition: 0.2s;
     color: black;
 }
 /* tabella del dropdown (nascosto di default) */
-.dropdown-content {
+.header-dropdown-content {
     display: none;
     position: absolute;
     border-color: black;
@@ -99,7 +95,7 @@ header .container{
     border-radius: 10px;
 }
 /* Singoli link all'interno del dropdown */
-.dropdown-content a {
+.header-dropdown-content a {
     color: black;
     padding: 12px 16px;
     text-decoration: none;
@@ -109,28 +105,28 @@ header .container{
     border-radius: 10px;
 }
 /* cambia colore quando passi un un link del contenuto */
-.dropdown-content a:hover {
+.header-dropdown-content a:hover {
     background-color: orangered;
 }
-.show {
+.header-show {
     display: block;
 }
 
 
-
-
-header .carrello{
+header .header-carrello{
     display: flex;
     align-items: center;
 }
-.carrello a{
+.header-carrello a, .header-custom_button{
     color: white;
     padding: 10px 20px;
     text-decoration: none;
     border-radius: 35px;
     background-color: orangered;
+    border-color: transparent;
+    font-size: 15px;
 }
-.carrello a:hover{
+.header-carrello a:hover, .header-custom_button:hover{
     transition: 0.2s;
     color: black;
 }
@@ -139,11 +135,11 @@ header .carrello{
 
 
 
-header .lista{
+header .header-lista{
    margin-top: -10px;
 }
 /*gestione della lista*/
-header .lista ul{
+header .header-lista ul{
     margin-left: 40px;
     margin-right: 40px;
     margin-top: 30px;
@@ -152,24 +148,10 @@ header .lista ul{
     align-items: center;
     justify-content: space-between;
 }
-header .lista ul li{ padding-bottom: 20px;
+header .header-lista ul li{
+    padding-bottom: 20px;
 }
-/* gestione del singolo elemento della lista
-.lista ul li a{
-    color: black;
-    font-size: 15px;
-    padding: 5px 20px;
-    border-radius: 30px;
-    transition: 0.2s;
-    margin-left: 70px;
-    margin-right: 70px;
-    margin-bottom: 20px;
-}
-.lista ul li a:hover{
-    color: black;
-    background: orangered;
-}*/
-.lista ul li button{
+.header-lista ul li button{
     background-color: #fefefe;
     text-decoration: none;
     color: black;
@@ -181,7 +163,7 @@ header .lista ul li{ padding-bottom: 20px;
     margin-right: 70px;
     border-color: transparent;
 }
-.lista ul li button:hover{
+.header-lista ul li button:hover{
     color: black;
     background: orangered;
 }
@@ -190,7 +172,7 @@ header .lista ul li{ padding-bottom: 20px;
 
 
 /* Stile per il burger menu */
-.burger-menu {
+.header-burger-menu {
     display: none;
     font-size: 30px;
     color: black;
@@ -198,138 +180,95 @@ header .lista ul li{ padding-bottom: 20px;
     margin-right: 20px;
 }
 
-
-.custom_button{
-    background-color: #fefefe;
-    text-decoration: none;
-    color: black;
-    font-size: 15px;
-    padding: 5px 20px;
-    border-radius: 30px;
-    transition: 0.2s;
-    margin-left: 70px;
-    margin-right: 70px;
-    border-color: transparent;
-}
-
-.custom_button:hover{
-    color: black;
-    background: orangered;
-}
-
-
-
-
 /* Media Queries per la responsività */
-
 /* Schermi piccoli (smartphone) */
-@media (max-width: 900px) {
-
+@media (max-width: 950px) {
     header{
         height: 80px;
     }
-    .logo a{
+    .header-logo a{
         font-size: 25px;
         margin-left: 10px;
     }
-
-    .search-bar {
+    .header-search-bar {
         padding: 10px 30px;
     }
-
-    .search-bar input[type="search"] {
+    .header-search-bar input[type="search"] {
         width: 150px;
         font-size: 14px;
     }
-
-    .utente {
+    .header-utente {
         margin-right: 20px;
         margin-left: 0;
     }
-
-    .carrello a {
+    .header-carrello a {
         padding: 5px 10px;
     }
-
-    .lista{
+    .header-lista{
         background-color: var(--backgroud-color-header);
-
     }
-
-    .lista ul {
+    .header-lista ul {
         margin: 0;
         padding: 0;
         flex-direction: column;
         display: none; /* Nascondi il menu di default */
     }
-
-    .lista ul li {
+    .header-lista ul li {
         text-align: center;
         margin: 10px 0;
     }
-
-    .burger-menu {
+    .header-burger-menu {
         display: block; /* Mostra il burger menu */
     }
-
-    .burger-menu .line{
+    .header-burger-menu .header-line{
         border-radius: 10px;
         width: 25px;
         height: 6px;
         background: black;
         margin: 2px 0  0  10px;
     }
-
-    .showburger {
+    .header-showburger {
         display: flex; /* Mostra il menu quando il burger menu è cliccato */
         flex-direction: column;
     }
-
-    .lista
+    .header-lista
     {
         display: none;
         opacity: 0;
         position: relative;
     }
-
-    .showlista{
+    .header-showlista{
         display: block;
         opacity: 1;
     }
 }
 
 /* Schermi medi (tablet) */
-@media (min-width: 901px) and (max-width: 1320px) {
-    .logo a{
+@media (min-width: 951px) and (max-width: 1320px) {
+    .header-logo a{
         font-size: 40px;
         margin-left: 10px;
     }
-
-    .search-bar {
+    .header-search-bar {
         padding: 10px 80px;
     }
-
-    .search-bar input[type="search"] {
+    .header-search-bar input[type="search"] {
         width: 300px;
         font-size: 18px;
     }
-
-    .utente {
+    .header-utente {
         margin-right: 50px;
         margin-left: 0;
     }
-
-    .carrello a {
+    .header-carrello a {
         padding: 5px 15px;
     }
-
-    .lista ul {
+    .header-lista ul {
         margin: 20px;
         flex-direction: row;
         justify-content: space-around;
     }
-
-    .lista ul li a {
+    .header-lista ul li a {
         font-size: 14px;
         padding: 5px 15px;
         margin: 5px 0;
