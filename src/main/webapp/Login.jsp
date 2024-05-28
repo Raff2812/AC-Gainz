@@ -152,7 +152,6 @@
             </div>
         </form>
     </div>
-    <div><img src="./Immagini/Soggetto.png"></div>
 
 
 <% if (request.getAttribute("Error") != null && request.getAttribute("Error").equals("Utente non registrato")){ %>
