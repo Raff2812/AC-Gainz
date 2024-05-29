@@ -101,7 +101,7 @@
 <body>
 
 <div class="register-contenitore">
-   <h1>Registrazione</h1>
+    <h1>Registrazione</h1>
     <form action="register" method="post">
         <div class="tab">
             <div class="register-first-row">
