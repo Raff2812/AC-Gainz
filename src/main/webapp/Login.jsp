@@ -21,6 +21,9 @@
         body{
             display: flex;
             background-image: url("./Immagini/Drawing.png");
+            background-repeat: no-repeat;
+            height: fit-content;
+            background-size: cover;
         }
 
         .login-contenitore{
@@ -60,14 +63,6 @@
 
         .input-box input::placeholder{
             color: black;
-        }
-
-        .input-box i{
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 20px;
         }
 
         .login-contenitore .ricordami-passdim{

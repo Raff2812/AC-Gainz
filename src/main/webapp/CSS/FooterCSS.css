@@ -1,6 +1,9 @@
 .footer{
     background-color: #E5E4E2;
     padding: 60px 0;
+    width: 100%;
+    z-index: 1;
+    margin-top: 20px;
 }
 .footer-container{
     max-width: 1170px;
@@ -20,17 +23,6 @@
     text-transform: capitalize;
     margin-bottom: 20px;
     font-weight: 600;
-    position: relative;
-}
-.footer-column h4::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    bottom: -5px;
-    background-color: orangered;
-    height: 3px;
-    box-sizing: border-box;
-    width: 60px;
 }
 .footer-column ul li{
     margin-left: 7px;
