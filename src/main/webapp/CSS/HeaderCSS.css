@@ -20,6 +20,7 @@ header{
     background: var(--backgroud-color-header);
     box-shadow: #36454F 2px 2px 2px 2px;
     margin-bottom: 20px;
+    z-index: 10;
 }
 /*posizionamento dei contenuti dell'header*/
 header .header-container{
