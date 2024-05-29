@@ -124,10 +124,6 @@
     document.getElementById("defaultOpen").click();
 </script>
 
-<form action="logOut" method="post">
-    <button type="submit" name="LogOut" style="color: red" >Log Out</button>
-</form>
-
 <%@ include file="Footer.jsp"%>
 </body>
 </html>
