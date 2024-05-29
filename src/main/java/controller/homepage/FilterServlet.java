@@ -29,10 +29,7 @@ public class FilterServlet extends HttpServlet {
 
         if(filter.equals("tutto")){
             productsByCriteria = prodottoDAO.doRetrieveAll();
-        }else if(filter.equals("integratori")){
-            productsByCriteria = prodottoDAO.doRetrieveAllSupplements();
-        }
-        else
+        } else
         {productsByCriteria = prodottoDAO.doRetrieveByCriteria("categoria", filter);}
 
         /*req.setAttribute("productsByCriteria", productsByCriteria);

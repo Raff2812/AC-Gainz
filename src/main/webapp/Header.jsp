@@ -60,16 +60,16 @@
     <div class="header-lista" id="lista">
         <ul>
             <li>
-                <a href="FilterProducts.jsp?category=tutto">Tutto</a>
+            <a href="FilterProducts.jsp">Store</a>
             </li>
             <li>
-                <a href="FilterProducts.jsp?category=proteine">Proteine</a>
+                <button onclick="filterCategory(this.innerText.toLowerCase())">Proteine</button>
             </li>
             <li>
-                <a href="FilterProducts.jsp?category=creatina">Creatina</a>
+                <button onclick="filterCategory(this.innerText.toLowerCase())">Creatina</button>
             </li>
             <li>
-                <a href="FilterProducts.jsp?category=salse">Salse</a>
+                <button onclick="filterCategory(this.innerText.toLowerCase())">Salse</button>
             </li>
         </ul>
 

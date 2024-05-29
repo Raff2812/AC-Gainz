@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.util.List" %>
+<%@ page import="model.Prodotto" %>
+<%@ page import="model.ProdottoDAO" %><%--
   Created by IntelliJ IDEA.
   User: raffa
   Date: 29/05/2024
@@ -12,15 +14,26 @@
 </head>
 <body>
 <%@include file="Header.jsp"%>
-<div class="group"></div>
+<div id="gr" class="group">
+<%
+    ProdottoDAO prodottoDAO = new ProdottoDAO();
+    List<Prodotto> allProducts = prodottoDAO.doRetrieveAll();
 
-<% String filter = request.getParameter("category");%>
+    for(Prodotto p: allProducts){
+%>
+
+    <p><%=p.getNome()%>  <%=p.getPrezzo()%>  <%=p.getCategoria()%></p>
+
+<%
+    }
+%>
+</div>
 
 <script>
-    var category = '<%=filter%>';
-    console.log(category);
     function filterCategory(category){
         const xhttp = new XMLHttpRequest();
+
+
 
         xhttp.onreadystatechange = function (){
             if(xhttp.readyState === 4 && xhttp.status === 200){
@@ -29,9 +42,10 @@
                 const group = document.querySelector(".group");
                 group.innerHTML = '';
 
+
                 prodotti.forEach(prodotto => {
                     const p = document.createElement("p");
-                    p.innerText = prodotto.nome;
+                    p.innerText = prodotto.nome + " " + prodotto.prezzo;
                     group.appendChild(p);
                 })
             }
