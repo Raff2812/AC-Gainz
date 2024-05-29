@@ -27,7 +27,7 @@ public class FilterServlet extends HttpServlet {
 
         List<Prodotto> productsByCriteria = new ArrayList<>();
 
-        if(filter.equals("Tutto")){
+        if(filter.equals("tutto")){
             productsByCriteria = prodottoDAO.doRetrieveAll();
         }else if(filter.equals("integratori")){
             productsByCriteria = prodottoDAO.doRetrieveAllSupplements();

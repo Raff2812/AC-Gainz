@@ -49,6 +49,7 @@
 --%>
  <div class="group"></div>
 
+ <p> Home Page</p>
 
 
  <%@ include file="Footer.jsp"%>

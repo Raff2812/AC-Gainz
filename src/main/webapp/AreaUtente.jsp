@@ -72,15 +72,14 @@
         <h3>Dettagli Utente</h3>
         <p>
             <%
-                Utente y = (Utente) session.getAttribute("Utente");
-                String email = y.getEmail();
-                String password = y.getPassword();
-                String indirizzo = y.getIndirizzo();
-                String nome= y.getNome();
-                String cognome= y.getCognome();
-                String codiceFiscale= y.getCodiceFiscale();
-                Date dataNascita= y.getDataNascita();
-                String telefono= y.getTelefono();
+                String email = x.getEmail();
+                String password = x.getPassword();
+                String indirizzo = x.getIndirizzo();
+                String nome= x.getNome();
+                String cognome= x.getCognome();
+                String codiceFiscale= x.getCodiceFiscale();
+                Date dataNascita= x.getDataNascita();
+                String telefono= x.getTelefono();
             %>
             Email:<br><%=email%>
             <br>Password:<br><%=password%>

@@ -60,15 +60,17 @@
     <div class="header-lista" id="lista">
         <ul>
             <li>
-                <a href="AllProducts.jsp">Tutto</a>
+                <a href="FilterProducts.jsp?category=tutto">Tutto</a>
             </li>
             <li>
-                <a href="Integratori.jsp">Integratori</a>
+                <a href="FilterProducts.jsp?category=proteine">Proteine</a>
             </li>
             <li>
-                <a href="Condimenti.jsp">Condimenti</a>
+                <a href="FilterProducts.jsp?category=creatina">Creatina</a>
             </li>
-
+            <li>
+                <a href="FilterProducts.jsp?category=salse">Salse</a>
+            </li>
         </ul>
 
     </div>
