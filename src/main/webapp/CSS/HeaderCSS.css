@@ -167,6 +167,38 @@ header .header-lista ul li{
     color: black;
     background: orangered;
 }
+.header-lista ul li a{
+    background-color: #fefefe;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    padding: 5px 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+    margin-left: 70px;
+    margin-right: 70px;
+    border-color: transparent;
+}
+.header-lista ul li a:hover{
+    color: black;
+    background: orangered;
+}
+.goBACK{
+    background-color: #fefefe;
+    text-decoration: none;
+    color: black;
+    font-size: 15px;
+    padding: 5px 20px;
+    border-radius: 30px;
+    transition: 0.2s;
+    margin-left: 70px;
+    margin-right: 70px;
+    border-color: transparent;
+}
+.goBACK:hover{
+    color: black;
+    background: orangered;
+}
 
 
 

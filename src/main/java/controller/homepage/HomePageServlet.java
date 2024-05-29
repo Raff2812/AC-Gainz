@@ -26,11 +26,11 @@ public class HomePageServlet extends HttpServlet {
 
         //Controllo necessario perchè senza, altrimenti, una volta loggati nel sito
         //se si cliccasse sul filtro del range presente in "basso" è come se mi facesse uscire (da migliorare)
-        List<Prodotto> productsByCriteria = (List<Prodotto>) req.getAttribute("productsByCriteria");
+        /*List<Prodotto> productsByCriteria = (List<Prodotto>) req.getAttribute("productsByCriteria");
         if (productsByCriteria != null){
-            RequestDispatcher requestDispatcherFilter = req.getRequestDispatcher("Filter.jsp");
+            RequestDispatcher requestDispatcherFilter = req.getRequestDispatcher("AllProducts.jsp");
             requestDispatcherFilter.forward(req, resp);
-        }
+        }*/
 
 
         //Se non clicco sul filtro, richiamo semplicemente index.jsp

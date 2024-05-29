@@ -3,8 +3,33 @@
 <html>
 <head>
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
+
+    <% Utente x = (Utente) session.getAttribute("Utente");
+        boolean isLogged = (x != null); %>
+
+
+    <script>
+        window.onload = function() {
+            const isLogged = <%= isLogged %>;
+            if (isLogged) {
+                document.getElementById("utente").innerHTML = `
+                <form action="AreaUtente.jsp" method="post">
+                    <input type="hidden" name="areaPersonale" value="areaPersonale">
+                    <button type="submit" class="header-custom_button">Area Personale</button>
+                </form>
+            `;
+            }
+            console.log(isLogged);
+            // Dispatch a custom event to signal that the header script has finished executing
+            document.dispatchEvent(new Event('headerScriptLoaded'));
+        };
+    </script>
+
+
 </head>
 <body>
+
+
 <header>
     <div class="header-container">
         <div class="header-burger-menu" onclick="toggleMenu()">
@@ -35,39 +60,21 @@
     <div class="header-lista" id="lista">
         <ul>
             <li>
-                <form action="index.jsp" method="post">
-                    <input type="hidden" name="category" value="Tutto">
-                    <button type="submit">Tutto</button>
-                </form>
+                <a href="AllProducts.jsp">Tutto</a>
             </li>
             <li>
-                <form action="filter" method="post">
-                    <input type="hidden" name="category" value="proteine">
-                    <button type="submit">Proteine</button>
-                </form>
+                <a href="Integratori.jsp">Integratori</a>
             </li>
             <li>
-                <form action="filter" method="post">
-                    <input type="hidden" name="category" value="farine">
-                    <button type="submit">Farine</button>
-                </form>
+                <a href="Condimenti.jsp">Condimenti</a>
             </li>
-            <li>
-                <form action="filter" method="post">
-                    <input type="hidden" name="category" value="barrette">
-                    <button type="submit">Barrette</button>
-                </form>
-            </li>
-            <li>
-                <form action="filter" method="post">
-                    <input type="hidden" name="category" value="salse">
-                    <button type="submit">Salse</button>
-                </form>
-            </li>
-        </ul>
-    </div>
-</header>
 
+        </ul>
+
+    </div>
+
+
+</header>
 
     <script>
         /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
@@ -98,20 +105,10 @@
 <%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
          cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
          dell'utente--%>
-    <script>
-        function isLogged() {
-            const userLoggedIn = <%= session.getAttribute("Utente") != null %>;
-            if (userLoggedIn) {
-                document.getElementById("utente").innerHTML = `
-                    <form action="AreaUtente.jsp" method="post">
-                        <input type="hidden" name="areaPersonale" value="areaPersonale">
-                        <button type="submit" class="header-custom_button">Area Personale</button>  <%-- qui mi definisco una classe custom_button per personalizzare il buttone
-                                                                                                      vedere in Header.cc --%>
-                    </form>
-                `;
-            }
-        }
-        window.onload = isLogged;
-    </script>
+
+
+
+
+
 </body>
 </html>

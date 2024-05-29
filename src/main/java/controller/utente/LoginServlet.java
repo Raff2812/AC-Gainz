@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         //Se nel mio db non c'è alcuna corrispondenza con l'email passata dal form, ricarico la pagina del login
         // e faccio uscire un messaggio di errore
         if(utenteDAO.doRetrieveByEmail(email) == null){
-            request.setAttribute("Error", "Utente non registrato");
+            request.setAttribute("ErrorEmail", "Utente non registrato");
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("Login.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -45,7 +45,8 @@ public class LoginServlet extends HttpServlet {
         //In questo caso, se arrivo qui significa che l'email è presente nel db ma ciò che è sbagliata è la password
         //per cui faccio ciò che ho fatto prima, con un messaggio di errore evidentemente diverso
         if(x == null){
-            request.setAttribute("Error", "Password Sbagliata");
+            HttpSession session = request.getSession();
+            session.setAttribute("ErrorPassword", "Password Sbagliata");
             RequestDispatcher requestDispatcher = request.getRequestDispatcher("Login.jsp");
             requestDispatcher.forward(request, response);
         }
@@ -60,8 +61,10 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("Utente", x);
 
         //richiamo la servlet HomePageServlet che mi gestirà queste informazioni
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
-        requestDispatcher.forward(request, response);
+        /*RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
+        requestDispatcher.forward(request, response);*/
+
+        response.sendRedirect("index.jsp");
 
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

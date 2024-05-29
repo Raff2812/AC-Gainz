@@ -8,8 +8,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Prodotto;
 import model.ProdottoDAO;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,11 +26,40 @@ public class FilterServlet extends HttpServlet {
         ProdottoDAO prodottoDAO = new ProdottoDAO();
 
         List<Prodotto> productsByCriteria = new ArrayList<>();
-        productsByCriteria = prodottoDAO.doRetrieveByCriteria("categoria", filter);
-        req.setAttribute("productsByCriteria", productsByCriteria);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("Filter.jsp");
-        requestDispatcher.forward(req, resp);
 
+        if(filter.equals("Tutto")){
+            productsByCriteria = prodottoDAO.doRetrieveAll();
+        }else if(filter.equals("integratori")){
+            productsByCriteria = prodottoDAO.doRetrieveAllSupplements();
+        }
+        else
+        {productsByCriteria = prodottoDAO.doRetrieveByCriteria("categoria", filter);}
+
+        /*req.setAttribute("productsByCriteria", productsByCriteria);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("AllProducts.jsp");
+        requestDispatcher.forward(req, resp);*/
+
+        JSONArray jsonArray = new JSONArray();
+
+        for (Prodotto p : productsByCriteria){
+            System.out.println(p.getNome());
+        }
+
+
+        for(Prodotto p: productsByCriteria){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("id", p.getIdProdotto());
+            jsonObject.put("nome", p.getNome());
+            jsonObject.put("prezzo", p.getPrezzo());
+            jsonArray.add(jsonObject);
+        }
+
+        System.out.println("JSON Array: " + jsonArray);
+
+        resp.setContentType("application/json");
+        PrintWriter o = resp.getWriter();
+        o.println(jsonArray);
+        o.flush();
     }
 
     @Override
