@@ -14,7 +14,79 @@
 </head>
 <body>
 <%@include file="Header.jsp"%>
+
+<div id="filters" class="filters">
+    <div id="firstSelect">
+        <label>
+            <select name="attributo" onchange="showSelect(this.value.toLowerCase())">
+                <option value="">-</option>
+                <option value="prezzo">Prezzo</option>
+                <option value="calorie">Calorie</option>
+                <option value="gusto">Gusto</option>
+                <option value="sconto">Sconto</option>
+            </select>
+        </label>
+    </div>
+    <div id="secondSelect">
+
+    </div>
+
+</div>
+
+
+<script>
+    function showSelect(filter){
+        if(filter === 'prezzo' || filter === 'calorie'){
+            const secondSelect = document.getElementById("secondSelect");
+            secondSelect.innerHTML = "";
+
+            const label1 = document.createElement("label")
+            const label2 = document.createElement("label");
+
+            const select1 = document.createElement("select");
+            const select2 = document.createElement("select");
+
+            const optionDefault = document.createElement("option");
+            optionDefault.value = "";
+            optionDefault.textContent = "-";
+            select1.appendChild(optionDefault);
+            select2.appendChild(optionDefault);
+
+            label1.appendChild(select1);
+            label2.appendChild(select2);
+
+            secondSelect.appendChild(label1);
+            secondSelect.appendChild(label2);
+        }
+    }
+</script>
+
+
+
 <div id="gr" class="group">
+<%
+    if(request.getAttribute("productsByCriteria") != null) {
+        List<Prodotto> productsByCriteria = (List<Prodotto>) request.getAttribute("productsByCriteria");
+        for (Prodotto p: productsByCriteria){
+%>
+    <p><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getGusto()%> <%=p.getPrezzo()%></p>
+    <%
+            }
+    }
+    else{
+        List<Prodotto> allProducts = (List<Prodotto>) application.getAttribute("Products");
+        for (Prodotto p: allProducts){
+    %>
+    <p><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getGusto()%> <%=p.getPrezzo()%></p>
+    <%
+        }
+        }
+    %>
+</div>
+
+
+
+    <%--
 <%
     ProdottoDAO prodottoDAO = new ProdottoDAO();
     List<Prodotto> allProducts = prodottoDAO.doRetrieveAll();
@@ -26,8 +98,10 @@
 
 <%
     }
-%>
-</div>
+%> --%>
+
+
+
 
 <script>
     function filterCategory(category){

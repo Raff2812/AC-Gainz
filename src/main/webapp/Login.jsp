@@ -14,11 +14,11 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
-        *{
-            font-family:"Inter";
+        * {
+            font-family: "Inter";
         }
 
-        body{
+        body {
             display: flex;
             background-image: url("./Immagini/Drawing.png");
             background-repeat: no-repeat;
@@ -26,7 +26,7 @@
             background-size: cover;
         }
 
-        .login-contenitore{
+        .login-contenitore {
             width: 420px;
             border: 2px solid black;
             backdrop-filter: blur(40px);
@@ -37,13 +37,14 @@
             padding: 30px 40px;
         }
 
-        .login-contenitore h1{
+        .login-contenitore h1 {
             font-size: 38px;
             text-align: center;
             color: black;
         }
 
-        .login-contenitore .input-box{
+        .login-contenitore .input-box {
+            position: relative;
             width: 100%;
             height: 50px;
             background: white;
@@ -51,7 +52,7 @@
             border-radius: 40px;
         }
 
-        .input-box input{
+        .input-box input {
             width: 100%;
             height: 100%;
             background: transparent;
@@ -61,11 +62,20 @@
             padding: 20px 45px 20px 20px;
         }
 
-        .input-box input::placeholder{
+        .input-box input::placeholder {
             color: black;
         }
 
-        .login-contenitore .ricordami-passdim{
+        .input-box img {
+            position: absolute;
+            top: 50%;
+            left: 85%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 30px;
+        }
+
+        .login-contenitore .ricordami-passdim {
             display: flex;
             justify-content: space-between;
             color: white;
@@ -73,17 +83,17 @@
             margin: -15px 0 15px;
         }
 
-        .ricordami-passdim a{
+        .ricordami-passdim a {
             color: white;
             text-decoration: none;
             transition: 0.2s;
         }
 
-        .ricordami-passdim a:hover{
+        .ricordami-passdim a:hover {
             color: orangered;
         }
 
-        .login-contenitore .submit-button{
+        .login-contenitore .submit-button {
             width: 100%;
             height: 45px;
             background: orangered;
@@ -97,32 +107,35 @@
             transition: 0.2s;
         }
 
-        .login-contenitore .submit-button:hover{
+        .login-contenitore .submit-button:hover {
             color: black;
         }
 
-        .login-contenitore .registrazione{
+        .login-contenitore .registrazione {
             font-size: 14px;
             text-align: center;
             margin: 20px 0 15px;
             color: white;
         }
 
-        .registrazione p a{
+        .registrazione p a {
             color: white;
             text-decoration: none;
             font-weight: 600;
             transition: 0.2s;
         }
 
-        .registrazione p a:hover{
+        .registrazione p a:hover {
             color: orangered;
-
         }
-
     </style>
+
 </head>
 <body>
+
+<p id="error-message"></p>
+
+<script defer src="JS/showPassword.js"></script>
 
     <div class="login-contenitore">
         <form action="login" method="post">
@@ -131,7 +144,9 @@
                 <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required>
             </div>
             <div class="input-box">
-                <label for="password"></label><input type="password" name="password" id="password" placeholder="Password" required>
+                <label for="password"></label>
+                <input type="password" name="password" id="password" placeholder="Password" required>
+                <img id="imgPass" src="./Immagini/hide.png" alt="Hide" onclick="showPassword()">
             </div>
             <div class="ricordami-passdim">
                 <label><input type="checkbox">Ricordami</label>
@@ -148,18 +163,24 @@
         </form>
     </div>
 
-
-<% if (request.getAttribute("Error") != null && request.getAttribute("Error").equals("Utente non registrato")){ %>
-<p style="color: red">Utente non registrato</p>
-<%
+<%--
+<script>
+    function showPassword(){
+        var passwordField = document.getElementById("password");
+        var imgPass = document.getElementById("imgPass");
+        if(passwordField.type === "password"){
+            passwordField.type = "text";
+            imgPass.src = "./Immagini/visible.png";
+        }else
+        {
+            passwordField.type = "password";
+            imgPass.src = "./Immagini/hide.png";
+        }
     }
-%>
+</script>
+--%>
 
-<% if(request.getAttribute("Error") != null && request.getAttribute("Error").equals("Password Sbagliata")){ %>
-<p style="color: red">Password Sbagliata!</p>
-<%
-    }
-%>
+
 
 </body>
 </html>
