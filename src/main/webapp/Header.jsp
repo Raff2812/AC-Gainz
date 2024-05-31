@@ -24,11 +24,8 @@
             document.dispatchEvent(new Event('headerScriptLoaded'));
         };
     </script>
-
-
 </head>
 <body>
-
 
 <header>
     <div class="header-container">
@@ -55,8 +52,6 @@
         </div>
     </div>
 
-
-
     <div class="header-lista" id="lista">
         <ul>
             <li>
@@ -72,10 +67,7 @@
                 <button onclick="filterCategory(this.innerText.toLowerCase())">Salse</button>
             </li>
         </ul>
-
     </div>
-
-
 </header>
 
     <script>
@@ -101,16 +93,5 @@
             menu.classList.toggle("header-showlista");
         }
     </script>
-
-
-
-<%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
-         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
-         dell'utente--%>
-
-
-
-
-
 </body>
 </html>
