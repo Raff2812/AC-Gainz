@@ -1,4 +1,4 @@
-package controller.homepage;
+package controller.Filters;
 
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class FilterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-       String filter = req.getParameter("category");
+        String filter = req.getParameter("category");
         ProdottoDAO prodottoDAO = new ProdottoDAO();
 
         List<Prodotto> productsByCriteria = new ArrayList<>();
@@ -32,11 +32,11 @@ public class FilterServlet extends HttpServlet {
         } else
         {productsByCriteria = prodottoDAO.doRetrieveByCriteria("categoria", filter);}
 
-        /*req.setAttribute("productsByCriteria", productsByCriteria);
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("AllProducts.jsp");
-        requestDispatcher.forward(req, resp);*/
+        req.setAttribute("productsByCriteria", productsByCriteria);
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("FilterProducts.jsp");
+        requestDispatcher.forward(req, resp);
 
-        JSONArray jsonArray = new JSONArray();
+        /*JSONArray jsonArray = new JSONArray();
 
         for (Prodotto p : productsByCriteria){
             System.out.println(p.getNome());
@@ -56,10 +56,10 @@ public class FilterServlet extends HttpServlet {
         resp.setContentType("application/json");
         PrintWriter o = resp.getWriter();
         o.println(jsonArray);
-        o.flush();
+        o.flush();*/
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         doGet(req, resp);
-}}
+    }}

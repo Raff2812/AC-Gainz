@@ -63,6 +63,7 @@
         }
 
         .register-contenitore .input-box{
+            position: relative;
             height: 50px;
             background: white;
             margin: 30px 0;
@@ -82,6 +83,15 @@
             color: black;
         }
 
+        .input-box img{
+            position: absolute;
+            top: 50%;
+            left: 85%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            width: 30px;
+        }
+
         form{
             display: inline-grid;
             width: fit-content;
@@ -97,20 +107,38 @@
             gap: 30px;
         }
 
+        .register-contenitore p{
+            font-size: 30px;
+            font-weight: bolder;
+            text-align: left;
+            color: orangered;
+        }
+        .register-contenitore a{
+            font-size: 20px;
+            text-align: left;
+            color: orangered;
+            margin-top: -30px;
+        }
+
     </style>
 <body>
 
+<script defer src="JS/validateForm.js"></script>
+<script defer src="JS/togglePassword.js"></script>
+
 <div class="register-contenitore">
     <h1>Registrazione</h1>
-    <form action="register" method="post">
+    <form id="registration-form" action="register" method="post" onsubmit="return validateForm()">
         <div class="tab">
             <div class="register-first-row">
                 <div class="input-box">
-                    <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required>
+                    <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required autocomplete="">
                 </div>
                 <div class="input-box">
-                    <label for="password"></label><input type="password" name="password" id="password" placeholder="Password" required>
+                    <label for="password"></label><input type="password" name="password" id="password" placeholder="Password" required autocomplete="">
+                    <img id="imgPass" src="Immagini/hide.png" alt="Hide" onclick="togglePassword()">
                 </div>
+
                 <div class="input-box">
                     <label for="nome"></label><input type="text" name="nome" id="nome" placeholder="Nome" required>
                 </div>
@@ -124,18 +152,23 @@
                     <label for="codiceFiscale"></label><input type="text" name="codiceFiscale" id="codiceFiscale" placeholder="Codice Fiscale" required>
                 </div>
                 <div class="input-box">
-                    <label for="dataDiNascita"></label><input type="date" name="dataDiNascita" id="dataDiNascita" placeholder="Data di nascita" required>
+                    <label for="dataDiNascita"></label><input type="date" name="dataDiNascita" id="dataDiNascita" placeholder="Data di nascita" required min="1900-01-01">
                 </div>
                 <div class="input-box">
                     <label for="indirizzo"></label><input type="text" name="indirizzo" id="indirizzo" placeholder="Indirizzo" required>
                 </div>
                 <div class="input-box">
-                    <label for="numCellulare"></label><input type="text" name="numCellulare" id="numCellulare" placeholder="numCellulare" required>
+                    <label for="numCellulare"></label><input type="text" name="numCellulare" id="numCellulare" placeholder="numCellulare" required >
                 </div>
             </div>
         </div>
         <button type="submit" class="submit-button">Invia</button>
     </form>
+
+    <p>Sei già registrato?</p>
+    <a href="Login.jsp">Login</a>
 </div>
+
+
 </body>
 </html>

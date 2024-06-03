@@ -1,142 +1,111 @@
-<%@ page import="java.util.List" %>
 <%@ page import="model.Prodotto" %>
-<%@ page import="model.ProdottoDAO" %><%--
-  Created by IntelliJ IDEA.
-  User: raffa
-  Date: 29/05/2024
-  Time: 18:03
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<%@ page import="java.util.List" %>
+<!DOCTYPE html>
+<html lang="it">
 <head>
-    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prodotti</title>
+    <style>
+        .pageContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .filtersContainer {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background-color: transparent;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            justify-content: center;
+            align-items: center;
+        }
+        .filter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .filter label {
+            margin-bottom: 5px;
+        }
+        .filter select {
+            padding: 5px;
+        }
+        .buttonFilter {
+            padding: 5px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
+
 <%@include file="Header.jsp"%>
 
-<div id="filters" class="filters">
-    <div id="firstSelect">
-        <label>
-            <select name="attributo" onchange="showSelect(this.value.toLowerCase())">
+<div class="pageContainer">
+    <div class="filtersContainer" id="filtersContainer">
+        <div class="sort">
+            <label for="sorting">Ordina Per</label>
+            <select id="sorting">
                 <option value="">-</option>
-                <option value="prezzo">Prezzo</option>
-                <option value="calorie">Calorie</option>
-                <option value="gusto">Gusto</option>
-                <option value="sconto">Sconto</option>
+                <option value="sortDown">Da alto a basso</option>
+                <option value="sortUp">Da basso ad alto</option>
             </select>
-        </label>
-    </div>
-    <div id="secondSelect">
+        </div>
 
-    </div>
+        <div class="filter">
+            <label for="prices">Prezzo</label>
+            <select id="prices">
+                <option value="">-</option>
+                <option value="0-30">0-30</option>
+                <option value="30-60">30-60</option>
+                <option value="60-100">60-100</option>
+            </select>
+        </div>
 
+        <div class="filter">
+            <label for="tastes">Gusti</label>
+            <select id="tastes"></select>
+        </div>
+
+        <div class="filter">
+            <label for="calories">Calorie</label>
+            <select id="calories">
+                <option value="">-</option>
+                <option value="0-100">0-100</option>
+                <option value="100-200">100-200</option>
+                <option value="200-300">200-300</option>
+                <option value="300-400">300-400</option>
+            </select>
+        </div>
+
+        <button onclick="resetProducts()">Reset</button>
+    </div>
 </div>
-
-
-<script>
-    function showSelect(filter){
-        if(filter === 'prezzo' || filter === 'calorie'){
-            const secondSelect = document.getElementById("secondSelect");
-            secondSelect.innerHTML = "";
-
-            const label1 = document.createElement("label")
-            const label2 = document.createElement("label");
-
-            const select1 = document.createElement("select");
-            const select2 = document.createElement("select");
-
-            const optionDefault = document.createElement("option");
-            optionDefault.value = "";
-            optionDefault.textContent = "-";
-            select1.appendChild(optionDefault);
-            select2.appendChild(optionDefault);
-
-            label1.appendChild(select1);
-            label2.appendChild(select2);
-
-            secondSelect.appendChild(label1);
-            secondSelect.appendChild(label2);
-        }
-    }
-</script>
-
-
 
 <div id="gr" class="group">
-<%
-    if(request.getAttribute("productsByCriteria") != null) {
-        List<Prodotto> productsByCriteria = (List<Prodotto>) request.getAttribute("productsByCriteria");
-        for (Prodotto p: productsByCriteria){
-%>
-    <p><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getGusto()%> <%=p.getPrezzo()%></p>
     <%
-            }
-    }
-    else{
-        List<Prodotto> allProducts = (List<Prodotto>) application.getAttribute("Products");
-        for (Prodotto p: allProducts){
-    %>
-    <p><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getGusto()%> <%=p.getPrezzo()%></p>
-    <%
+        List<Prodotto> products = null;
+        if (request.getAttribute("productsByCriteria") != null) {
+            products = (List<Prodotto>) request.getAttribute("productsByCriteria");
+        } else {
+            products = (List<Prodotto>) application.getAttribute("Products");
         }
+        if (products != null){
+            session.setAttribute("originalProducts", products);
+            session.setAttribute("products", products);
         }
     %>
+    <% for (Prodotto p : products) { %>
+    <p class="px"><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getPrezzo()%> <%=p.getGusto()%> <%=p.getCalorie()%></p>
+    <% } %>
 </div>
 
-
-
-    <%--
-<%
-    ProdottoDAO prodottoDAO = new ProdottoDAO();
-    List<Prodotto> allProducts = prodottoDAO.doRetrieveAll();
-
-    for(Prodotto p: allProducts){
-%>
-
-    <p><%=p.getNome()%>  <%=p.getPrezzo()%>  <%=p.getCategoria()%></p>
-
-<%
-    }
-%> --%>
-
-
-
-
-<script>
-    function filterCategory(category){
-        const xhttp = new XMLHttpRequest();
-
-
-
-        xhttp.onreadystatechange = function (){
-            if(xhttp.readyState === 4 && xhttp.status === 200){
-                const prodotti = JSON.parse(xhttp.responseText);
-
-                const group = document.querySelector(".group");
-                group.innerHTML = '';
-
-
-                prodotti.forEach(prodotto => {
-                    const p = document.createElement("p");
-                    p.innerText = prodotto.nome + " " + prodotto.prezzo;
-                    group.appendChild(p);
-                })
-            }
-        }
-
-        xhttp.open("GET", "filter?category="+category, true);
-        xhttp.send();
-    }
-
-    document.addEventListener('headerScriptLoaded', () => {
-        filterCategory(category);
-        console.log("filterCategory script executed");
-    });
-
-</script>
-
-
+<script src="JS/showTastes.js"></script>
+<script src="JS/genericFilter.js"></script>
+<script src="JS/sortProducts.js"></script>
+<script src="JS/resetProducts.js"></script>
 
 <%@include file="Footer.jsp"%>
 </body>

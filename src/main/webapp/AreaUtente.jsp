@@ -14,7 +14,7 @@
     <title>Area utente</title>
 </head>
 <body>
-    <%@include file="Header.jsp"%>
+<%@include file="Header.jsp"%>
 <div class="contenitore">
     <div class="tab">
         <button class="tablinks" onclick="opentab(event, 'areautente')">Area Utente</button>
@@ -25,7 +25,7 @@
     <div id="areautente" class="tabcontent">
         <h3>Dettagli Utente</h3>
         <p>
-            <%
+                <%
                 String email = x.getEmail();
                 String password = x.getPassword();
                 String indirizzo = x.getIndirizzo();
@@ -35,36 +35,36 @@
                 Date dataNascita= x.getDataNascita();
                 String telefono= x.getTelefono();
             %>
-            <p id="areautente-tags">Email:</p><%=email%>
-            <br><br><p id="areautente-tags">Password:</p><%=password%>
-            <br><br><p id="areautente-tags">Indirizzo:</p><%=indirizzo%>
-            <br><br><p id="areautente-tags">Nome:</p><%=nome%>
-            <br><br><p id="areautente-tags">Cognome:</p><%=cognome%>
-            <br><br><p id="areautente-tags">Codice fiscale:</p><%=codiceFiscale%>
-            <br><br><p id="areautente-tags">Data di Nascita:</p><%=dataNascita%>
-            <br><br><p id="areautente-tags">Telefono:</p><%=telefono%>
+        <p id="areautente-tags">Email:</p><%=email%>
+        <br><br><p id="areautente-tags">Password:</p><%=password%>
+        <br><br><p id="areautente-tags">Indirizzo:</p><%=indirizzo%>
+        <br><br><p id="areautente-tags">Nome:</p><%=nome%>
+        <br><br><p id="areautente-tags">Cognome:</p><%=cognome%>
+        <br><br><p id="areautente-tags">Codice fiscale:</p><%=codiceFiscale%>
+        <br><br><p id="areautente-tags">Data di Nascita:</p><%=dataNascita%>
+        <br><br><p id="areautente-tags">Telefono:</p><%=telefono%>
         </p>
     </div>
 
     <div id="areamodifiche" class="tabcontent">
         <h3>Area Modifiche</h3>
         <br><br>
-       <button onclick="displaydivpass()">Modifica Password</button>
-            <div id="passdiv" style="display: none">
-                <form id="change-password-form">
-                    <label for="current-password">Password Attuale</label>
-                    <input type="password" id="current-password" name="current-password" required>
+        <button onclick="displaydivpass()">Modifica Password</button>
+        <div id="passdiv" style="display: none">
+            <form id="change-password-form">
+                <label for="current-password">Password Attuale</label>
+                <input type="password" id="current-password" name="current-password" required>
 
-                    <label for="new-password">Nuova Password</label>
-                    <input type="password" id="new-password" name="new-password" required>
+                <label for="new-password">Nuova Password</label>
+                <input type="password" id="new-password" name="new-password" required>
 
-                    <label for="confirm-password">Conferma Nuova Password</label>
-                    <input type="password" id="confirm-password" name="confirm-password" required>
+                <label for="confirm-password">Conferma Nuova Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required>
 
-                    <input type="submit" class="submit" value="Modifica Password">
-                    <div id="error-message-pass" class="error"></div>
-                </form>
-            </div>
+                <input type="submit" class="submit" value="Modifica Password">
+                <div id="error-message-pass" class="error"></div>
+            </form>
+        </div>
 
         <br><br>
         <button onclick="displaydivind()">Modifica Indirizzo</button>
@@ -143,6 +143,10 @@
         <h3>Dettagli Ordini</h3>
         <p></p>
     </div>
+</div>
+
+<div class="logOut">
+    <a href="logOut">LogOut</a>
 </div>
 
 <%@ include file="Footer.jsp"%>

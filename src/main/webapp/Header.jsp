@@ -23,9 +23,13 @@
             // Dispatch a custom event to signal that the header script has finished executing
             document.dispatchEvent(new Event('headerScriptLoaded'));
         };
+
     </script>
+
+
 </head>
 <body>
+
 
 <header>
     <div class="header-container">
@@ -39,6 +43,7 @@
         </div>
         <div class="header-search-bar">
             <input type="search" placeholder="Search..">
+            <img id="search-img" src="./Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
             <a href="">Carrello</a>
@@ -52,46 +57,78 @@
         </div>
     </div>
 
+
+
     <div class="header-lista" id="lista">
         <ul>
             <li>
-            <a href="FilterProducts.jsp">Store</a>
+                <form action="filter" method="get">
+                    <input type="hidden" name="category" value="tutto">
+                    <button type="submit" value="proteine">Store</button>
+                </form>
             </li>
             <li>
-                <button onclick="filterCategory(this.innerText.toLowerCase())">Proteine</button>
+                <form action="filter" method="get">
+                    <input type="hidden" name="category" value="proteine">
+                    <button type="submit" value="proteine">Proteine</button>
+                </form>
             </li>
             <li>
-                <button onclick="filterCategory(this.innerText.toLowerCase())">Creatina</button>
+                <form action="filter" method="get">
+                    <input type="hidden" name="category" value="creatina">
+                    <button type="submit" value="proteine">Creatina</button>
+                </form>
             </li>
             <li>
-                <button onclick="filterCategory(this.innerText.toLowerCase())">Salse</button>
+                <form action="filter" method="get">
+                    <input type="hidden" name="category" value="salse">
+                    <button type="submit" value="proteine">Salse</button>
+                </form>
             </li>
         </ul>
     </div>
+
+
+
+
+
+
+
 </header>
 
-    <script>
-        /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
-        function myFunction() {
-            document.getElementById("myDropdown").classList.toggle("header-show");
-        }
-        // chiudi il dropdown se l'utente clicca all'esterno del riquadro
-        window.onclick = function(event) {
-            if (!event.target.matches('.header-dropbutton')) {
-                var dropdowns = document.getElementsByClassName("header-dropdown-content");
-                var i;
-                for (i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('header-show')) {
-                        openDropdown.classList.remove('header-show');
-                    }
+<script>
+    /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
+    function myFunction() {
+        document.getElementById("myDropdown").classList.toggle("header-show");
+    }
+    // chiudi il dropdown se l'utente clicca all'esterno del riquadro
+    window.onclick = function(event) {
+        if (!event.target.matches('.header-dropbutton')) {
+            var dropdowns = document.getElementsByClassName("header-dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('header-show')) {
+                    openDropdown.classList.remove('header-show');
                 }
             }
         }
-        function toggleMenu() {
-            var menu = document.getElementById("lista");
-            menu.classList.toggle("header-showlista");
-        }
-    </script>
+    }
+    function toggleMenu() {
+        var menu = document.getElementById("lista");
+        menu.classList.toggle("header-showlista");
+    }
+</script>
+
+
+
+<%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
+         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
+         dell'utente--%>
+
+
+
+
+
 </body>
 </html>

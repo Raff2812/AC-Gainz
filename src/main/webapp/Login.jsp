@@ -128,14 +128,26 @@
         .registrazione p a:hover {
             color: orangered;
         }
+
+        .login-contenitore .errorMessage{
+            color: black;
+            font-size: 30px;
+            margin-left: 40px;
+        }
     </style>
 
 </head>
 <body>
 
-<p id="error-message"></p>
 
-<script defer src="JS/showPassword.js"></script>
+<%
+    String err = request.getParameter("err");
+%>
+
+
+
+
+<script defer src="JS/togglePassword.js"></script>
 
     <div class="login-contenitore">
         <form action="login" method="post">
@@ -146,7 +158,7 @@
             <div class="input-box">
                 <label for="password"></label>
                 <input type="password" name="password" id="password" placeholder="Password" required>
-                <img id="imgPass" src="./Immagini/hide.png" alt="Hide" onclick="showPassword()">
+                <img src="Immagini/hide.png" alt="hide png" id="imgPass" onclick="togglePassword()">
             </div>
             <div class="ricordami-passdim">
                 <label><input type="checkbox">Ricordami</label>
@@ -161,11 +173,13 @@
                 </p>
             </div>
         </form>
+
+        <div class="errorMessage" id="errorMessage"></div>
     </div>
 
 <%--
 <script>
-    function showPassword(){
+    function togglePassword(){
         var passwordField = document.getElementById("password");
         var imgPass = document.getElementById("imgPass");
         if(passwordField.type === "password"){
@@ -180,6 +194,36 @@
 </script>
 --%>
 
+
+
+
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", function (){
+        showError();
+    })
+
+
+    function showError(){
+        var errorMessage = "<%=err%>";
+        document.getElementById("errorMessage").innerHTML = "";
+        if(errorMessage !== "") {
+            if (errorMessage === "patternPassword") {
+                document.getElementById("errorMessage").innerHTML = "Password non valida. Deve contenere almeno 8 caratteri, un numero, una lettera maiuscola, una lettera minuscola e un carattere speciale.";
+            }
+            if (errorMessage === "patternMail") {
+                document.getElementById("errorMessage").innerHTML = "Email non valida. Inserisci un'email valida."
+            }
+            if (errorMessage === "UtenteNonRegistrato") {
+                document.getElementById("errorMessage").innerHTML = "Utente non registrato";
+            }
+            if (errorMessage === "PasswordSbagliata") {
+                document.getElementById("errorMessage").innerHTML = "Password Sbagliata";
+            }
+        }
+    }
+</script>
 
 
 </body>

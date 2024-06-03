@@ -12,29 +12,45 @@ import model.UtenteDAO;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @WebServlet(value = "/login")
 public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 
-        //Prendo i parametri dal form
+        // Prendo i parametri dal form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
         UtenteDAO utenteDAO = new UtenteDAO();
 
+        String emailPattern = "^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}$";
+        Pattern emailRegex = Pattern.compile(emailPattern);
+        Matcher emailMatcher = emailRegex.matcher(email);
 
-        //Se nel mio db non c'è alcuna corrispondenza con l'email passata dal form, ricarico la pagina del login
-        // e faccio uscire un messaggio di errore
-        if(utenteDAO.doRetrieveByEmail(email) == null){
-            request.setAttribute("ErrorEmail", "Utente non registrato");
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("Login.jsp");
-            requestDispatcher.forward(request, response);
+        if (!emailMatcher.matches()) {
+
+            response.sendRedirect("Login.jsp?err=patternMail");
+            return;
         }
 
+        String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$";
+        Pattern passwordRegex = Pattern.compile(passwordPattern);
+        Matcher passwordMatcher = passwordRegex.matcher(password);
+
+        if (!passwordMatcher.matches()) {
+
+            response.sendRedirect("Login.jsp?err=patternPassword");
+            return;
+        }
+
+        // Se nel mio db non c'è alcuna corrispondenza con l'email passata dal form, ricarico la pagina del login
+        // e faccio uscire un messaggio di errore
+        if (utenteDAO.doRetrieveByEmail(email) == null) {
+            response.sendRedirect("Login.jsp?err=UtenteNonRegistrato");
+            return;
+        }
 
         Utente x = null;
         try {
@@ -42,31 +58,27 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        //In questo caso, se arrivo qui significa che l'email è presente nel db ma ciò che è sbagliata è la password
-        //per cui faccio ciò che ho fatto prima, con un messaggio di errore evidentemente diverso
-        if(x == null){
-            HttpSession session = request.getSession();
-            session.setAttribute("ErrorPassword", "Password Sbagliata");
-            RequestDispatcher requestDispatcher = request.getRequestDispatcher("Login.jsp");
-            requestDispatcher.forward(request, response);
+
+        // In questo caso, se arrivo qui significa che l'email è presente nel db ma ciò che è sbagliata è la password
+        // per cui faccio ciò che ho fatto prima, con un messaggio di errore evidentemente diverso
+        if (x == null) {
+            response.sendRedirect("Login.jsp?err=PasswordSbagliata");
+            return;
         }
 
-        //se arrivo qui, ho messo i dati giusti nel form
+        // Se arrivo qui, ho messo i dati giusti nel form
 
-        //mi prendo la sessione
+        // Mi prendo la sessione
         HttpSession session = request.getSession();
-        session.setMaxInactiveInterval(1800);  //non so se serve
+        session.setMaxInactiveInterval(1800); // Set session timeout
 
-        //inserisco nella sessione l'oggetto contenente l'utente vero e proprio
+        // Inserisco nella sessione l'oggetto contenente l'utente vero e proprio
         session.setAttribute("Utente", x);
 
-        //richiamo la servlet HomePageServlet che mi gestirà queste informazioni
-        /*RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
-        requestDispatcher.forward(request, response);*/
-
+        // Redirect to the index page
         response.sendRedirect("index.jsp");
-
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         doGet(request, response);
     }

@@ -44,6 +44,7 @@ header .header-container{
 }
 /*forma della barra di ricerca*/
 .header-search-bar{
+    position: relative;
     margin-top: 10px;
     border: 1px solid black;
     background-color: white;
@@ -59,9 +60,16 @@ header .header-container{
     font-size: 20px;
     color: black;
 }
+.header-search-bar img{
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    transform: translateY(-50%);
+    width: 25px;
+}
 
 
-
+/* se mette contenitore position: relative e il contenuto position:absolute posso posizionare meglio */
 
 /* il container dove andra il contenuto del dropdown */
 .header-utente{
@@ -137,7 +145,7 @@ header .header-carrello{
 
 
 header .header-lista{
-   margin-top: -10px;
+    margin-top: -10px;
 }
 /*gestione della lista*/
 header .header-lista ul{
