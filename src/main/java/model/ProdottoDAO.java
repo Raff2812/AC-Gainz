@@ -94,6 +94,7 @@ public class ProdottoDAO {
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
+                p.setEvidenza(rs.getBoolean(15));
 
                 prodotti.add(p);
 
@@ -139,6 +140,7 @@ public class ProdottoDAO {
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
+                p.setEvidenza(rs.getBoolean(15));
 
                 prodotti.add(p);
 
@@ -186,7 +188,7 @@ public class ProdottoDAO {
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
-
+                p.setEvidenza(rs.getBoolean(15));
 
                 prodotti.add(p);
             }

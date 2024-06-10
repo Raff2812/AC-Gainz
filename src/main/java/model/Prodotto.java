@@ -16,6 +16,8 @@ public class Prodotto {
     private float proteine;
     private float carboidrati;
 
+    private boolean evidenza;
+
     public Prodotto()
     {
 
@@ -52,6 +54,15 @@ public class Prodotto {
         this.grassi = grassi;
         this.proteine = proteine;
         this.carboidrati = carboidrati;
+
+    }
+
+    public boolean isEvidenza() {
+        return evidenza;
+    }
+
+    public void setEvidenza(boolean evidenza) {
+        this.evidenza = evidenza;
     }
 
     public String getIdProdotto() {

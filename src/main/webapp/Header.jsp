@@ -62,25 +62,25 @@
     <div class="header-lista" id="lista">
         <ul>
             <li>
-                <form action="filter" method="get">
+                <form action="categories" method="get">
                     <input type="hidden" name="category" value="tutto">
                     <button type="submit" value="proteine">Store</button>
                 </form>
             </li>
             <li>
-                <form action="filter" method="get">
+                <form action="categories" method="get">
                     <input type="hidden" name="category" value="proteine">
                     <button type="submit" value="proteine">Proteine</button>
                 </form>
             </li>
             <li>
-                <form action="filter" method="get">
+                <form action="categories" method="get">
                     <input type="hidden" name="category" value="creatina">
                     <button type="submit" value="proteine">Creatina</button>
                 </form>
             </li>
             <li>
-                <form action="filter" method="get">
+                <form action="categories" method="get">
                     <input type="hidden" name="category" value="salse">
                     <button type="submit" value="proteine">Salse</button>
                 </form>

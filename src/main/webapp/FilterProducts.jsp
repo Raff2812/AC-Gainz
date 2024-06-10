@@ -47,17 +47,18 @@
     <div class="filtersContainer" id="filtersContainer">
         <div class="sort">
             <label for="sorting">Ordina Per</label>
-            <select id="sorting">
+            <select id="sorting" name="sort">
                 <option value="">-</option>
-                <option value="sortDown">Da alto a basso</option>
-                <option value="sortUp">Da basso ad alto</option>
+                <option value="sortDown">Prezzo: da alto a basso</option>
+                <option value="sortUp">Prezzo: da basso ad alto</option>
+                <option value="evidence">In evidenza </option>
             </select>
         </div>
 
         <div class="filter">
             <label for="prices">Prezzo</label>
-            <select id="prices">
-                <option value="">-</option>
+            <select id="prices" name="price">
+                <option value="">Seleziona un range</option>
                 <option value="0-30">0-30</option>
                 <option value="30-60">30-60</option>
                 <option value="60-100">60-100</option>
@@ -66,13 +67,13 @@
 
         <div class="filter">
             <label for="tastes">Gusti</label>
-            <select id="tastes"></select>
+            <select id="tastes" name="taste"></select>
         </div>
 
         <div class="filter">
             <label for="calories">Calorie</label>
-            <select id="calories">
-                <option value="">-</option>
+            <select id="calories" name="calorie">
+                <option value="">Seleziona un range</option>
                 <option value="0-100">0-100</option>
                 <option value="100-200">100-200</option>
                 <option value="200-300">200-300</option>
@@ -80,7 +81,7 @@
             </select>
         </div>
 
-        <button onclick="resetProducts()">Reset</button>
+        <button id="reset-button">Reset</button>
     </div>
 </div>
 
@@ -104,9 +105,7 @@
 
 <script src="JS/showTastes.js"></script>
 <script src="JS/genericFilter.js"></script>
-<script src="JS/sortProducts.js"></script>
 <script src="JS/resetProducts.js"></script>
-
 <%@include file="Footer.jsp"%>
 </body>
 </html>

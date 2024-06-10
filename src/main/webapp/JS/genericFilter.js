@@ -1,10 +1,23 @@
-function genericFilter(filter, value) {
-    console.log(`Calling genericFilter with filter: ${filter}, value: ${value}`);
+function genericFilter() {
+    console.log("Calling genericFilter");
 
-    const xhttp = new XMLHttpRequest();
-    const urlServlet = `genericFilter?filter=${encodeURIComponent(filter)}&value=${encodeURIComponent(value)}`;
+    const price = document.getElementById("prices").value;
+    const taste = document.getElementById("tastes").value;
+    const calories = document.getElementById("calories").value;
+    const sorting = document.getElementById("sorting").value;
+
+    const params = new URLSearchParams();
+
+    if (price) params.append("price", price);
+    if (taste) params.append("taste", taste);
+    if (calories) params.append("calories", calories);
+    if (sorting) params.append("sorting", sorting);
+
+    const urlServlet = `genericFilter?${params.toString()}`;
 
     console.log("Calling genericFilter with URL: " + urlServlet);
+
+    const xhttp = new XMLHttpRequest();
 
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
@@ -13,9 +26,13 @@ function genericFilter(filter, value) {
             group.innerHTML = "";
 
             prodottiFiltrati.forEach(prodottoFiltrato => {
-                const p = document.createElement("p");
-                p.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
-                group.appendChild(p);
+                const img = document.createElement("img");
+                img.src = `${prodottoFiltrato.immagine}`;
+                img.style.width = "100px";
+                const div = document.createElement("div");
+                div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
+                div.appendChild(img);
+                group.appendChild(div);
             });
         } else if (xhttp.readyState === 4) {
             console.error("Error in genericFilter: " + xhttp.status);
@@ -26,24 +43,22 @@ function genericFilter(filter, value) {
     xhttp.send();
 }
 
-
 document.getElementById("prices").addEventListener("change", function() {
-    const value = this.value;
-    console.log(`Price changed: ${value}`);
-        genericFilter('price', value);
-
+    console.log(`Price changed: ${this.value}`);
+    genericFilter();
 });
 
 document.getElementById("tastes").addEventListener("change", function() {
-    const value = this.value;
-    console.log(`Taste changed: ${value}`);
-        genericFilter('taste', value);
-
+    console.log(`Taste changed: ${this.value}`);
+    genericFilter();
 });
 
 document.getElementById("calories").addEventListener("change", function() {
-    const value = this.value;
-    console.log(`Calories changed: ${value}`);
-        genericFilter('calories', value);
+    console.log(`Calories changed: ${this.value}`);
+    genericFilter();
+});
 
+document.getElementById("sorting").addEventListener("change", function() {
+    console.log(`Sorting changed: ${this.value}`);
+    genericFilter();
 });
