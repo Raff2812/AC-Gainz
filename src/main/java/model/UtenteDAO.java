@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,7 +21,7 @@ public class UtenteDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             if(resultSet.next()){
 
-                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8));
+                Utente u=new Utente(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5),resultSet.getDate(6),resultSet.getString(7),resultSet.getString(8), resultSet.getBoolean(9));
                 return u;
             }
         }
@@ -88,9 +90,12 @@ public class UtenteDAO {
 
             rs = st.executeQuery("SELECT * FROM utente");
 
+
+
             while(rs.next()) {
 
                 p = new Utente();
+
 
                 p.setEmail(rs.getString(1));
 
@@ -142,4 +147,44 @@ public class UtenteDAO {
             throw new RuntimeException(e);
         }
     }
+
+   public void doUpdateCustomerGeneric(Utente u, String attributeToUpdate, String value){
+
+       String query = "UPDATE Utente SET " + attributeToUpdate + " = ? WHERE email = ?";
+
+
+        try(Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+
+            switch (attributeToUpdate){
+                case "dataDiNascita" ->{
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("AAAA-MM-dd");
+                    Date d = simpleDateFormat.parse(value);
+                    preparedStatement.setDate(1, (java.sql.Date) d);
+                }
+                case "poteri" ->{
+                    if(value.equals("true")){
+                        boolean b = true;
+                        preparedStatement.setBoolean(1, b);
+                    }else {
+                        boolean x = false;
+                        preparedStatement.setBoolean(1, x);
+                    }
+
+                }
+                default -> preparedStatement.setString(1, value);
+            }
+
+
+            preparedStatement.setString(2, u.getEmail());
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+   }
+
 }

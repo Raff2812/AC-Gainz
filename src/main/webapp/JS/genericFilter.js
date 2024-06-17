@@ -27,11 +27,15 @@ function genericFilter() {
 
             prodottiFiltrati.forEach(prodottoFiltrato => {
                 const img = document.createElement("img");
-                img.src = `${prodottoFiltrato.immagine}`;
-                img.style.width = "100px";
+                const button = document.createElement("button");
+                button.innerHTML = "Aggiungi al carrello"
+                button.className = ""
+                //img.src = `${prodottoFiltrato.immagine}`;
+                //img.style.width = "100px";
                 const div = document.createElement("div");
                 div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
-                div.appendChild(img);
+                div.appendChild(button);
+                //div.appendChild(img);
                 group.appendChild(div);
             });
         } else if (xhttp.readyState === 4) {
@@ -62,3 +66,5 @@ document.getElementById("sorting").addEventListener("change", function() {
     console.log(`Sorting changed: ${this.value}`);
     genericFilter();
 });
+
+

@@ -6,101 +6,117 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 public class CarrelloDAO {
-    public Carrello doRetrieveById(int id)
-    {
-        try(Connection con= ConPool.getConnection())
-        {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_carrello,email_utente,id_prodotto,quantita,prezzo FROM carrello WHERE id_carrello=?");
-            preparedStatement.setInt(1,id);
-            ResultSet resultSet=preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                Carrello o=new Carrello(resultSet.getInt(1),resultSet.getString(2),resultSet.getInt(3),resultSet.getInt(4),resultSet.getFloat(5));
-                return o;
-            }
-            return null;
 
-        }
-        catch (SQLException sqlException)
-        {
-            throw new RuntimeException(sqlException);
+
+    public void doSave(Carrello c){
+        try (Connection con = ConPool.getConnection()){
+            PreparedStatement preparedStatement = con.prepareStatement("INSERT into carrello (utente, prodotto, quantity, total_price) VALUES (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, c.getEmailUtente());
+            preparedStatement.setString(2, c.getIdProdotto());
+            preparedStatement.setInt(3, c.getQuantita());
+            preparedStatement.setFloat(4, c.getPrezzo());
+
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
-    public void doSave(Carrello carrello) {
-        try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO carrello (id_carrello,email_utente,id_prodotto,quantita,prezzo) VALUES(?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, carrello.getIdCarrello());
-            ps.setString(2, carrello.getEmailUtente());
-            ps.setInt(3, carrello.getIdProdotto());
-            ps.setInt(4, carrello.getQuantita());
-            ps.setFloat(5, carrello.getPrezzo());
-            if (ps.executeUpdate() != 1) {
-                throw new RuntimeException("INSERT error.");
+
+    public List<Carrello> doRetrieveCartItemsByUser(String emailUtente) {
+        List<Carrello> carrelli = new ArrayList<>();
+
+        try (Connection connection = ConPool.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM carrello WHERE utente = ?");
+            preparedStatement.setString(1, emailUtente);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Carrello carrello = new Carrello();
+                carrello.setEmailUtente(resultSet.getString("utente"));
+                carrello.setIdProdotto(resultSet.getString("prodotto"));
+                carrello.setQuantita(resultSet.getInt("quantity"));
+                carrello.setPrezzo(resultSet.getFloat("total_price"));
+
+                carrelli.add(carrello);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
+        return carrelli;
     }
 
-    public List<Carrello> doRetrieveAll(){
 
-        ArrayList<Carrello> carrelli = new ArrayList<>();
+    public void removeProductFromCart(int idCarrello, String emailUtente, Prodotto prodotto){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from carrello where utente = ? and prodotto = ?");
+            preparedStatement.setString(1, emailUtente);
+            preparedStatement.setString(2, prodotto.getIdProdotto());
 
-        Statement st;
+            preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
-        ResultSet rs;
 
-        Carrello o;
 
+
+    public void addProductToCart(String emailUtente, Prodotto prodotto) {
         try (Connection con = ConPool.getConnection()) {
 
-            st = con.createStatement();
+            String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
+                    "VALUES (?, ?, ?, ?) " +
+                    "ON DUPLICATE KEY UPDATE " +
+                    "quantity = quantity + ?, total_price = total_price + ?";
 
-            rs = st.executeQuery("SELECT * FROM carrello");
+            try (PreparedStatement preparedStatement = con.prepareStatement(query)) {
+                preparedStatement.setString(1, emailUtente);
+                preparedStatement.setString(2, prodotto.getIdProdotto());
+                preparedStatement.setInt(3, 1);  // Aggiungi 1 unità del prodotto
+                preparedStatement.setFloat(4, prodotto.getPrezzo());  // Prezzo totale iniziale per il nuovo prodotto
+               preparedStatement.setInt(5, 1);  // Quantità da aggiungere in caso di duplicato
+                preparedStatement.setFloat(6, prodotto.getPrezzo());  // Prezzo totale da aggiungere in caso di duplicato
 
-            while(rs.next()) {
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Prodotto aggiunto al carrello con successo per l'utente " + emailUtente);
+                } else {
+                    System.out.println("Il prodotto non è stato aggiunto al carrello per l'utente " + emailUtente);
+                }
+            }
+        } catch (SQLException e) {
+            // Gestione delle eccezioni SQL
+            System.err.println("Errore durante l'aggiunta del prodotto al carrello per l'utente " + emailUtente);
+            e.printStackTrace();
+            // Puoi lanciare una eccezione specifica o gestire diversamente l'errore a seconda delle necessità
+        }
+    }
 
-                o = new Carrello();
-                o.setIdCarrello(rs.getInt(1));
-                o.setEmailUtente(rs.getString(2));
-                o.setIdProdotto(rs.getInt(3));
-                o.setQuantita(rs.getInt(4));
-                o.setPrezzo(rs.getFloat(5));
+    public void removeItem(String emailProdotto, String idProdotto){
+        try(Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from carrello where utente = ? and prodotto = ?");
+            preparedStatement.setString(1, emailProdotto);
+            preparedStatement.setString(2, idProdotto);
 
-                carrelli.add(o);
+            int rowsAffected = preparedStatement.executeUpdate();
+
+            if(rowsAffected > 0){
+                System.out.println("Rimosso dal carrello il prodotto: " + idProdotto);
+            }else {
+                System.out.println("Non è stato rimosso il prodotto: " + idProdotto + " dal carrello");
             }
 
-            con.close();
 
-            return carrelli;
-        }
-
-        catch (SQLException e) {
-
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
+
     }
 
-    public void doUpdateCarrello(Carrello o){
 
-        try (Connection con = ConPool.getConnection()) {
-            Statement st = con.createStatement();
-            String query = "update dettaglio_ordine set id_carrello ='" + o.getIdCarrello() +
-                    "', emailUtente='" + o.getEmailUtente() +
-                    "', id_prodotto='" + o.getIdProdotto() +
-                    "', quantita='"+ o.getQuantita() +
-                    "', prezzo="+ o.getPrezzo()
-                    + " where id_carrello =" + o.getIdCarrello() + ";";
-            st.executeUpdate(query);
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

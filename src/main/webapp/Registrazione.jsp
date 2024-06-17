@@ -136,7 +136,7 @@
                 </div>
                 <div class="input-box">
                     <label for="password"></label><input type="password" name="password" id="password" placeholder="Password" required autocomplete="">
-                    <img id="imgPass" src="Immagini/hide.png" alt="Hide" onclick="togglePassword()">
+                    <img id="imgPass" src="Immagini/hide.png" alt="Hide" onclick="togglePassword('password', 'imgPass')">
                 </div>
 
                 <div class="input-box">

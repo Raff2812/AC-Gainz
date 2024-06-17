@@ -1,6 +1,6 @@
 //Script per le tab laterali
 
-function opentab(evt, cityName)
+function opentab(cityName)
 {
     var i, tabcontent, tablinks;
     tabcontent = document.getElementsByClassName("tabcontent");
@@ -11,15 +11,66 @@ function opentab(evt, cityName)
     tablinks = document.getElementsByClassName("tablinks");
     for (i = 0; i < tablinks.length; i++)
     {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className = tablinks[i].className.replace("active", "");
     }
     document.getElementById(cityName).style.display = "block";
-    evt.currentTarget.className += " active";
+    this.currentTarget.className += " active";
+}
+
+
+function displayAll(idx){
+    var x = document.getElementById(idx);
+
+    if(x.style.display === "none") x.style.display = "block";
+    else x.style.display = "none";
 }
 
 
 
 
+/*
+function genericEdit(field, value){
+    const xhttp = new XMLHttpRequest();
+
+    const address = "edit";
+
+    xhttp.onreadystatechange = function (){
+        if(xhttp.readyState === 4 && xhttp.status === 200){
+            //gestire errori o successi
+        }
+    }
+
+
+    xhttp.open("POST", address,true);
+
+    xhttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+    value.append('action', )
+    xhttp.send();
+}
+*/
+
+
+/*
+document.addEventListener("DOMContentLoaded", function (){
+    const forms = document.querySelectorAll("form");
+
+    forms.forEach(form =>{
+        form.addEventListener("submit", function (event){
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            const action = formData.get('action');
+
+            genericEdit(action, formData)
+        })
+    })
+})*/
+
+
+
+/*
 
 //script per mostrare la div del singolo campo di modifica
 function displaydivpass() {
@@ -103,4 +154,4 @@ function displaydivcodfis() {
     {
         x.style.display = "none";
     }
-}
+}*/

@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import model.Carrello;
 import model.Utente;
 import model.UtenteDAO;
 
@@ -74,6 +75,8 @@ public class LoginServlet extends HttpServlet {
 
         // Inserisco nella sessione l'oggetto contenente l'utente vero e proprio
         session.setAttribute("Utente", x);
+
+
 
         // Redirect to the index page
         response.sendRedirect("index.jsp");

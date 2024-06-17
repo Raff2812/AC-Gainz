@@ -54,7 +54,14 @@ public class Prodotto {
         this.grassi = grassi;
         this.proteine = proteine;
         this.carboidrati = carboidrati;
+    }
 
+    public Prodotto(String idProdotto, String nome, String categoria, float prezzo, String gusto){
+        this.idProdotto = idProdotto;
+        this.nome = nome;
+        this.categoria = categoria;
+        this.prezzo = prezzo;
+        this.gusto = gusto;
     }
 
     public boolean isEvidenza() {

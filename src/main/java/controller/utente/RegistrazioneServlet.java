@@ -54,7 +54,7 @@ public class RegistrazioneServlet extends HttpServlet {
         //Stessa cosa fatta su LoginServlet
         HttpSession session = request.getSession();
         session.setAttribute("Utente", x);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("homePage");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
         requestDispatcher.forward(request, response);
     }
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

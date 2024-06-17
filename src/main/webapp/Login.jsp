@@ -1,19 +1,13 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: raffa
-  Date: 22/05/2024
-  Time: 09:10
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html><head>
+<html>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <title>Login Form</title>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap');
         * {
             font-family: "Inter";
         }
@@ -129,103 +123,85 @@
             color: orangered;
         }
 
-        .login-contenitore .errorMessage{
+        .login-contenitore .errorMessage {
             color: black;
             font-size: 30px;
             margin-left: 40px;
         }
     </style>
-
 </head>
 <body>
-
 
 <%
     String err = request.getParameter("err");
 %>
 
-
-
-
 <script defer src="JS/togglePassword.js"></script>
 
-    <div class="login-contenitore">
-        <form action="login" method="post">
-            <h1>Accedi</h1>
-            <div class="input-box">
-                <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required>
-            </div>
-            <div class="input-box">
-                <label for="password"></label>
-                <input type="password" name="password" id="password" placeholder="Password" required>
-                <img src="Immagini/hide.png" alt="hide png" id="imgPass" onclick="togglePassword()">
-            </div>
-            <div class="ricordami-passdim">
-                <label><input type="checkbox">Ricordami</label>
-                <a href="">Password dimenticata?</a>
-            </div>
+<div class="login-contenitore">
+    <form action="login" method="post" autocomplete="on">
+        <h1>Accedi</h1>
+        <div class="input-box">
+            <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="input-box">
+            <label for="password"></label>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+            <img src="Immagini/hide.png" alt="hide png" id="imgPass" onclick="togglePassword('password', 'imgPass')">
+        </div>
+        <div class="ricordami-passdim">
+            <label><input type="checkbox">Ricordami</label>
+            <a href="">Password dimenticata?</a>
+        </div>
 
-            <button type="submit" class="submit-button">Login</button>
+        <button type="submit" class="submit-button">Login</button>
 
-            <div class="registrazione">
-                <p>Non hai ancora un account?
-                    <a href="Registrazione.jsp">Registrami</a>
-                </p>
-            </div>
-        </form>
+        <div class="registrazione">
+            <p>Non hai ancora un account?
+                <a href="Registrazione.jsp">Registrami</a>
+            </p>
+        </div>
+    </form>
 
-        <div class="errorMessage" id="errorMessage"></div>
-    </div>
-
-<%--
-<script>
-    function togglePassword(){
-        var passwordField = document.getElementById("password");
-        var imgPass = document.getElementById("imgPass");
-        if(passwordField.type === "password"){
-            passwordField.type = "text";
-            imgPass.src = "./Immagini/visible.png";
-        }else
-        {
-            passwordField.type = "password";
-            imgPass.src = "./Immagini/hide.png";
-        }
-    }
-</script>
---%>
-
-
-
-
+    <div class="errorMessage" id="errorMessage"></div>
+</div>
 
 <script>
-
     document.addEventListener("DOMContentLoaded", function (){
-        showError();
-    })
+        var errorMessage = "<%= err %>";
+        console.log("Error Message: " + errorMessage);
 
+        if (errorMessage && errorMessage.trim() !== "") {
+            showError(errorMessage);
+        }
 
-    function showError(){
-        var errorMessage = "<%=err%>";
-        document.getElementById("errorMessage").innerHTML = "";
-        if(errorMessage !== "") {
-            if (errorMessage === "patternPassword") {
-                document.getElementById("errorMessage").innerHTML = "Password non valida. Deve contenere almeno 8 caratteri, un numero, una lettera maiuscola, una lettera minuscola e un carattere speciale.";
-            }
-            if (errorMessage === "patternMail") {
-                document.getElementById("errorMessage").innerHTML = "Email non valida. Inserisci un'email valida."
-            }
-            if (errorMessage === "UtenteNonRegistrato") {
-                document.getElementById("errorMessage").innerHTML = "Utente non registrato";
-            }
-            if (errorMessage === "PasswordSbagliata") {
-                document.getElementById("errorMessage").innerHTML = "Password Sbagliata";
-            }
+        // Rimuovi il parametro `err` dalla query string senza ricaricare la pagina
+        var newURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
+        window.history.replaceState({ path: newURL }, "", newURL);
+    });
+
+    function showError(errorMessage) {
+        var errorMsgElement = document.getElementById("errorMessage");
+        errorMsgElement.style.display = "block";
+
+        switch (errorMessage) {
+            case "patternPassword":
+                errorMsgElement.innerHTML = "Password non valida. Deve contenere almeno 8 caratteri, un numero, una lettera maiuscola, una lettera minuscola e un carattere speciale.";
+                break;
+            case "patternMail":
+                errorMsgElement.innerHTML = "Email non valida. Inserisci un'email valida.";
+                break;
+            case "UtenteNonRegistrato":
+                errorMsgElement.innerHTML = "Utente non registrato.";
+                break;
+            case "PasswordSbagliata":
+                errorMsgElement.innerHTML = "Password Sbagliata.";
+                break;
+            default:
+               ;
         }
     }
 </script>
-
 
 </body>
 </html>
-

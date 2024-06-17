@@ -1,34 +1,28 @@
 <%@ page import="model.Utente" %>
+<%@ page import="model.Carrello" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <title>Header</title>
+
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
 
-    <% Utente x = (Utente) session.getAttribute("Utente");
-        boolean isLogged = (x != null); %>
+    <% Utente utente = (Utente) session.getAttribute("Utente");
+        boolean isLogged = (utente != null);
 
+
+    %>
 
     <script>
-        window.onload = function() {
-            const isLogged = <%= isLogged %>;
-            if (isLogged) {
-                document.getElementById("utente").innerHTML = `
-                <form action="AreaUtente.jsp" method="post">
-                    <input type="hidden" name="areaPersonale" value="areaPersonale">
-                    <button type="submit" class="header-custom_button">Area Personale</button>
-                </form>
-            `;
-            }
-            console.log(isLogged);
-            // Dispatch a custom event to signal that the header script has finished executing
-            document.dispatchEvent(new Event('headerScriptLoaded'));
-        };
-
+        const Logged= <%= isLogged%>
     </script>
 
+    <script src="JS/Header.js" defer></script>
 
 </head>
 <body>
+
 
 
 <header>
@@ -42,11 +36,17 @@
             <a href="index.jsp" >AC-Gainz</a>
         </div>
         <div class="header-search-bar">
-            <input type="search" placeholder="Search..">
+            <label>
+                <input type="search" placeholder="Search..">
+            </label>
             <img id="search-img" src="./Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
-            <a href="">Carrello</a>
+            <div id="cart" onclick="toggleCart()">Carrello
+                <div id="listCart" class="hidden">
+                    <button class="rmvButton"></button>
+                </div>
+            </div>
         </div>
         <div class="header-utente" id="utente">
             <button onclick="myFunction()" class="header-dropbutton">Utente</button>
@@ -87,47 +87,7 @@
             </li>
         </ul>
     </div>
-
-
-
-
-
-
-
 </header>
-
-<script>
-    /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("header-show");
-    }
-    // chiudi il dropdown se l'utente clicca all'esterno del riquadro
-    window.onclick = function(event) {
-        if (!event.target.matches('.header-dropbutton')) {
-            var dropdowns = document.getElementsByClassName("header-dropdown-content");
-            var i;
-            for (i = 0; i < dropdowns.length; i++) {
-                var openDropdown = dropdowns[i];
-                if (openDropdown.classList.contains('header-show')) {
-                    openDropdown.classList.remove('header-show');
-                }
-            }
-        }
-    }
-    function toggleMenu() {
-        var menu = document.getElementById("lista");
-        menu.classList.toggle("header-showlista");
-    }
-</script>
-
-
-
-<%-- Script che prende dalla session l'utente loggato, e se tale utente non è undefined
-         cambia nell'header l'elemento con id = 'utente' e lo sostituisce con un bottone che reinderizza ora all'Area Personale
-         dell'utente--%>
-
-
-
 
 
 </body>

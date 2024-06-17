@@ -82,3 +82,18 @@ div#areamodifiche label:not(:first-child){
 div#areamodifiche .submit{
     margin-top: 20px;
 }
+
+#change-password-form img{
+    transform: translateY(-87%);
+    cursor: pointer;
+    width: 25px;
+    margin-left: 179px;
+}
+
+.success{
+    color: green;
+}
+
+.error{
+    color: red;
+}

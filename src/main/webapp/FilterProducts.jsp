@@ -1,5 +1,6 @@
 <%@ page import="model.Prodotto" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.json.simple.JSONObject" %>
 <!DOCTYPE html>
 <html lang="it">
 <head>
@@ -37,11 +38,16 @@
             padding: 5px;
             text-decoration: none;
         }
+
+
     </style>
 </head>
 <body>
 
 <%@include file="Header.jsp"%>
+
+
+<script src="JS/Cart.js"></script>
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -98,10 +104,18 @@
             session.setAttribute("products", products);
         }
     %>
-    <% for (Prodotto p : products) { %>
-    <p class="px"><%=p.getNome()%> <%=p.getCategoria()%> <%=p.getPrezzo()%> <%=p.getGusto()%> <%=p.getCalorie()%></p>
+    <% for (Prodotto p : products) {%>
+    <div class="px">
+        <%=p.getIdProdotto()%>
+        <%=p.getNome()%>
+        <%=p.getCategoria()%>
+        <%=p.getPrezzo()%>
+        <%=p.getGusto()%>
+        <button class="cartAdd" data-product='{"id": "<%= p.getIdProdotto() %>", "nome": "<%= p.getNome() %>", "categoria": "<%= p.getCategoria() %>", "prezzo": <%= p.getPrezzo() %>, "gusto": "<%= p.getGusto() %>"}'>Aggiungi al Carrello</button>
+    </div>
     <% } %>
 </div>
+
 
 <script src="JS/showTastes.js"></script>
 <script src="JS/genericFilter.js"></script>

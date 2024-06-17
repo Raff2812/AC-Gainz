@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -30,8 +31,11 @@ public class GenericFilterServlet extends HttpServlet {
         System.out.println("Taste Filter: " + tasteFilter);
         System.out.println("Sorting Filter: " + sortingFilter);
 
-        List<Prodotto> products = (List<Prodotto>) req.getSession().getAttribute("products");
-        List<Prodotto> originalProducts = (List<Prodotto>) req.getSession().getAttribute("originalProducts");
+
+        HttpSession session = req.getSession();;
+        synchronized (session){
+        List<Prodotto> products = (List<Prodotto>) session.getAttribute("products");
+        List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("originalProducts");
 
         List<Prodotto> resultProducts = new ArrayList<>(originalProducts);
 
@@ -69,10 +73,11 @@ public class GenericFilterServlet extends HttpServlet {
             jsonArray.add(jsonObject);
         }
 
-        req.getSession().setAttribute("products", resultProducts);
+        session.setAttribute("products", resultProducts);
 
         o.println(jsonArray);
         o.flush();
+    }
     }
 
 

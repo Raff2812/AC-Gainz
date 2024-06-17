@@ -1,6 +1,8 @@
 function resetProducts() {
     console.log("Resetting products...");
 
+    
+
     const selects = document.querySelectorAll('select');
 
     selects.forEach(select => {
@@ -11,3 +13,4 @@ function resetProducts() {
 }
 
 document.getElementById("reset-button").addEventListener("click", resetProducts);
+

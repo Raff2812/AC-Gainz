@@ -20,7 +20,7 @@ function validateForm(){
     var emailPattern =/^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/;
 
 
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/
+    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 
 
 

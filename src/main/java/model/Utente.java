@@ -21,6 +21,17 @@ public class Utente {
     public Utente()
     {}
 
+    public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono, boolean poteri) {
+        this.email = email;
+        this.password = password;
+        this.nome = nome;
+        this.cognome = cognome;
+        this.codiceFiscale = codiceFiscale;
+        this.dataNascita = dataNascita;
+        this.indirizzo = indirizzo;
+        this.telefono = telefono;
+        this.poteri = poteri;
+    }
     public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono) {
         this.email = email;
         this.password = password;
