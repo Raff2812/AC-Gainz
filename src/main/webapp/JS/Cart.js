@@ -143,10 +143,11 @@ function updateCartView(action, response) {
         // Calculate the total quantity
         let totalQuantity = 0;
         let totalPrice = 0;
-        for (let i = 0; i < cartItems.length; i++) {
-            totalQuantity += cartItems[i].quantity;
-            totalPrice += cartItems[i].prezzo;
-        }
+
+        cartItems.forEach(cartItem =>{
+            totalQuantity += cartItem.quantity;
+            totalPrice += cartItem.prezzo;
+        })
 
         // Update cart counter
         const cartElement = document.getElementById("cart");
