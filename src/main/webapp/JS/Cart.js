@@ -11,7 +11,11 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("cart").addEventListener("click", function () {
         toggleCartVisibility();
     });
+
+    // Carica il contenuto del carrello al caricamento della pagina
+    showCart();
 });
+
 
 function toggleCartVisibility() {
     const listCart = document.getElementById("listCart");

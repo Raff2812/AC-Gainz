@@ -22,6 +22,7 @@
 </head>
 <body>
 
+<script src="JS/Cart.js" defer></script>
 
 
 <header>

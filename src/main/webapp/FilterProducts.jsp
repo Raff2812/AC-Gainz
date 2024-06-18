@@ -44,7 +44,7 @@
 
 <%@include file="Header.jsp"%>
 
-<script src="JS/Cart.js"></script>
+<%-- <script src="JS/Cart.js"></script> --%>
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">

@@ -70,6 +70,7 @@ header .header-container{
 
 /* Cart */
 .header-carrello {
+    position: relative;
     display: flex;
     align-items: center;
 }
@@ -91,8 +92,8 @@ header .header-container{
 }
 
 #listCart {
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: 300px; /* Altezza massima */
+    overflow-y: auto; /* Scroll verticale */
     padding: 10px;
     color: black;
     border: 1px solid #ccc;
@@ -100,6 +101,9 @@ header .header-container{
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     margin-top: 10px;
+    position: absolute; /* Posizione assoluta */
+    top: 100%; /* Posiziona sotto il pulsante */
+    left: 0; /* Allinea a sinistra */
 }
 
 #listCart div {
@@ -111,7 +115,6 @@ header .header-container{
 .hidden {
     display: none;
 }
-
 
 #listCart div:last-child {
     border-bottom: none;
