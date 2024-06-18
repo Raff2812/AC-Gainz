@@ -8,11 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Carrello;
+import model.CarrelloDAO;
 import model.Utente;
 import model.UtenteDAO;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -77,7 +81,11 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("Utente", x);
 
 
-
+        CarrelloDAO carrelloDAO = new CarrelloDAO();
+        List<Carrello> cart = carrelloDAO.doRetrieveCartByEmail(x.getEmail());
+        if (!cart.isEmpty()) {
+            session.setAttribute("cart", cart);
+        }
         // Redirect to the index page
         response.sendRedirect("index.jsp");
     }

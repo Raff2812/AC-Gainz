@@ -11,7 +11,6 @@
     <% Utente utente = (Utente) session.getAttribute("Utente");
         boolean isLogged = (utente != null);
 
-
     %>
 
     <script>
@@ -42,11 +41,10 @@
             <img id="search-img" src="./Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
-            <div id="cart" onclick="toggleCart()">Carrello
-                <div id="listCart" class="hidden">
-                    <button class="rmvButton"></button>
-                </div>
-            </div>
+            <div id="cart">Carrello (0)</div>
+        <div id="listCart" class="hidden">
+            <!-- Il contenuto del carrello sarà qui -->
+        </div>
         </div>
         <div class="header-utente" id="utente">
             <button onclick="myFunction()" class="header-dropbutton">Utente</button>

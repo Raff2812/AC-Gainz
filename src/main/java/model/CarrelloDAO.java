@@ -12,13 +12,35 @@ public class CarrelloDAO {
 
     public void doSave(Carrello c){
         try (Connection con = ConPool.getConnection()){
-            PreparedStatement preparedStatement = con.prepareStatement("INSERT into carrello (utente, prodotto, quantity, total_price) VALUES (?,?,?,?)",Statement.RETURN_GENERATED_KEYS);
+            String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
+                    "VALUES (?, ?, ?, ?) " +
+                    "ON DUPLICATE KEY UPDATE " +
+                    "quantity = quantity + ?, total_price = total_price + ?";
+            PreparedStatement preparedStatement = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, c.getEmailUtente());
             preparedStatement.setString(2, c.getIdProdotto());
             preparedStatement.setInt(3, c.getQuantita());
             preparedStatement.setFloat(4, c.getPrezzo());
+            preparedStatement.setInt(5, c.getQuantita());
+            preparedStatement.setFloat(6, c.getPrezzo());
 
             preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void doRemoveCartByUser(String emailUtente){
+        try (Connection connection = ConPool.getConnection()){
+
+            PreparedStatement preparedStatement = connection.prepareStatement("Delete from carrello where utente = ?");
+            preparedStatement.setString(1, emailUtente);
+
+            int rowsDeleted = preparedStatement.executeUpdate();
+            if (rowsDeleted > 0)
+                System.out.println("Eliminate correttamente: " + rowsDeleted + "righe dal carrello di: " + emailUtente);
+            else System.out.println("Nessuna riga eliminata");
+
         }catch (SQLException e){
             throw new RuntimeException(e);
         }
@@ -63,6 +85,32 @@ public class CarrelloDAO {
         }
     }
 
+
+
+    public List<Carrello> doRetrieveCartByEmail(String email){
+        List<Carrello> cartEntries = new ArrayList<>();
+
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from carrello where utente = ?");
+            preparedStatement.setString(1, email);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                Carrello carrelloEntry = new Carrello();
+                carrelloEntry.setEmailUtente(resultSet.getString(1));
+                carrelloEntry.setIdProdotto(resultSet.getString(2));
+                carrelloEntry.setQuantita(resultSet.getInt(3));
+                carrelloEntry.setPrezzo(resultSet.getFloat(4));
+
+                cartEntries.add(carrelloEntry);
+            }
+
+            return cartEntries;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
 
 

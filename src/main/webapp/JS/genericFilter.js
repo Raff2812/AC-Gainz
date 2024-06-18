@@ -68,3 +68,21 @@ document.getElementById("sorting").addEventListener("change", function() {
 });
 
 
+function buildJSONString(product) {
+    const jsonObject = {
+        id: product.id,
+        nome: escapeJSONString(product.nome),
+        categoria: escapeJSONString(product.categoria),
+        prezzo: product.prezzo,
+        gusto: escapeJSONString(product.gusto)
+    };
+    return JSON.stringify(jsonObject);
+}
+
+// Funzione per gestire l'escape dei caratteri speciali in stringhe JSON
+function escapeJSONString(value) {
+    // Gestione degli escape per caratteri speciali come ", \, /, ecc.
+    return value.replace(/[\\"]/g, '\\$&')
+        .replace(/\u0000/g, '\\0');
+    // Aggiungi altre regole di escape se necessario
+}

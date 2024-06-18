@@ -1,7 +1,7 @@
 <%@ page import="model.Prodotto" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.json.simple.JSONObject" %>
-<!DOCTYPE html>
+
 <html lang="it">
 <head>
     <meta charset="UTF-8">
@@ -38,14 +38,11 @@
             padding: 5px;
             text-decoration: none;
         }
-
-
     </style>
 </head>
 <body>
 
 <%@include file="Header.jsp"%>
-
 
 <script src="JS/Cart.js"></script>
 
@@ -57,7 +54,7 @@
                 <option value="">-</option>
                 <option value="sortDown">Prezzo: da alto a basso</option>
                 <option value="sortUp">Prezzo: da basso ad alto</option>
-                <option value="evidence">In evidenza </option>
+                <option value="evidence">In evidenza</option>
             </select>
         </div>
 
@@ -91,6 +88,8 @@
     </div>
 </div>
 
+<script src="JS/genericFilter.js"></script>
+
 <div id="gr" class="group">
     <%
         List<Prodotto> products = null;
@@ -99,27 +98,38 @@
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }
-        if (products != null){
+        if (products != null) {
             session.setAttribute("originalProducts", products);
             session.setAttribute("products", products);
+            for (Prodotto p : products) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", p.getIdProdotto());
+                jsonObject.put("nome", p.getNome());
+                jsonObject.put("categoria", p.getCategoria());
+                jsonObject.put("prezzo", p.getPrezzo());
+                jsonObject.put("gusto", p.getGusto());
+
+                System.out.println(jsonObject.get("nome").toString());
+                String jsonString = jsonObject.toJSONString();
+    %>
+    <div class="px">
+        <%= p.getIdProdotto() %>
+        <%= p.getNome() %>
+        <%= p.getCategoria() %>
+        <%= p.getPrezzo() %>
+        <%= p.getGusto() %>
+        <button class="cartAdd" data-product='<%= jsonString %>'>Aggiungi al Carrello</button>
+    </div>
+    <%
+            }
         }
     %>
-    <% for (Prodotto p : products) {%>
-    <div class="px">
-        <%=p.getIdProdotto()%>
-        <%=p.getNome()%>
-        <%=p.getCategoria()%>
-        <%=p.getPrezzo()%>
-        <%=p.getGusto()%>
-        <button class="cartAdd" data-product='{"id": "<%= p.getIdProdotto() %>", "nome": "<%= p.getNome() %>", "categoria": "<%= p.getCategoria() %>", "prezzo": <%= p.getPrezzo() %>, "gusto": "<%= p.getGusto() %>"}'>Aggiungi al Carrello</button>
-    </div>
-    <% } %>
 </div>
 
-
 <script src="JS/showTastes.js"></script>
-<script src="JS/genericFilter.js"></script>
 <script src="JS/resetProducts.js"></script>
+
 <%@include file="Footer.jsp"%>
+
 </body>
 </html>

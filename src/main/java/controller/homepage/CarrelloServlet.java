@@ -27,8 +27,6 @@ public class CarrelloServlet extends HttpServlet {
         PrintWriter o = resp.getWriter();
 
         JSONArray jsonArray = new JSONArray();
-
-
         if (action.equals("add")) {
             String id = req.getParameter("id");
             String nome = req.getParameter("nome");
@@ -98,7 +96,26 @@ public class CarrelloServlet extends HttpServlet {
             o.println(jsonArray);
             o.flush();
         }
+        if(action.equals("show")){
+            System.out.println("Showing");
+            List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
+
+            if(!cart.isEmpty()){
+                System.out.println("Ho roba");
+                for (Carrello c: cart){
+                    System.out.println(c.getIdProdotto() + " in the cart");
+                    JSONObject jsonObject = new JSONObject();
+                    jsonObject.put("id", c.getIdProdotto());
+                    jsonObject.put("quantity", c.getQuantita());
+                    jsonObject.put("prezzo", c.getPrezzo());
+                    jsonArray.add(jsonObject);
+                }
+
+                o.println(jsonArray);
+                o.flush();
+            }
         }
+    }
 
 
 
