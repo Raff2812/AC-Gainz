@@ -8,12 +8,16 @@ public class Carrello {
     private String emailUtente;
 
     private String idProdotto = "";
+    private String nomeProdotto;
     private int quantita;
     private float prezzo;
 
-    public Carrello(String emailUtente, String idProdotto, int quantita, float prezzo) {
+
+
+    public Carrello(String emailUtente, String idProdotto, String nomeProdotto, int quantita, float prezzo) {
         this.emailUtente = emailUtente;
         this.idProdotto = idProdotto;
+        this.nomeProdotto = nomeProdotto;
         this.quantita = quantita;
         this.prezzo = prezzo;
     }
@@ -25,6 +29,14 @@ public class Carrello {
     public Carrello()
     {
 
+    }
+
+    public String getNomeProdotto() {
+        return nomeProdotto;
+    }
+
+    public void setNomeProdotto(String nomeProdotto) {
+        this.nomeProdotto = nomeProdotto;
     }
 
     public String getEmailUtente() {

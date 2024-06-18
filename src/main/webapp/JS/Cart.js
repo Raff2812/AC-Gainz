@@ -106,6 +106,7 @@ function updateCartView(action, response) {
             response = '[]';
         }
         const cartItems = JSON.parse(response);
+        console.log(cartItems);
         const cartItemDiv = document.getElementById("listCart");
 
         if (!cartItemDiv) {
@@ -123,7 +124,7 @@ function updateCartView(action, response) {
         } else {
             cartItems.forEach(item => {
                 const div = document.createElement("div");
-                div.innerText = `${item.id} ${item.quantity} ${item.prezzo}`;
+                div.innerText = `${item.nome} ${item.quantity} ${item.prezzo}`;
                 const rmvButton = document.createElement("button");
 
                 rmvButton.className = "rmvButton";

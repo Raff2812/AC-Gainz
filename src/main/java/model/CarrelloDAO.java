@@ -12,13 +12,14 @@ public class CarrelloDAO {
 
     public void doSave(Carrello c){
         try (Connection con = ConPool.getConnection()){
-            String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
-                    "VALUES (?, ?, ?, ?) " +
+            String query = "INSERT INTO carrello (utente, prodotto, nome_prodotto, quantity, total_price) " +
+                    "VALUES (?, ?, ?, ?, ?) " +
                     "ON DUPLICATE KEY UPDATE " +
                     "quantity = quantity + ?, total_price = total_price + ?";
             PreparedStatement preparedStatement = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, c.getEmailUtente());
             preparedStatement.setString(2, c.getIdProdotto());
+            preparedStatement.setString(3, c.getNomeProdotto());
             preparedStatement.setInt(3, c.getQuantita());
             preparedStatement.setFloat(4, c.getPrezzo());
             preparedStatement.setInt(5, c.getQuantita());
@@ -60,6 +61,7 @@ public class CarrelloDAO {
                 Carrello carrello = new Carrello();
                 carrello.setEmailUtente(resultSet.getString("utente"));
                 carrello.setIdProdotto(resultSet.getString("prodotto"));
+                carrello.setNomeProdotto(resultSet.getString("nome_prodotto"));
                 carrello.setQuantita(resultSet.getInt("quantity"));
                 carrello.setPrezzo(resultSet.getFloat("total_price"));
 
@@ -73,7 +75,7 @@ public class CarrelloDAO {
     }
 
 
-    public void removeProductFromCart(int idCarrello, String emailUtente, Prodotto prodotto){
+ /*   public void removeProductFromCart(int idCarrello, String emailUtente, Prodotto prodotto){
         try (Connection connection = ConPool.getConnection()){
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE from carrello where utente = ? and prodotto = ?");
             preparedStatement.setString(1, emailUtente);
@@ -84,6 +86,7 @@ public class CarrelloDAO {
             throw new RuntimeException(e);
         }
     }
+  */
 
 
 
@@ -98,10 +101,11 @@ public class CarrelloDAO {
 
             while (resultSet.next()){
                 Carrello carrelloEntry = new Carrello();
-                carrelloEntry.setEmailUtente(resultSet.getString(1));
-                carrelloEntry.setIdProdotto(resultSet.getString(2));
-                carrelloEntry.setQuantita(resultSet.getInt(3));
-                carrelloEntry.setPrezzo(resultSet.getFloat(4));
+                carrelloEntry.setEmailUtente(resultSet.getString("utente"));
+                carrelloEntry.setIdProdotto(resultSet.getString("prodotto"));
+                carrelloEntry.setNomeProdotto(resultSet.getString("nome_prodotto"));
+                carrelloEntry.setQuantita(resultSet.getInt("quantity"));
+                carrelloEntry.setPrezzo(resultSet.getFloat("total_price"));
 
                 cartEntries.add(carrelloEntry);
             }
@@ -114,11 +118,11 @@ public class CarrelloDAO {
 
 
 
-    public void addProductToCart(String emailUtente, Prodotto prodotto) {
+   /* public void addProductToCart(String emailUtente, Prodotto prodotto) {
         try (Connection con = ConPool.getConnection()) {
 
-            String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
-                    "VALUES (?, ?, ?, ?) " +
+            String query = "INSERT INTO carrello (utente, prodotto, nome_prodotto, quantity, total_price) " +
+                    "VALUES (?, ?, ?, ?, ?) " +
                     "ON DUPLICATE KEY UPDATE " +
                     "quantity = quantity + ?, total_price = total_price + ?";
 
@@ -144,27 +148,6 @@ public class CarrelloDAO {
             // Puoi lanciare una eccezione specifica o gestire diversamente l'errore a seconda delle necessità
         }
     }
-
-    public void removeItem(String emailProdotto, String idProdotto){
-        try(Connection connection = ConPool.getConnection()){
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE from carrello where utente = ? and prodotto = ?");
-            preparedStatement.setString(1, emailProdotto);
-            preparedStatement.setString(2, idProdotto);
-
-            int rowsAffected = preparedStatement.executeUpdate();
-
-            if(rowsAffected > 0){
-                System.out.println("Rimosso dal carrello il prodotto: " + idProdotto);
-            }else {
-                System.out.println("Non è stato rimosso il prodotto: " + idProdotto + " dal carrello");
-            }
-
-
-        }catch (SQLException e){
-            throw new RuntimeException(e);
-        }
-
-    }
-
+    */
 
 }

@@ -52,7 +52,7 @@ public class CarrelloServlet extends HttpServlet {
                     }
                 }
 
-                if(!b) cartItems.add(new Carrello("user@gmail.com",  id, 1, prezzo));
+                if(!b) cartItems.add(new Carrello("user@gmail.com",  id, nome, 1, prezzo));
 
 
 
@@ -60,6 +60,7 @@ public class CarrelloServlet extends HttpServlet {
                     System.out.println(c.getIdProdotto());
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", c.getIdProdotto());
+                    jsonObject.put("nome", c.getNomeProdotto());
                     jsonObject.put("quantity", c.getQuantita());
                     jsonObject.put("prezzo", c.getPrezzo());
                     jsonArray.add(jsonObject);
@@ -86,6 +87,7 @@ public class CarrelloServlet extends HttpServlet {
                 System.out.println(c.getIdProdotto());
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", c.getIdProdotto());
+                jsonObject.put("nome", c.getNomeProdotto());
                 jsonObject.put("quantity", c.getQuantita());
                 jsonObject.put("prezzo", c.getPrezzo());
                 jsonArray.add(jsonObject);
@@ -106,6 +108,7 @@ public class CarrelloServlet extends HttpServlet {
                     System.out.println(c.getIdProdotto() + " in the cart");
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", c.getIdProdotto());
+                    jsonObject.put("nome", c.getNomeProdotto());
                     jsonObject.put("quantity", c.getQuantita());
                     jsonObject.put("prezzo", c.getPrezzo());
                     jsonArray.add(jsonObject);
