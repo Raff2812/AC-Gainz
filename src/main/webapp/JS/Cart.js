@@ -117,7 +117,12 @@ function updateCartView(action, response) {
             emptyMessage.innerText = "Il carrello è vuoto.";
             cartItemDiv.appendChild(emptyMessage);
         } else {
-            cartItems.forEach(item => {
+            let totalQuantity = 0;
+            let totalPrice = 0;
+
+            // Loop through the cartItems except the last element which is totalPrice
+            for (let i = 0; i < cartItems.length - 1; i++) {
+                const item = cartItems[i];
                 const div = document.createElement("div");
                 div.innerText = `${item.nome} ${item.quantity} ${item.prezzo}`;
                 const rmvButton = document.createElement("button");
@@ -133,32 +138,30 @@ function updateCartView(action, response) {
 
                 div.appendChild(rmvButton);
                 cartItemDiv.appendChild(div);
-            });
+
+                totalQuantity += item.quantity;
+            }
+
+            // The last item is the totalPrice object
+            const totalPriceItem = cartItems[cartItems.length - 1];
+            totalPrice = totalPriceItem.totalPrice;
+
+            // Update cart counter
+            const cartElement = document.getElementById("cart");
+            if (!cartElement) {
+                console.error("Element with ID 'cart' not found");
+                return;
+            }
+            cartElement.innerHTML = `Carrello (${totalQuantity})`;
+
+            const totalPriceDiv = document.createElement("h3");
+            totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
+            cartItemDiv.appendChild(totalPriceDiv);
         }
-
-        // Calculate the total quantity
-        let totalQuantity = 0;
-        let totalPrice = 0;
-
-        cartItems.forEach(cartItem =>{
-            totalQuantity += cartItem.quantity;
-            totalPrice += cartItem.prezzo;
-        })
-
-        // Update cart counter
-        const cartElement = document.getElementById("cart");
-        if (!cartElement) {
-            console.error("Element with ID 'cart' not found");
-            return;
-        }
-        cartElement.innerHTML = `Carrello (${totalQuantity})`;
-
-        const totalPriceDiv = document.createElement("h3");
-        totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
-        cartItemDiv.appendChild(totalPriceDiv);
-
     } catch (error) {
         console.error("Error parsing JSON response:", error);
         console.log("Response text:", response);
     }
 }
+
+
