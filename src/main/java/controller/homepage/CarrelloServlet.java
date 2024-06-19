@@ -92,11 +92,19 @@ public class CarrelloServlet extends HttpServlet {
 
         for (Carrello item : cartItems) {
             JSONObject jsonObject = new JSONObject();
+
             jsonObject.put("id", item.getIdProdotto());
+
             jsonObject.put("nome", prodottoDAO.doRetrieveById(item.getIdProdotto()).getNome());
+
             jsonObject.put("quantity", item.getQuantita());
-            jsonObject.put("prezzo", item.getPrezzo());
+
+            float itemPrice = item.getPrezzo();
+            itemPrice = Math.round(itemPrice * 100.0f) / 100.0f;
+            jsonObject.put("prezzo", itemPrice);
+
             totalPrice += item.getPrezzo();
+
             jsonArray.add(jsonObject);
         }
 

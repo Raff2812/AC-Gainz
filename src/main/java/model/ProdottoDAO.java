@@ -34,7 +34,7 @@ public class ProdottoDAO {
     public void doSave(Prodotto prodotto) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantita,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantità,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,prodotto.getIdProdotto());
             ps.setString(2, prodotto.getNome());
@@ -203,7 +203,7 @@ public class ProdottoDAO {
         }
     }
 
-    public void doUpdateCustomer(Prodotto u){
+    public void doUpdateProduct(Prodotto u){
 
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();
