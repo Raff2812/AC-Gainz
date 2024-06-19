@@ -122,7 +122,7 @@ header .header-container{
 
 .rmvButton {
     margin-top: 5px;
-    background-color: #e74c3c;
+    background-color: orangered;
     color: white;
     border: none;
     border-radius: 3px;
@@ -131,7 +131,9 @@ header .header-container{
 }
 
 .rmvButton:hover {
-    background-color: #c0392b;
+    transition: 0.2s;
+    background-color: white;
+    border: black;
 }
 
 

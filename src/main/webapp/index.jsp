@@ -10,6 +10,7 @@
 <html>
 <head>
     <title>AC-Gainz HomePage</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
 </head>
 <body>
  <%@ include file="Header.jsp"%>

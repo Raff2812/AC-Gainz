@@ -9,6 +9,8 @@
 <html>
 <head>
     <title>Area Admin</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
+
 </head>
 <body>
 

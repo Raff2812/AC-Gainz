@@ -107,6 +107,7 @@ public class CarrelloServlet extends HttpServlet {
             System.out.println("Showing");
             List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
 
+            if (cart != null){
             if(!cart.isEmpty()){
                 System.out.println("Ho roba");
                 for (Carrello c: cart){
@@ -123,6 +124,7 @@ public class CarrelloServlet extends HttpServlet {
 
                 o.println(jsonArray);
                 o.flush();
+            }
             }
         }
     }

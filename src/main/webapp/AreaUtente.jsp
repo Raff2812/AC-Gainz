@@ -8,6 +8,7 @@
     <script src="JS/AreaUtente.js"></script>
     <link rel="stylesheet" href="CSS/AreaUtenteCSS.css">
     <title>Area utente</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
 </head>
 <body>
 
