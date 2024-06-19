@@ -11,17 +11,16 @@ import java.util.Objects;
 
 public class ProdottoDAO {
 
-    public Prodotto doRetrieveById(int id)
+    public Prodotto doRetrieveById(String id)
     {
         try(Connection con= ConPool.getConnection())
         {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_prodotto,nome,descrizione,prezzo,quantita,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto FROM prodotto WHERE id_prodotto=?");
-            preparedStatement.setInt(1,id);
+            PreparedStatement preparedStatement=con.prepareStatement("SELECT * FROM prodotto WHERE id_prodotto=?");
+            preparedStatement.setString(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                Prodotto p=new Prodotto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
-                return p;
+                return new Prodotto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
             }
             return null;
 
@@ -212,7 +211,7 @@ public class ProdottoDAO {
                     "', nome='" + u.getNome() +
                     "', descrizione='" + u.getDescrizione() +
                     "', prezzo='"+ u.getPrezzo() +
-                    "', quantita='"+ u.getQuantita() +
+                    "', quantità ='"+ u.getQuantita() +
                     "', categoria='"+ u.getCategoria() +
                     "', Gusto='"+ u.getGusto() +
                     "', Calorie='"+ u.getCalorie() +
@@ -229,6 +228,9 @@ public class ProdottoDAO {
             throw new RuntimeException(e);
         }
     }
+
+
+
 
 
 }

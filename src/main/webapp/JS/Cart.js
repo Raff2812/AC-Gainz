@@ -39,11 +39,6 @@ function addCart(product) {
     const params = new URLSearchParams();
     params.append("action", "add");
     params.append("id", product.id.toString());
-    params.append("nome", product.nome.toString());
-    console.log(params.get("nome"));
-    params.append("categoria", product.categoria.toString());
-    params.append("prezzo", product.prezzo.toString());
-    params.append("gusto", product.gusto.toString());
 
     fetch("cartServlet?" + params.toString())
         .then(response => {

@@ -26,15 +26,22 @@ public class LogoutServlet extends HttpServlet {
         CarrelloDAO carrelloDAO = new CarrelloDAO();
         List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
 
-        if (cart.isEmpty()){
+
+        List<Carrello> savedCart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
+
+
+
+        if(!savedCart.isEmpty() && cart.equals(savedCart)){
+            ; //doNothing
+            }else if (cart.isEmpty()){
             carrelloDAO.doRemoveCartByUser(x.getEmail());
             System.out.println("Carrello vuoto");
-        } else{
-            for (Carrello c : cart) {
-            c.setEmailUtente(x.getEmail());
-            carrelloDAO.doSave(c);
+            }else{
+                for (Carrello c : cart) {
+                c.setEmailUtente(x.getEmail());
+                carrelloDAO.doSave(c);
+                }
             }
-        }
 
 
 

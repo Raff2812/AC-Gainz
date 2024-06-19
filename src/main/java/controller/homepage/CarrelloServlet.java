@@ -21,6 +21,7 @@ public class CarrelloServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
 
+        ProdottoDAO prodottoDAO = new ProdottoDAO();
         HttpSession session = req.getSession();
 
         resp.setContentType("application/json");
@@ -29,12 +30,14 @@ public class CarrelloServlet extends HttpServlet {
         JSONArray jsonArray = new JSONArray();
         if (action.equals("add")) {
             String id = req.getParameter("id");
-            String nome = req.getParameter("nome");
+            /*String nome = req.getParameter("nome");
             String categoria = req.getParameter("categoria");
             float prezzo = Float.parseFloat(req.getParameter("prezzo"));
-            String gusto = req.getParameter("gusto");
+            String gusto = req.getParameter("gusto");*/
 
-            System.out.println(id + " " + nome + " " + categoria + " " + prezzo + " " +gusto);
+            Prodotto p = prodottoDAO.doRetrieveById(id);
+
+            System.out.println(id + " " + p.getNome() + " " + p.getCategoria() + " " + p.getCategoria() + " " + p.getGusto());
 
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -47,12 +50,12 @@ public class CarrelloServlet extends HttpServlet {
                 for (Carrello c: cartItems){
                     if(c.getIdProdotto().equals(id)){
                         c.setQuantita(c.getQuantita() + 1);
-                        c.setPrezzo(c.getPrezzo() + prezzo);
+                        c.setPrezzo(c.getPrezzo() + p.getPrezzo());
                         b = true;
                     }
                 }
 
-                if(!b) cartItems.add(new Carrello("user@gmail.com",  id, nome, 1, prezzo));
+                if(!b) cartItems.add(new Carrello("user@gmail.com",  id, p.getNome(), 1, p.getPrezzo()));
 
 
 
@@ -60,7 +63,7 @@ public class CarrelloServlet extends HttpServlet {
                     System.out.println(c.getIdProdotto());
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", c.getIdProdotto());
-                    jsonObject.put("nome", c.getNomeProdotto());
+                    jsonObject.put("nome", p.getNome());
                     jsonObject.put("quantity", c.getQuantita());
                     jsonObject.put("prezzo", c.getPrezzo());
                     jsonArray.add(jsonObject);
@@ -73,6 +76,8 @@ public class CarrelloServlet extends HttpServlet {
             }
         if (action.equals("remove")){
             String idToRemove = req.getParameter("id");
+
+            Prodotto p = prodottoDAO.doRetrieveById(idToRemove);
 
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -87,7 +92,7 @@ public class CarrelloServlet extends HttpServlet {
                 System.out.println(c.getIdProdotto());
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", c.getIdProdotto());
-                jsonObject.put("nome", c.getNomeProdotto());
+                jsonObject.put("nome", p.getNome());
                 jsonObject.put("quantity", c.getQuantita());
                 jsonObject.put("prezzo", c.getPrezzo());
                 jsonArray.add(jsonObject);
@@ -105,10 +110,12 @@ public class CarrelloServlet extends HttpServlet {
             if(!cart.isEmpty()){
                 System.out.println("Ho roba");
                 for (Carrello c: cart){
+                    Prodotto p = prodottoDAO.doRetrieveById(c.getIdProdotto());
+
                     System.out.println(c.getIdProdotto() + " in the cart");
                     JSONObject jsonObject = new JSONObject();
                     jsonObject.put("id", c.getIdProdotto());
-                    jsonObject.put("nome", c.getNomeProdotto());
+                    jsonObject.put("nome", p.getNome());
                     jsonObject.put("quantity", c.getQuantita());
                     jsonObject.put("prezzo", c.getPrezzo());
                     jsonArray.add(jsonObject);

@@ -104,12 +104,6 @@
             for (Prodotto p : products) {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("id", p.getIdProdotto());
-                jsonObject.put("nome", p.getNome());
-                jsonObject.put("categoria", p.getCategoria());
-                jsonObject.put("prezzo", p.getPrezzo());
-                jsonObject.put("gusto", p.getGusto());
-
-                System.out.println(jsonObject.get("nome").toString());
                 String jsonString = jsonObject.toJSONString();
     %>
     <div class="px">

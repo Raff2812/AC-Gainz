@@ -82,7 +82,7 @@ public class LoginServlet extends HttpServlet {
 
 
         CarrelloDAO carrelloDAO = new CarrelloDAO();
-        List<Carrello> cart = carrelloDAO.doRetrieveCartByEmail(x.getEmail());
+        List<Carrello> cart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
         if (!cart.isEmpty()) {
             session.setAttribute("cart", cart);
         }
