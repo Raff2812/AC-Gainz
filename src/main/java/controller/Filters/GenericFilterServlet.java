@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
+import model.ProdottoDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -21,6 +22,9 @@ public class GenericFilterServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String nameFilter = req.getParameter("name"); //SearchBar
+
+
         String priceFilter = req.getParameter("price");
         String caloriesFilter = req.getParameter("calories");
         String tasteFilter = req.getParameter("taste");
@@ -39,7 +43,7 @@ public class GenericFilterServlet extends HttpServlet {
 
         List<Prodotto> resultProducts = new ArrayList<>(originalProducts);
 
-        if (priceFilter == null && caloriesFilter == null && tasteFilter == null && sortingFilter == null) {
+        if (priceFilter == null && caloriesFilter == null && tasteFilter == null && sortingFilter == null && nameFilter == null) {
             resultProducts = new ArrayList<>(originalProducts); //potenzialmente inutile
         } else {
             if (priceFilter != null) {
@@ -53,6 +57,12 @@ public class GenericFilterServlet extends HttpServlet {
             }
             if (sortingFilter != null) {
                 resultProducts = resultFromSorting(resultProducts, sortingFilter);  //aggiorni resultProducts
+            }
+            if (nameFilter != null){
+                resultProducts = filterByName(resultProducts, nameFilter);
+                for (Prodotto p: resultProducts){
+                    System.out.println(p.getNome());
+                }
             }
         }
 
@@ -80,6 +90,17 @@ public class GenericFilterServlet extends HttpServlet {
     }
     }
 
+
+    private List<Prodotto> filterByName(List<Prodotto> prodottos, String value){
+        List<Prodotto> resultProducts = new ArrayList<>();
+
+        ProdottoDAO prodottoDAO = new ProdottoDAO();
+
+        resultProducts = prodottoDAO.doRetrieveByName(value);
+
+
+        return resultProducts;
+    }
 
 
     private List<Prodotto> filterByPrice(List<Prodotto> products, String value) {

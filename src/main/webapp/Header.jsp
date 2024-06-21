@@ -23,7 +23,7 @@
 <body>
 
 <script src="JS/Cart.js" defer></script>
-
+<script src="JS/SearchBar.js"></script>
 
 <header>
     <div class="header-container">
@@ -37,7 +37,7 @@
         </div>
         <div class="header-search-bar">
             <label>
-                <input type="search" placeholder="Search..">
+                <input type="search" id="search-input" placeholder="Search..">
             </label>
             <img id="search-img" src="./Immagini/search.png" alt="search-img">
         </div>

@@ -19,6 +19,9 @@ import java.util.Date;
 @WebServlet("/register")
 public class RegistrazioneServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+      super.doGet(request, response);
+    }
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String email = request.getParameter("email");
         UtenteDAO utenteDAO = new UtenteDAO();
         if(utenteDAO.doRetrieveByEmail(email) != null){
@@ -56,8 +59,5 @@ public class RegistrazioneServlet extends HttpServlet {
         session.setAttribute("Utente", x);
         RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
         requestDispatcher.forward(request, response);
-    }
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doGet(request, response);
     }
 }

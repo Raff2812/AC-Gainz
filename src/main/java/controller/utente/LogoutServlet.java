@@ -12,39 +12,32 @@ import model.CarrelloDAO;
 import model.Utente;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(value = "/logOut")
 public class LogoutServlet extends HttpServlet {
 
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Utente x = (Utente) session.getAttribute("Utente");
-        //Save cart into DB before logging out
+
+        // Save cart into DB before logging out
         CarrelloDAO carrelloDAO = new CarrelloDAO();
         List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
 
-
-        List<Carrello> savedCart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
-
+        if (cart == null) cart = new ArrayList<>();
 
 
-        if(!savedCart.isEmpty() && cart.equals(savedCart)){
-            ; //doNothing
-            }else if (cart.isEmpty()){
-            carrelloDAO.doRemoveCartByUser(x.getEmail());
-            System.out.println("Carrello vuoto");
-            }else{
-                for (Carrello c : cart) {
-                c.setEmailUtente(x.getEmail());
-                carrelloDAO.doSave(c);
-                }
-            }
+        // Remove existing cart items for the user
+        carrelloDAO.doRemoveCartByUser(x.getEmail());
 
-
-
+        // Save the current session cart items to the database
+        for (Carrello c : cart) {
+            c.setEmailUtente(x.getEmail());
+            carrelloDAO.doSave(c);
+        }
 
         session.removeAttribute("Utente");
         req.getSession().invalidate();

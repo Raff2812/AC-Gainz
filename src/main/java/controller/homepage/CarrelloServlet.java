@@ -28,11 +28,11 @@ public class CarrelloServlet extends HttpServlet {
 
         switch (action) {
             case "add" ->
-                handleAddAction(req, session, prodottoDAO, out);
+                    handleAddAction(req, session, prodottoDAO, out);
             case "remove" ->
-                handleRemoveAction(req, session, prodottoDAO, out);
+                    handleRemoveAction(req, session, prodottoDAO, out);
             case "show" ->
-                handleShowAction(session, prodottoDAO, out);
+                    handleShowAction(session, prodottoDAO, out);
         }
     }
 

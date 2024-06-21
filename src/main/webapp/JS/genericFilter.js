@@ -15,36 +15,21 @@ function genericFilter() {
 
     const urlServlet = `genericFilter?${params.toString()}`;
 
+
+    fetch(urlServlet)
+        .then(response => {
+            if (!response.ok) throw new Error();
+
+            return response.text();
+        })
+        .then(responseText => {
+            updateView(responseText);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
     console.log("Calling genericFilter with URL: " + urlServlet);
-
-    const xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            const prodottiFiltrati = JSON.parse(xhttp.responseText);
-            const group = document.querySelector(".group");
-            group.innerHTML = "";
-
-            prodottiFiltrati.forEach(prodottoFiltrato => {
-                const img = document.createElement("img");
-                const button = document.createElement("button");
-                button.innerHTML = "Aggiungi al carrello"
-                button.className = ""
-                //img.src = `${prodottoFiltrato.immagine}`;
-                //img.style.width = "100px";
-                const div = document.createElement("div");
-                div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
-                div.appendChild(button);
-                //div.appendChild(img);
-                group.appendChild(div);
-            });
-        } else if (xhttp.readyState === 4) {
-            console.error("Error in genericFilter: " + xhttp.status);
-        }
-    };
-
-    xhttp.open("GET", urlServlet, true);
-    xhttp.send();
 }
 
 document.getElementById("prices").addEventListener("change", function() {
@@ -67,22 +52,60 @@ document.getElementById("sorting").addEventListener("change", function() {
     genericFilter();
 });
 
+document.addEventListener("DOMContentLoaded", function() {
+    const queryString = window.location.search;
+    const urlSearchParams = new URLSearchParams(queryString);
 
-function buildJSONString(product) {
-    const jsonObject = {
-        id: product.id,
-        nome: escapeJSONString(product.nome),
-        categoria: escapeJSONString(product.categoria),
-        prezzo: product.prezzo,
-        gusto: escapeJSONString(product.gusto)
-    };
-    return JSON.stringify(jsonObject);
+    if (urlSearchParams.has("name")) {
+        filterByName(urlSearchParams.get("name"));
+    }
+});
+
+function filterByName(name) {
+    const urlSearch = new URLSearchParams();
+    urlSearch.append("name", name);
+
+    fetch(`genericFilter?${urlSearch.toString()}`)
+        .then(response => {
+            if (!response.ok) throw new Error();
+            return response.text();
+        })
+        .then(responseText => {
+            updateView(responseText);
+        })
+        .catch(error => {
+            console.error(error);
+        });
 }
 
-// Funzione per gestire l'escape dei caratteri speciali in stringhe JSON
-function escapeJSONString(value) {
-    // Gestione degli escape per caratteri speciali come ", \, /, ecc.
-    return value.replace(/[\\"]/g, '\\$&')
-        .replace(/\u0000/g, '\\0');
-    // Aggiungi altre regole di escape se necessario
+function updateView(response) {
+    const group = document.querySelector(".group");
+    group.innerHTML = "";
+
+    const products = JSON.parse(response);
+
+    products.forEach(prodottoFiltrato => {
+        const button = document.createElement("button");
+        button.innerHTML = "Aggiungi al carrello";
+        button.className= "cartAdd";
+
+        const product = JSON.stringify(prodottoFiltrato);
+
+        button.setAttribute("data-product", product);
+
+        const div = document.createElement("div");
+        div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
+        div.appendChild(button);
+        group.appendChild(div);
+    });
+
+
+        // Aggiunta di eventi click per i pulsanti "Aggiungi al carrello"
+      document.querySelectorAll(".cartAdd").forEach(button => {
+            button.addEventListener("click", function () {
+                const product = JSON.parse(this.getAttribute("data-product"));
+                addCart(product);
+            });
+        });
+
 }

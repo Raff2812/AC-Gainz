@@ -14,9 +14,6 @@ window.onload = function() {
 
 
 
-
-
-
 /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("header-show");
@@ -40,7 +37,3 @@ function toggleMenu() {
 }
 
 
-/*function toggleCart(){
-    const listCart = document.getElementById("listCart");
-    listCart.classList.toggle("hidden")
-}*/

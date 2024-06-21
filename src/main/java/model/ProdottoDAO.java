@@ -31,6 +31,47 @@ public class ProdottoDAO {
         }
     }
 
+
+
+    public List<Prodotto> doRetrieveByName(String nameProduct){
+        try (Connection connection = ConPool.getConnection()){
+            List<Prodotto> productsFilteredByName = new ArrayList<>();
+
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from prodotto where nome like ?");
+
+            String filter = nameProduct + "%";
+            preparedStatement.setString(1, filter);
+
+            ResultSet rs = preparedStatement.executeQuery();
+
+            while (rs.next()){
+                Prodotto p = new Prodotto();
+                p.setIdProdotto(rs.getString("id_prodotto"));
+                p.setNome(rs.getString("nome"));
+                p.setDescrizione(rs.getString("descrizione"));
+                p.setPrezzo(rs.getFloat("prezzo"));
+                p.setQuantita(rs.getInt("quantità"));
+                p.setCategoria(rs.getString("categoria"));
+                p.setGusto(rs.getString("gusto"));
+                p.setCalorie(rs.getFloat("calorie"));
+                p.setGrassi(rs.getFloat("grassi"));
+                p.setCarboidrati(rs.getFloat("carboidrati"));
+                p.setProteine(rs.getFloat("proteine"));
+                p.setPeso(rs.getInt("peso"));
+                p.setImmagine(rs.getString("immagine"));
+                p.setSconto(rs.getInt("sconto"));
+                p.setEvidenza(rs.getBoolean("evidenza"));
+
+                productsFilteredByName.add(p);
+            }
+
+            return productsFilteredByName;
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
     public void doSave(Prodotto prodotto) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
@@ -203,7 +244,7 @@ public class ProdottoDAO {
         }
     }
 
-    public void doUpdateProduct(Prodotto u){
+    public void doUpdateProduct (Prodotto u){
 
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();

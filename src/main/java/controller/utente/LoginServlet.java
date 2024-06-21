@@ -16,6 +16,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -23,7 +24,10 @@ import java.util.regex.Pattern;
 @WebServlet(value = "/login")
 public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        super.doGet(request, response);
+    }
 
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         // Prendo i parametri dal form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -82,15 +86,32 @@ public class LoginServlet extends HttpServlet {
 
 
         CarrelloDAO carrelloDAO = new CarrelloDAO();
-        List<Carrello> cart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
-        if (!cart.isEmpty()) {
-            session.setAttribute("cart", cart);
+        List<Carrello> dbCart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
+        if (dbCart == null) dbCart = new ArrayList<>();
+
+        List<Carrello> sessionCart = (List<Carrello>) session.getAttribute("cart");
+        if (sessionCart == null) sessionCart = new ArrayList<>();
+
+        for (Carrello sessionCartEntry : sessionCart) {
+            boolean found = false;
+            for (Carrello dbCartEntry : dbCart) {
+                if (dbCartEntry.getIdProdotto().equals(sessionCartEntry.getIdProdotto())) {
+                    dbCartEntry.setQuantita(dbCartEntry.getQuantita() + sessionCartEntry.getQuantita());
+                    dbCartEntry.setPrezzo(dbCartEntry.getPrezzo() + sessionCartEntry.getPrezzo());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                dbCart.add(sessionCartEntry);
+            }
         }
+
+        session.setAttribute("cart", dbCart);
+
         // Redirect to the index page
         response.sendRedirect("index.jsp");
+
     }
 
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doGet(request, response);
-    }
 }

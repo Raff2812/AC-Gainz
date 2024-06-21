@@ -157,6 +157,12 @@ function updateCartView(action, response) {
             const totalPriceDiv = document.createElement("h3");
             totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
             cartItemDiv.appendChild(totalPriceDiv);
+
+            const goToCheckOut = document.createElement("a");
+            goToCheckOut.className = "checkOut";
+            goToCheckOut.href = "Carrello.jsp";
+            goToCheckOut.innerText = "Vai al CheckOut";
+            cartItemDiv.appendChild(goToCheckOut);
         }
     } catch (error) {
         console.error("Error parsing JSON response:", error);
