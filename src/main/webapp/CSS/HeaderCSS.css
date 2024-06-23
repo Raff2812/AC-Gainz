@@ -101,6 +101,7 @@ header .header-container{
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     margin-top: 10px;
+    z-index: 1; /*fai comparire sugli altri elementi*/
     position: absolute; /* Posizione assoluta */
     top: 100%; /* Posiziona sotto il pulsante */
     left: 0; /* Allinea a sinistra */

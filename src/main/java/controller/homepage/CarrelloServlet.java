@@ -20,11 +20,14 @@ public class CarrelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String action = req.getParameter("action");
+
+
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         HttpSession session = req.getSession();
 
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
+
 
         switch (action) {
             case "add" ->
@@ -33,11 +36,16 @@ public class CarrelloServlet extends HttpServlet {
                     handleRemoveAction(req, session, prodottoDAO, out);
             case "show" ->
                     handleShowAction(session, prodottoDAO, out);
+            case "quantity" ->
+                    handleQuantityAction(req, session, prodottoDAO, out);
         }
+
+
     }
 
     private void handleAddAction(HttpServletRequest req, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         String id = req.getParameter("id");
+        System.out.println(id);
         Prodotto prodotto = prodottoDAO.doRetrieveById(id);
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -78,11 +86,37 @@ public class CarrelloServlet extends HttpServlet {
     private void handleShowAction(HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
-        if (cartItems != null) {
+        if (cartItems != null && !cartItems.isEmpty()) {
+            System.out.println("sturnz");
             writeCartItemsToResponse(cartItems, prodottoDAO, out);
         } else {
-            out.println("[]");
+            JSONArray jsonArray = new JSONArray();
+            out.println(jsonArray);
             out.flush();
+            out.close();
+        }
+    }
+
+    private void handleQuantityAction(HttpServletRequest request, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException{
+        List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
+        if (cartItems != null){
+            String quantity = request.getParameter("quantity");
+            String id = request.getParameter("id");
+            if (quantity != null && !quantity.isBlank() && id != null){
+                int q = Integer.parseInt(quantity);
+                if (q <= 0){
+                    handleRemoveAction(request, session, prodottoDAO, out);
+                }else {
+                    for (Carrello c: cartItems){
+                        if (c.getIdProdotto().equals(id)){
+                            c.setQuantita(q);
+                            c.setPrezzo(prodottoDAO.doRetrieveById(c.getIdProdotto()).getPrezzo() * q);
+                            break;
+                        }
+                    }
+                    writeCartItemsToResponse(cartItems, prodottoDAO, out);
+                }
+            }
         }
     }
 
@@ -90,12 +124,18 @@ public class CarrelloServlet extends HttpServlet {
         JSONArray jsonArray = new JSONArray();
         float totalPrice = 0;
 
+
         for (Carrello item : cartItems) {
+            Prodotto p = prodottoDAO.doRetrieveById(item.getIdProdotto());
             JSONObject jsonObject = new JSONObject();
 
             jsonObject.put("id", item.getIdProdotto());
 
             jsonObject.put("nome", prodottoDAO.doRetrieveById(item.getIdProdotto()).getNome());
+
+            jsonObject.put("imgSrc", p.getImmagine());
+            jsonObject.put("flavour", p.getGusto());
+            jsonObject.put("weight", p.getPeso());
 
             jsonObject.put("quantity", item.getQuantita());
 
@@ -116,6 +156,7 @@ public class CarrelloServlet extends HttpServlet {
 
         out.println(jsonArray);
         out.flush();
+        out.close();
     }
 
     @Override

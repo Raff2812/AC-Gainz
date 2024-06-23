@@ -38,56 +38,56 @@ public class GenericFilterServlet extends HttpServlet {
 
         HttpSession session = req.getSession();;
         synchronized (session){
-        List<Prodotto> products = (List<Prodotto>) session.getAttribute("products");
-        List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("originalProducts");
+            List<Prodotto> products = (List<Prodotto>) session.getAttribute("products");
+            List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("originalProducts");
 
-        List<Prodotto> resultProducts = new ArrayList<>(originalProducts);
+            List<Prodotto> resultProducts = new ArrayList<>(originalProducts);
 
-        if (priceFilter == null && caloriesFilter == null && tasteFilter == null && sortingFilter == null && nameFilter == null) {
-            resultProducts = new ArrayList<>(originalProducts); //potenzialmente inutile
-        } else {
-            if (priceFilter != null) {
-                resultProducts = filterByPrice(resultProducts, priceFilter); //aggiorni resultProducts
-            }
-            if (caloriesFilter != null) {
-                resultProducts = filterByCalories(resultProducts, caloriesFilter);  //aggiorni resultProducts
-            }
-            if (tasteFilter != null) {
-                resultProducts = filterByTaste(resultProducts, tasteFilter);  //aggiorni resultProducts
-            }
-            if (sortingFilter != null) {
-                resultProducts = resultFromSorting(resultProducts, sortingFilter);  //aggiorni resultProducts
-            }
-            if (nameFilter != null){
-                resultProducts = filterByName(resultProducts, nameFilter);
-                for (Prodotto p: resultProducts){
-                    System.out.println(p.getNome());
+            if (priceFilter == null && caloriesFilter == null && tasteFilter == null && sortingFilter == null && nameFilter == null) {
+                resultProducts = new ArrayList<>(originalProducts); //potenzialmente inutile
+            } else {
+                if (priceFilter != null) {
+                    resultProducts = filterByPrice(resultProducts, priceFilter); //aggiorni resultProducts
+                }
+                if (caloriesFilter != null) {
+                    resultProducts = filterByCalories(resultProducts, caloriesFilter);  //aggiorni resultProducts
+                }
+                if (tasteFilter != null) {
+                    resultProducts = filterByTaste(resultProducts, tasteFilter);  //aggiorni resultProducts
+                }
+                if (sortingFilter != null) {
+                    resultProducts = resultFromSorting(resultProducts, sortingFilter);  //aggiorni resultProducts
+                }
+                if (nameFilter != null){
+                    resultProducts = filterByName(resultProducts, nameFilter);
+                    for (Prodotto p: resultProducts){
+                        System.out.println(p.getNome());
+                    }
                 }
             }
+
+            resp.setContentType("application/json");
+            PrintWriter o = resp.getWriter();
+
+            JSONArray jsonArray = new JSONArray();
+
+            for (Prodotto p : resultProducts) {
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("id", p.getIdProdotto());
+                jsonObject.put("nome", p.getNome());
+                jsonObject.put("categoria", p.getCategoria());
+                jsonObject.put("calorie", p.getCalorie());
+                jsonObject.put("prezzo", p.getPrezzo());
+                jsonObject.put("gusto", p.getGusto());
+                jsonObject.put("immagine", p.getImmagine());
+                jsonArray.add(jsonObject);
+            }
+
+            session.setAttribute("products", resultProducts);
+
+            o.println(jsonArray);
+            o.flush();
         }
-
-        resp.setContentType("application/json");
-        PrintWriter o = resp.getWriter();
-
-        JSONArray jsonArray = new JSONArray();
-
-        for (Prodotto p : resultProducts) {
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", p.getIdProdotto());
-            jsonObject.put("nome", p.getNome());
-            jsonObject.put("categoria", p.getCategoria());
-            jsonObject.put("calorie", p.getCalorie());
-            jsonObject.put("prezzo", p.getPrezzo());
-            jsonObject.put("gusto", p.getGusto());
-            jsonObject.put("immagine", p.getImmagine());
-            jsonArray.add(jsonObject);
-        }
-
-        session.setAttribute("products", resultProducts);
-
-        o.println(jsonArray);
-        o.flush();
-    }
     }
 
 

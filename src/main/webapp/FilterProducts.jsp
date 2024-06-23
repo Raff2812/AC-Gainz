@@ -40,12 +40,14 @@
             text-decoration: none;
         }
     </style>
+
+    <script src="JS/FilterProductsStart.js"></script>
 </head>
 <body>
 
 <%@include file="Header.jsp"%>
 
-<%-- <script src="JS/Cart.js"></script> --%>
+<%-- <script src="JS/CartPopUp.js"></script> --%>
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -94,18 +96,13 @@
 <div id="gr" class="group">
     <%
         List<Prodotto> products = null;
-        if (request.getAttribute("productsByCriteria") != null) {
-            products = (List<Prodotto>) request.getAttribute("productsByCriteria");
+        if (session.getAttribute("productsByCriteria") != null) {
+            products = (List<Prodotto>) session.getAttribute("productsByCriteria");
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }
         if (products != null) {
-            session.setAttribute("originalProducts", products);
-            session.setAttribute("products", products);
             for (Prodotto p : products) {
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("id", p.getIdProdotto());
-                String jsonString = jsonObject.toJSONString();
     %>
     <div class="px">
         <%= p.getIdProdotto() %>
@@ -113,7 +110,7 @@
         <%= p.getCategoria() %>
         <%= p.getPrezzo() %>
         <%= p.getGusto() %>
-        <button class="cartAdd" data-product='<%= jsonString %>'>Aggiungi al Carrello</button>
+        <button class="cartAdd">Aggiungi al Carrello</button>
     </div>
     <%
             }

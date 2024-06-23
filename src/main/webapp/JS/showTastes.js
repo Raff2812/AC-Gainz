@@ -1,31 +1,41 @@
 function showTastes(){
-    const xhttp = new XMLHttpRequest();
+    fetch("showTastes")
+        .then(response =>{
+            if(!response.ok)
+                throw new Error();
+            return response.text();
+        })
+        .then(responseText =>{
+            updateSelectView(responseText);
+        })
+        .catch(error =>{
+            console.error(error)
+        })
+}
+
+
+function updateSelectView(response) {
     const select = document.querySelector("#tastes");
     const currentSelection = select.value;
 
-    xhttp.onreadystatechange = function (){
-        if(xhttp.readyState === 4 && xhttp.status === 200){
-            const gusti = JSON.parse(xhttp.responseText);
 
-            select.innerHTML = "<option value=''>Seleziona un gusto</option>"; // Default option
+    const gusti = JSON.parse(response);
 
-            gusti.forEach(gusto=>{
-                const option = document.createElement("option");
-                option.value = gusto;
-                option.innerHTML = gusto;
-                select.appendChild(option);
-            });
+    select.innerHTML = "<option value=''>Seleziona un gusto</option>"; // Default option
 
-            // Ripristina il valore selezionato, se esiste
-            if (currentSelection) {
-                select.value = currentSelection;
-            }
-        }
-    };
+    gusti.forEach(gusto=>{
+        const option = document.createElement("option");
+        option.value = gusto;
+        option.innerHTML = gusto;
+        select.appendChild(option);
+    });
 
-    xhttp.open("GET", "showTastes", true);
-    xhttp.send();
+    // Ripristina il valore selezionato, se esiste
+    if (currentSelection) {
+        select.value = currentSelection;
+    }
 }
+
 
 document.addEventListener("DOMContentLoaded", function() {
     console.log("DOM fully loaded and parsed");

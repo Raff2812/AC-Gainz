@@ -3,7 +3,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     input.addEventListener("input", function () {
         const inputValue = this.value;
-        searchBar(inputValue);
+        if (window.location.pathname.includes("categories") || window.location.pathname.includes("FilterProducts"))
+            searchBar(inputValue);
     });
 
     input.addEventListener("keypress", function (e){
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 function searchBar(inputValue) {
     const urlParams = new URLSearchParams();
     urlParams.append("name", inputValue);
+    console.log("searching with ajax by searchBar input");
 
     fetch("searchBar?" + urlParams.toString())
         .then(response => {
@@ -52,9 +54,16 @@ function updateSearchResults(response) {
             button.className = "cartAdd";
 
 
-            const product = JSON.stringify(prodottoFiltrato);
+            //const product = JSON.stringify(prodottoFiltrato);
 
-            button.setAttribute("data-product", product);
+
+
+            button.setAttribute("data-product", prodottoFiltrato.id);
+
+
+            button.onclick = function() {
+                addCart(button.getAttribute("data-product"));
+            };
 
 
             const div = document.createElement("div");
@@ -63,15 +72,8 @@ function updateSearchResults(response) {
             group.appendChild(div);
         });
 
-        // Aggiunta di eventi click per i pulsanti "Aggiungi al carrello"
-        document.querySelectorAll(".cartAdd").forEach(button => {
-                button.addEventListener("click", function () {
-                    const product = JSON.parse(this.getAttribute("data-product"));
-                    addCart(product);
-                });
-            });
+
     } catch (error) {
         console.error("Error parsing JSON response:", error);
-        console.log("Response text:", response);
     }
 }

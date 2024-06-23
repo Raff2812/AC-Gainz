@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
 import model.ProdottoDAO;
 
@@ -22,6 +23,8 @@ public class CategoriesServlet extends HttpServlet {
         String filter = req.getParameter("category");
         ProdottoDAO prodottoDAO = new ProdottoDAO();
 
+        HttpSession session = req.getSession();
+
         List<Prodotto> productsByCriteria = new ArrayList<>();
 
         if(filter.equals("tutto")){
@@ -31,7 +34,10 @@ public class CategoriesServlet extends HttpServlet {
         }
 
 
-        req.setAttribute("productsByCriteria", productsByCriteria);
+        session.setAttribute("productsByCriteria", productsByCriteria);
+
+
+
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("FilterProducts.jsp");
         requestDispatcher.forward(req, resp);
     }

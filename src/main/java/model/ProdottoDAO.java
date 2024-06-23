@@ -39,7 +39,7 @@ public class ProdottoDAO {
 
             PreparedStatement preparedStatement = connection.prepareStatement("select * from prodotto where nome like ?");
 
-            String filter = nameProduct + "%";
+            String filter = "%" + nameProduct + "%";
             preparedStatement.setString(1, filter);
 
             ResultSet rs = preparedStatement.executeQuery();

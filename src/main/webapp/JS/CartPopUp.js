@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Aggiunta di eventi click per i pulsanti "Aggiungi al carrello"
     document.querySelectorAll(".cartAdd").forEach(button => {
         button.addEventListener("click", function () {
-            const product = JSON.parse(this.getAttribute("data-product"));
+            const product = this.getAttribute("data-product");
             addCart(product);
         });
     });
@@ -35,10 +35,10 @@ function rmvClick() {
     removeItem(id);
 }
 
-function addCart(product) {
+function addCart(idProdotto) {
     const params = new URLSearchParams();
     params.append("action", "add");
-    params.append("id", product.id.toString());
+    params.append("id", idProdotto);
 
     fetch("cartServlet?" + params.toString())
         .then(response => {
@@ -69,6 +69,12 @@ function removeItem(id) {
         })
         .then(responseText => {
             updateCartView("remove", responseText);
+            showCart();
+
+            if (window.location.pathname.includes("Carrello")){
+                console.log("Stong ndo cart")
+                showCartCheckOut();
+            }
         })
         .catch(error => {
             console.error(error);
@@ -85,10 +91,14 @@ function showCart() {
                 throw new Error(`Network error: ${response.status} - ${response.statusText}`);
             }
 
+
             return response.text();
         })
         .then(responseText => {
             updateCartView("show", responseText);
+
+            if (window.location.pathname.includes("Carrello"))
+                updateCartJSP(responseText);
         })
         .catch(error => {
             console.error(error);
@@ -101,6 +111,7 @@ function updateCartView(action, response) {
             response = '[]';
         }
         const cartItems = JSON.parse(response);
+
         console.log(cartItems);
         const cartItemDiv = document.getElementById("listCart");
 
@@ -116,58 +127,68 @@ function updateCartView(action, response) {
             const emptyMessage = document.createElement("div");
             emptyMessage.innerText = "Il carrello è vuoto.";
             cartItemDiv.appendChild(emptyMessage);
-        } else {
-            let totalQuantity = 0;
-            let totalPrice = 0;
 
-            // Loop through the cartItems except the last element which is totalPrice
-            for (let i = 0; i < cartItems.length - 1; i++) {
-                const item = cartItems[i];
-                const div = document.createElement("div");
-                div.innerText = `${item.nome} ${item.quantity} ${item.prezzo}`;
-                const rmvButton = document.createElement("button");
-
-                rmvButton.className = "rmvButton";
-                rmvButton.innerText = "Rimuovi Elemento";
-                rmvButton.style.display = "block";
-                rmvButton.style.color = "black";
-                rmvButton.setAttribute("data-product-id", item.id);
-
-                // Associate click event to the remove button
-                rmvButton.addEventListener("click", rmvClick);
-
-                div.appendChild(rmvButton);
-                cartItemDiv.appendChild(div);
-
-                totalQuantity += item.quantity;
-            }
-
-            // The last item is the totalPrice object
-            const totalPriceItem = cartItems[cartItems.length - 1];
-            totalPrice = totalPriceItem.totalPrice;
-
-            // Update cart counter
+            // Reset cart total to zero
             const cartElement = document.getElementById("cart");
-            if (!cartElement) {
-                console.error("Element with ID 'cart' not found");
-                return;
-            }
-            cartElement.innerHTML = `Carrello (${totalQuantity})`;
 
-            const totalPriceDiv = document.createElement("h3");
-            totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
-            cartItemDiv.appendChild(totalPriceDiv);
+            cartElement.innerHTML = "Carrello (0)";
 
-            const goToCheckOut = document.createElement("a");
-            goToCheckOut.className = "checkOut";
-            goToCheckOut.href = "Carrello.jsp";
-            goToCheckOut.innerText = "Vai al CheckOut";
-            cartItemDiv.appendChild(goToCheckOut);
+            return; // Exit early if cart is empty
         }
+
+        let totalQuantity = 0;
+        let totalPrice = 0;
+
+        // Loop through the cartItems except the last element which is totalPrice
+        for (let i = 0; i < cartItems.length - 1; i++) {
+            const item = cartItems[i];
+            const div = document.createElement("div");
+            div.innerText = `${item.nome} ${item.quantity} ${item.prezzo}`;
+            const rmvButton = document.createElement("button");
+
+            rmvButton.className = "rmvButton";
+            rmvButton.innerText = "Rimuovi Elemento";
+            rmvButton.style.display = "block";
+            rmvButton.style.color = "black";
+            rmvButton.setAttribute("data-product-id", item.id);
+
+            // Associate click event to the remove button
+            rmvButton.addEventListener("click", rmvClick);
+
+            div.appendChild(rmvButton);
+            cartItemDiv.appendChild(div);
+
+            totalQuantity += item.quantity;
+        }
+
+        // The last item is the totalPrice object
+        const totalPriceItem = cartItems[cartItems.length - 1];
+        totalPrice = totalPriceItem.totalPrice;
+
+        // Update cart counter
+        const cartElement = document.getElementById("cart");
+        if (!cartElement) {
+            console.error("Element with ID 'cart' not found");
+            return;
+        }
+        cartElement.innerHTML = `Carrello (${totalQuantity})`;
+
+        const totalPriceDiv = document.createElement("h3");
+        totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
+        cartItemDiv.appendChild(totalPriceDiv);
+
+        const goToCheckOut = document.createElement("a");
+        goToCheckOut.className = "checkOut";
+        goToCheckOut.href = "Carrello.jsp";
+        goToCheckOut.innerText = "Vai al CheckOut";
+        cartItemDiv.appendChild(goToCheckOut);
+
+
     } catch (error) {
         console.error("Error parsing JSON response:", error);
         console.log("Response text:", response);
     }
 }
+
 
 

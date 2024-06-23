@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const urlSearchParams = new URLSearchParams(queryString);
 
     if (urlSearchParams.has("name")) {
+        console.log("calling Filter by Name")
         filterByName(urlSearchParams.get("name"));
     }
 });
@@ -89,9 +90,10 @@ function updateView(response) {
         button.innerHTML = "Aggiungi al carrello";
         button.className= "cartAdd";
 
-        const product = JSON.stringify(prodottoFiltrato);
+        button.setAttribute("data-product", prodottoFiltrato.id);
 
-        button.setAttribute("data-product", product);
+
+
 
         const div = document.createElement("div");
         div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
@@ -99,13 +101,12 @@ function updateView(response) {
         group.appendChild(div);
     });
 
-
-        // Aggiunta di eventi click per i pulsanti "Aggiungi al carrello"
-      document.querySelectorAll(".cartAdd").forEach(button => {
-            button.addEventListener("click", function () {
-                const product = JSON.parse(this.getAttribute("data-product"));
-                addCart(product);
-            });
+    // Rimuovi tutti i listener click precedenti e aggiungi nuovi listener
+    document.querySelectorAll(".cartAdd").forEach(button => {
+        button.addEventListener("click", function() {
+            const product = this.getAttribute("data-product");
+            addCart(product);
         });
+    });
 
 }

@@ -22,7 +22,7 @@
 </head>
 <body>
 
-<script src="JS/Cart.js" defer></script>
+<script src="JS/CartPopUp.js" defer></script>
 <script src="JS/SearchBar.js"></script>
 
 <header>
