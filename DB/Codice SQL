@@ -1,17 +1,116 @@
-create database if not exists ProgettoTSW;
-use ProgettoTSW;
+drop database if exists projectusTSW;
+
+create database if not exists projectusTSW;
+
+
+use projectusTSW;
+
+
 
 create table if not exists utente(
   email varchar(100) primary key,
   password varchar(63) not null,
-  nome varchar(40) not null,
-  cognome varchar(40) not null,
+  nome varchar(40),
+  cognome varchar(40),
   codice_fiscale varchar(16),
-  data_di_nascita date,
+	data_di_nascita date,
   indirizzo varchar(255),
   numero_di_cellulare varchar(20),
-  poteri bool default false
+  poteri tinyint(1) default 0
+  );
+
+create table if not exists prodotto(
+	id_prodotto varchar(30) primary key,
+  nome varchar(100),
+  descrizione varchar(3000),
+  prezzo float,
+  quantità int,
+  categoria varchar(100),
+  gusto varchar(50),
+  calorie int,
+  grassi int,
+  proteine int,
+  carboidrati int,
+  peso int,
+  immagine varchar(2083),
+  sconto int,
+  evidenza tinyint(1) default 0
+);
+
+create table if not exists carrello(
+	utente varchar(100) not null,
+  prodotto varchar(30) not null,
+  quantity int,
+  total_price float,
+  
+  primary key(utente, prodotto),
+  foreign key(utente) references utente(email),
+  foreign key(prodotto) references prodotto(id_prodotto)
 );
 
 
+INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES
+('luigiaureimma21@gmail.com', '938992937be7b24c8d25f82e68be130b11ca0e61', 'Luigi', 'Auriemma', 'ARMLGU03E21G812E', '2003-05-21', 'Via Raggi 14', '3925303194', 1),
+('raffaelecoppola603@gmail.com', '05b532c78680ae5ec2fa8abe256495ec58186a22', 'Raffaele', 'Coppola', 'CPPRFL03T28H703E', '2003-12-28', 'Via Giovanni Verga', '3896630640', 1),
+('utentex@gmail.com', 'eb701d6c70f1d528becb9173f0ce7d7b8fa755b9', 'Utente', 'X', 'YHLVDS73M49C122X', '2000-12-15', 'Via Napoli', '3201703145', 0),
+('utentey@gmail.com', 'c57558b2f0198f62db7db52d38025038c8f40bdd', 'Utente', 'Y', 'RSSMRA91M14H501E', '2004-01-01', 'Via Vetice', '329456789', 0);
 
+INSERT INTO prodotto (id_prodotto, nome, descrizione, prezzo, quantità, categoria, gusto, calorie, grassi, proteine, carboidrati, peso, immagine, sconto, evidenza) VALUES
+('B001', 'Barretta Proteica al Cioccolato', 'Barretta proteica al gusto di cioccolato', 1.99, 200, 'barrette', 'Cioccolato', 200, 7, 20, 15, 50, 'Immagini/protein.png', 10, 0),
+('B002', 'Barretta Energetica ai Frutti Rossi', 'Barretta energetica ai frutti rossi', 1.79, 180, 'barrette', 'Frutti Rossi', 180, 5, 15, 20, 50, 'Immagini/protein.png', 0, 0),
+('B003', 'Barretta Vegana alla Nocciola', 'Barretta vegana con nocciole', 2.29, 160, 'barrette', 'Nocciola', 210, 10, 12, 22, 50, 'Immagini/protein.png', 0, 0),
+('B004', 'Barretta al Caramello e Arachidi', 'Barretta proteica con caramello e arachidi', 2.49, 150, 'barrette', 'Caramello e Arachidi', 220, 12, 18, 17, 50, 'Immagini/protein.png', 5, 0),
+('B005', 'Barretta al Miele e Mandorle', 'Barretta energetica con miele e mandorle', 1.89, 170, 'barrette', 'Miele e Mandorle', 190, 8, 10, 25, 50, 'Immagini/protein.png', 0, 0),
+('C001', 'Crema alla Nocciola', 'Deliziosa crema spalmabile alla nocciola', 5.99, 50, 'creme spalmabili', 'Nocciola', 200, 12, 3, 25, 400, 'Immagini/protein.png', 10, 0),
+('C002', 'Crema al Cacao', 'Squisita crema spalmabile al cacao', 4.99, 100, 'creme spalmabili', 'Cacao', 220, 15, 4, 30, 350, 'Immagini/protein.png', 15, 0),
+('C003', 'Crema al Pistacchio', 'Gustosa crema spalmabile al pistacchio', 6.49, 75, 'creme spalmabili', 'Pistacchio', 250, 18, 5, 28, 300, 'Immagini/protein.png', 5, 0),
+('C004', 'Crema di Mandorle', 'Delicata crema spalmabile alle mandorle', 7.99, 30, 'creme spalmabili', 'Mandorle', 210, 14, 6, 27, 450, 'Immagini/protein.png', 20, 0),
+('C005', 'Crema al Caramello', 'Irresistibile crema spalmabile al caramello', 5.49, 80, 'creme spalmabili', 'Caramello', 240, 16, 3, 35, 380, 'Immagini/protein.png', 0, 0),
+('CRT001', 'Creatina Monoidrato', 'Creatina di alta qualità per migliorare la forza e le prestazioni', 19.99, 50, 'creatina', 'Neutro', 0, 0, 0, 0, 300, 'Immagini/protein.png', 10, 0),
+('CRT002', 'Creatina Micronizzata', 'Creatina micronizzata per un migliore assorbimento e digeribilità', 22.99, 40, 'creatina', 'Neutro', 0, 0, 0, 0, 250, 'Immagini/protein.png', 15, 0),
+('CRT003', 'Creatina Etil Estere', 'Creatina avanzata con etil estere per un rapido assorbimento', 25.99, 30, 'creatina', 'Neutro', 0, 0, 0, 0, 200, 'Immagini/protein.png', 20, 0),
+('CRT004', 'Creatina HCL', 'Creatina cloridrato per un migliore assorbimento e meno ritenzione idrica', 24.99, 25, 'creatina', 'Neutro', 0, 0, 0, 0, 180, 'Immagini/protein.png', 0, 0),
+('CRT005', 'Creatina Alkaline', 'Creatina alcalina per una maggiore stabilità e assorbimento', 27.99, 20, 'creatina', 'Neutro', 0, 0, 0, 0, 220, 'Immagini/protein.png', 5, 0),
+('CRT006', 'Creatina dell\'anima buona', 'rerbetb', 10, 58, 'creatina', 'Neutro', 0, 0, 0, 0, 100, 'Immagini/protein.png', 0, 0),
+('F001', 'Farina di Mandorle', 'Farina finemente macinata da mandorle', 15.99, 20, 'farine', 'Neutro', 600, 54, 20, 10, 500, 'Immagini/protein.png', 0, 0),
+('F002', 'Farina di Cocco', 'Farina di cocco biologica', 9.99, 15, 'farine', 'Neutro', 450, 33, 8, 21, 500, 'Immagini/protein.png', 0, 0),
+('F003', 'Farina di Avena', 'Farina di avena integrale', 5.99, 40, 'farine', 'Neutro', 400, 7, 14, 70, 500, 'Immagini/protein.png', 0, 0),
+('F004', 'Farina di Grano Saraceno', 'Farina senza glutine', 6.99, 25, 'farine', 'Neutro', 340, 3, 13, 72, 500, 'Immagini/protein.png', 0, 0),
+('F005', 'Farina di Riso', 'Farina di riso bianca', 4.99, 50, 'farine', 'Neutro', 360, 1, 7, 80, 500, 'Immagini/protein.png', 0, 0),
+('P001', 'Proteina Whey 100%', 'Proteine del siero del latte ad alta concentrazione', 29.99, 50, 'proteine', 'Cioccolato', 120, 2, 25, 3, 500, 'Immagini/protein.png', 10, 1),
+('P002', 'Proteina Vegana', 'Mix di proteine vegetali per un apporto completo', 34.99, 40, 'proteine', 'Vaniglia', 110, 1, 23, 2, 500, 'Immagini/protein.png', 15, 0),
+('P003', 'Caseina Micellare', 'Proteine a rilascio lento per un recupero notturno ottimale', 27.99, 30, 'proteine', 'Fragola', 130, 2, 24, 4, 500, 'Immagini/protein.png', 20, 0),
+('P004', 'Proteina Isolata di Soia', 'Alta concentrazione di proteine vegetali isolate', 24.99, 25, 'proteine', 'Neutro', 115, 1, 27, 1, 500, 'Immagini/protein.png', 0, 0),
+('P005', 'Proteina dell\'Albume', 'Proteine dell\'albume d\'uovo in polvere', 32.99, 35, 'proteine', 'Neutro', 108, 0, 22, 1, 500, 'Immagini/protein.png', 5, 0),
+('PROD001', 'Cioccolato fondente', 'Barretta di cioccolato fondente al 70%', 1.99, 100, 'Snack', 'Fondente', 250, 12, 3, 30, 50, 'Immagini/protein.png', 0, 0),
+('PROD002', 'Acqua Minerale', 'Bottiglia di acqua minerale naturale', 0.5, 500, 'Snack', 'Neutro', 0, 0, 0, 0, 1000, 'Immagini/protein.png', 0, 0),
+('PROD003', 'Yogurt alla Fragola', 'Vasetto di yogurt alla fragola', 2.49, 150, 'Latticini', 'Fragola', 150, 5, 8, 20, 200, 'Immagini/protein.png', 0, 0),
+('PROD004', 'Mela Verde', 'Mela verde fresca', 0.8, 150, 'Frutta', 'Neutro', 60, 1, 1, 15, 150, 'Immagini/protein.png', 0, 0),
+('PROD005', 'Pasta Penne', 'Pacchetto di pasta penne rigate', 1.29, 200, 'Frutta', 'Neutro', 350, 1, 12, 75, 500, 'Immagini/protein.png', 0, 0),
+('PW001', 'Pre-Workout Boost', 'Formula pre-allenamento per aumentare energia e concentrazione', 29.99, 45, 'pre-workout', 'Arancia', 10, 0, 2, 3, 300, 'Immagini/protein.png', 10, 0),
+('PW002', 'Pre-Workout Explosive', 'Potente pre-allenamento per massimizzare le prestazioni', 34.99, 40, 'pre-workout', 'Limonata', 15, 0, 1, 4, 350, 'Immagini/protein.png', 15, 0),
+('PW003', 'Pre-Workout Surge', 'Pre-allenamento con ingredienti avanzati per un’energia esplosiva', 32.99, 35, 'pre-workout', 'Mela Verde', 12, 0, 2, 3, 280, 'Immagini/protein.png', 20, 0),
+('PW004', 'Pre-Workout Nitro', 'Pre-allenamento con alta concentrazione di caffeina e beta-alanina', 28.99, 30, 'pre-workout', 'Cola', 10, 0, 1, 2, 290, 'Immagini/protein.png', 0, 0),
+('PW005', 'Pre-Workout Intense', 'Pre-allenamento per aumentare forza e resistenza', 31.99, 25, 'pre-workout', 'Frutti Rossi', 14, 0, 2, 3, 310, 'Immagini/protein.png', 5, 0),
+('S001', 'Salsa Barbecue', 'Salsa barbecue affumicata', 4.99, 100, 'salse', 'Affumicata', 50, 0, 1, 12, 500, 'Immagini/protein.png', 0, 0),
+('S002', 'Salsa di Pomodoro', 'Salsa di pomodoro biologica', 3.99, 80, 'salse', 'Pomodoro', 40, 1, 2, 9, 500, 'Immagini/protein.png', 0, 0),
+('S003', 'Maionese Vegana', 'Maionese senza uova', 5.99, 60, 'salse', 'Neutro', 90, 10, 0, 2, 500, 'Immagini/protein.png', 0, 0),
+('S004', 'Salsa al Pesto', 'Salsa al pesto genovese', 6.99, 70, 'salse', 'Basilico', 80, 7, 2, 4, 500, 'Immagini/protein.png', 0, 0),
+('S005', 'Salsa di Soia', 'Salsa di soia a basso contenuto di sodio', 2.99, 90, 'salse', 'Soia', 15, 0, 1, 2, 500, 'Immagini/protein.png', 0, 0);
+
+INSERT INTO carrello (utente, prodotto, quantity, total_price) VALUES
+('luigiaureimma21@gmail.com', 'CRT003', 3, 77.97),
+('luigiaureimma21@gmail.com', 'P001', 6, 179.94),
+('luigiaureimma21@gmail.com', 'P003', 3, 83.97),
+('luigiaureimma21@gmail.com', 'S005', 6, 17.94),
+('raffaelecoppola603@gmail.com', 'B001', 4, 7.96),
+('raffaelecoppola603@gmail.com', 'B002', 5, 8.95),
+('raffaelecoppola603@gmail.com', 'B003', 3, 6.87),
+('raffaelecoppola603@gmail.com', 'B004', 2, 4.98),
+('raffaelecoppola603@gmail.com', 'B005', 2, 3.78),
+('raffaelecoppola603@gmail.com', 'C002', 4, 19.96),
+('raffaelecoppola603@gmail.com', 'CRT005', 2, 55.98),
+('raffaelecoppola603@gmail.com', 'CRT006', 4, 40),
+('raffaelecoppola603@gmail.com', 'F004', 5, 34.95),
+('raffaelecoppola603@gmail.com', 'S002', 5, 19.95),
+('raffaelecoppola603@gmail.com', 'S003', 2, 11.98);
