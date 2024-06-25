@@ -15,14 +15,15 @@
             align-items: center;
         }
         .filtersContainer {
-            display: flex;
-            gap: 20px;
             padding: 20px;
-            background-color: transparent;
+            width: 80%;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            row-gap: 20px;
+            background: #f6f6f6;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            justify-content: center;
-            align-items: center;
+            margin: 10px auto 50px;
         }
         .filter {
             display: flex;
@@ -32,8 +33,13 @@
         .filter label {
             margin-bottom: 5px;
         }
-        .filter select {
-            padding: 5px;
+        .filter select, button{
+            appearance: none;
+            min-width: 150px;
+            padding: 12px 15px;
+            border: 1px solid #d6d6d6;
+            border-radius: 10px;
+
         }
 
         .content-group{
@@ -90,20 +96,26 @@
             background-color: orangered;
             color: black;
         }
+
+
+        @media only screen and (max-width: 1030px) {
+            .filtersContainer{
+                justify-content: space-around;
+            }
+        }
     </style>
     <script src="JS/FilterProductsStart.js"></script>
 </head>
 <body>
 <%@include file="Header.jsp"%>
-<%-- <script src="JS/CartPopUp.js"></script> --%>
+
 
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
-        <div class="sort">
-            <label for="sorting">Ordina Per</label>
+        <div class="filter">
             <select id="sorting" name="sort">
-                <option value="">-</option>
+                <option value="">Sort by:</option>
                 <option value="sortDown">Prezzo: da alto a basso</option>
                 <option value="sortUp">Prezzo: da basso ad alto</option>
                 <option value="evidence">In evidenza</option>
@@ -111,9 +123,8 @@
         </div>
 
         <div class="filter">
-            <label for="prices">Prezzo</label>
             <select id="prices" name="price">
-                <option value="">Seleziona un range</option>
+                <option value="">Seleziona un range di prezzo</option>
                 <option value="0-30">0-30</option>
                 <option value="30-60">30-60</option>
                 <option value="60-100">60-100</option>
@@ -121,14 +132,14 @@
         </div>
 
         <div class="filter">
-            <label for="tastes">Gusti</label>
-            <select id="tastes" name="taste"></select>
+            <select id="tastes" name="taste">
+                <option value="">Seleziona un gusto</option>
+            </select>
         </div>
 
         <div class="filter">
-            <label for="calories">Calorie</label>
             <select id="calories" name="calorie">
-                <option value="">Seleziona un range</option>
+                <option value="">Seleziona un range di calorie</option>
                 <option value="0-100">0-100</option>
                 <option value="100-200">100-200</option>
                 <option value="200-300">200-300</option>

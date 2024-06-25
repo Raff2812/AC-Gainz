@@ -30,3 +30,5 @@ function updateButtonsOnResponse(responseText) {
         button.setAttribute("data-product", product["id" + productIndex]); // Imposta l'attributo data-product con l'ID del prodotto
     }
 }
+
+

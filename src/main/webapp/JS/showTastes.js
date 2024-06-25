@@ -38,7 +38,5 @@ function updateSelectView(response) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    console.log("DOM fully loaded and parsed");
-
     document.getElementById('tastes').addEventListener('click', showTastes)
 });
