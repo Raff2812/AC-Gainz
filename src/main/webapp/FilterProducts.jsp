@@ -35,19 +35,68 @@
         .filter select {
             padding: 5px;
         }
-        .buttonFilter {
-            padding: 5px;
-            text-decoration: none;
+
+        .content-group{
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-card{
+            width: 20%;
+            margin: 15px 15px 25px 15px;
+            border-radius: 20px;
+            box-shadow: 0 14px 14px black;
+            transition: .3s;
+            text-align: center;
+        }
+
+        .product-card:hover{
+            transform: translate(0,-8px);
+        }
+
+        .product-info{
+            align-content: center;
+        }
+        .product-info-name{
+            padding: 5px 0;
+            font-size: 18px;
+            color: black;
+            font-weight: bold;
+        }
+        .product-card img{
+            padding-top: 5px;
+            width: 40%;
+            height: 40%;
+        }
+
+        .product-card button{
+            text-align: center;
+            font-size: 20px;
+            color: white;
+            background-color: rgba(0,0,0,0.86);
+            width: 100%;
+            padding: 15px;
+            border: 0;
+            cursor: pointer;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+            transition: .4s;
+        }
+
+        .product-card button:hover{
+            background-color: orangered;
+            color: black;
         }
     </style>
-
     <script src="JS/FilterProductsStart.js"></script>
 </head>
 <body>
-
 <%@include file="Header.jsp"%>
-
 <%-- <script src="JS/CartPopUp.js"></script> --%>
+
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -93,7 +142,7 @@
 
 <script src="JS/genericFilter.js"></script>
 
-<div id="gr" class="group">
+<div id="gr" class="content-group">
     <%
         List<Prodotto> products = null;
         if (session.getAttribute("productsByCriteria") != null) {
@@ -104,12 +153,20 @@
         if (products != null) {
             for (Prodotto p : products) {
     %>
-    <div class="px">
-        <%= p.getIdProdotto() %>
-        <%= p.getNome() %>
-        <%= p.getCategoria() %>
-        <%= p.getPrezzo() %>
-        <%= p.getGusto() %>
+    <div class="product-card">
+        <img src="<%=p.getImmagine()%>">
+        <div class="product-info">
+            <div class="product-info-name">
+                <%= p.getNome() %>
+            </div>
+            <div class="product-info-price">
+                <%= p.getPrezzo() %>
+            </div>
+            <div class="product-info-flavour">
+                <%= p.getGusto() %>
+
+            </div>
+        </div>
         <button class="cartAdd">Aggiungi al Carrello</button>
     </div>
     <%
@@ -122,6 +179,5 @@
 <script src="JS/resetProducts.js"></script>
 
 <%@include file="Footer.jsp"%>
-
 </body>
 </html>

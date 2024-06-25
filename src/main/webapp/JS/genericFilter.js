@@ -80,12 +80,39 @@ function filterByName(name) {
 }
 
 function updateView(response) {
-    const group = document.querySelector(".group");
+    const group = document.querySelector("#gr");
     group.innerHTML = "";
 
     const products = JSON.parse(response);
 
     products.forEach(prodottoFiltrato => {
+        const divProductCard = document.createElement("div");
+        divProductCard.className = "product-card";
+
+        const img = document.createElement("img");
+        img.src = prodottoFiltrato.immagine;
+        img.alt = prodottoFiltrato.nome;
+
+        divProductCard.appendChild(img);
+
+        const divProductInfoName = document.createElement("div");
+        divProductInfoName.className = "product-info-name";
+        divProductInfoName.innerText = prodottoFiltrato.nome;
+        divProductCard.appendChild(divProductInfoName);
+
+        const divProductInfoPrice = document.createElement("div");
+        divProductInfoPrice.className = "product-info-price";
+        divProductInfoPrice.innerText = prodottoFiltrato.prezzo;
+        divProductCard.appendChild(divProductInfoPrice);
+
+        const divProductInfoFlavour = document.createElement("div");
+        divProductInfoFlavour.className = "product-info-flavour";
+        divProductInfoFlavour.innerText = prodottoFiltrato.gusto;
+
+        divProductCard.appendChild(divProductInfoFlavour);
+
+
+
         const button = document.createElement("button");
         button.innerHTML = "Aggiungi al carrello";
         button.className= "cartAdd";
@@ -93,12 +120,9 @@ function updateView(response) {
         button.setAttribute("data-product", prodottoFiltrato.id);
 
 
+        divProductCard.appendChild(button)
 
-
-        const div = document.createElement("div");
-        div.innerHTML = `${prodottoFiltrato.id} ${prodottoFiltrato.nome} ${prodottoFiltrato.prezzo} ${prodottoFiltrato.gusto} ${prodottoFiltrato.calorie}`;
-        div.appendChild(button);
-        group.appendChild(div);
+        group.appendChild(divProductCard);
     });
 
     // Rimuovi tutti i listener click precedenti e aggiungi nuovi listener
