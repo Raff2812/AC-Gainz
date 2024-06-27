@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(value = "/startSession")
@@ -21,6 +22,7 @@ public class sessionHelperServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         List<Prodotto> products = null;
+
         if (session.getAttribute("productsByCriteria") != null) {
             products = (List<Prodotto>) session.getAttribute("productsByCriteria");
         } else {

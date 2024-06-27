@@ -11,6 +11,7 @@ function startSession(){
         })
         .then(responseText =>{
             updateButtonsOnResponse(responseText);
+
         })
         .catch(error =>{
             console.error(error);

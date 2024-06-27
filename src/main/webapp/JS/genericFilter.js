@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function filterByName(name) {
+function filterByName(name, updatePage = false) {
     const urlSearch = new URLSearchParams();
     urlSearch.append("name", name);
 
@@ -72,7 +72,10 @@ function filterByName(name) {
             return response.text();
         })
         .then(responseText => {
-            updateView(responseText);
+            updateView(responseText);  // Aggiorna la vista
+            if (updatePage) {
+                window.location.href = "FilterProducts.jsp"; // Naviga verso la nuova pagina solo se updatePage è true
+            }
         })
         .catch(error => {
             console.error(error);
@@ -89,41 +92,66 @@ function updateView(response) {
         const divProductCard = document.createElement("div");
         divProductCard.className = "product-card";
 
+        const divProductImage = document.createElement("div");
+        divProductImage.className = "product-image";
+
+        if (prodottoFiltrato.sconto > 0) {
+            const spanSconto = document.createElement("span");
+            spanSconto.className = "product-sconto";
+            spanSconto.innerText = `${prodottoFiltrato.sconto}% di Sconto`;
+            divProductImage.appendChild(spanSconto);
+        }
+
         const img = document.createElement("img");
         img.src = prodottoFiltrato.immagine;
         img.alt = prodottoFiltrato.nome;
+        divProductImage.appendChild(img);
 
-        divProductCard.appendChild(img);
+        divProductCard.appendChild(divProductImage);
 
-        const divProductInfoName = document.createElement("div");
-        divProductInfoName.className = "product-info-name";
-        divProductInfoName.innerText = prodottoFiltrato.nome;
-        divProductCard.appendChild(divProductInfoName);
+        const divProductInfo = document.createElement("div");
+        divProductInfo.className = "product-info";
 
-        const divProductInfoPrice = document.createElement("div");
-        divProductInfoPrice.className = "product-info-price";
-        divProductInfoPrice.innerText = prodottoFiltrato.prezzo;
-        divProductCard.appendChild(divProductInfoPrice);
+        const h2ProductName = document.createElement("h2");
+        h2ProductName.className = "product-info-name";
+        h2ProductName.innerText = prodottoFiltrato.nome;
+        divProductInfo.appendChild(h2ProductName);
 
-        const divProductInfoFlavour = document.createElement("div");
-        divProductInfoFlavour.className = "product-info-flavour";
-        divProductInfoFlavour.innerText = prodottoFiltrato.gusto;
+        if (prodottoFiltrato.sconto > 0) {
+            const spanPriceOff = document.createElement("span");
+            spanPriceOff.className = "product-info-price-off";
+            const prezzoScontato = prodottoFiltrato.prezzo - (prodottoFiltrato.prezzo * prodottoFiltrato.sconto / 100);
+            spanPriceOff.innerText = prezzoScontato.toFixed(2);
+            divProductInfo.appendChild(spanPriceOff);
 
-        divProductCard.appendChild(divProductInfoFlavour);
+            const spanPrice = document.createElement("span");
+            spanPrice.className = "product-info-price";
+            spanPrice.innerText = prodottoFiltrato.prezzo.toFixed(2);
+            divProductInfo.appendChild(spanPrice);
+        } else {
+            const spanPriceOff = document.createElement("span");
+            spanPriceOff.className = "product-info-price-off";
+            spanPriceOff.innerText = prodottoFiltrato.prezzo.toFixed(2);
+            divProductInfo.appendChild(spanPriceOff);
+        }
 
+        const spanFlavour = document.createElement("span");
+        spanFlavour.className = "product-info-flavour";
+        spanFlavour.innerText = prodottoFiltrato.gusto;
+        divProductInfo.appendChild(spanFlavour);
 
+        divProductCard.appendChild(divProductInfo);
 
         const button = document.createElement("button");
         button.innerHTML = "Aggiungi al carrello";
-        button.className= "cartAdd";
-
+        button.className = "cartAdd";
         button.setAttribute("data-product", prodottoFiltrato.id);
 
-
-        divProductCard.appendChild(button)
+        divProductCard.appendChild(button);
 
         group.appendChild(divProductCard);
     });
+
 
     // Rimuovi tutti i listener click precedenti e aggiungi nuovi listener
     document.querySelectorAll(".cartAdd").forEach(button => {

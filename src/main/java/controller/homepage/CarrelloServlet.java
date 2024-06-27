@@ -45,7 +45,6 @@ public class CarrelloServlet extends HttpServlet {
 
     private void handleAddAction(HttpServletRequest req, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         String id = req.getParameter("id");
-        System.out.println(id);
         Prodotto prodotto = prodottoDAO.doRetrieveById(id);
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -53,19 +52,28 @@ public class CarrelloServlet extends HttpServlet {
             cartItems = new ArrayList<>();
         }
 
+
+
+        float price = prodotto.getPrezzo();
+
+        if (prodotto.getSconto() > 0){
+          price = prodotto.getPrezzo() - (prodotto.getPrezzo() * ((float) prodotto.getSconto() / 100));
+          price = Math.round(price * 100.0f) / 100.0f;
+        }
         boolean itemExists = false;
         for (Carrello item : cartItems) {
             if (item.getIdProdotto().equals(id)) {
                 item.setQuantita(item.getQuantita() + 1);
-                item.setPrezzo(item.getPrezzo() + prodotto.getPrezzo());
+                item.setPrezzo(item.getPrezzo() + price);
                 itemExists = true;
                 break;
             }
         }
 
-        if (!itemExists) {
-            cartItems.add(new Carrello("user@gmail.com", id, prodotto.getNome(), 1, prodotto.getPrezzo()));
-        }
+        if (!itemExists)
+            cartItems.add(new Carrello("user@gmail.com", id, prodotto.getNome(), 1, price));
+
+
 
         session.setAttribute("cart", cartItems);
         writeCartItemsToResponse(cartItems, prodottoDAO, out);
@@ -131,7 +139,7 @@ public class CarrelloServlet extends HttpServlet {
 
             jsonObject.put("id", item.getIdProdotto());
 
-            jsonObject.put("nome", prodottoDAO.doRetrieveById(item.getIdProdotto()).getNome());
+            jsonObject.put("nome", p.getNome());
 
             jsonObject.put("imgSrc", p.getImmagine());
             jsonObject.put("flavour", p.getGusto());

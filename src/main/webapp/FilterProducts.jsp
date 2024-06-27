@@ -33,7 +33,7 @@
         .filter label {
             margin-bottom: 5px;
         }
-        .filter select, button,#reset-button{
+        .filter select, button, #reset-button {
             appearance: none;
             min-width: 150px;
             padding: 12px 15px;
@@ -41,34 +41,28 @@
             border-radius: 15px;
             transition: 0.3s;
         }
-        #reset-button:hover{
+        #reset-button:hover {
             background-color: orangered;
             color: black;
         }
-
-
-
-
-        .content-group{
+        .content-group {
             width: 100%;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
         }
-        .product-card{
+        .product-card {
             width: 20%;
-            height: 40%;
             margin: 15px 15px 25px 15px;
             border-radius: 20px;
             box-shadow: 0 14px 14px black;
             transition: .3s;
         }
-        .product-card:hover{
-            transform: translate(0,-8px);
+        .product-card:hover {
+            transform: translateY(-8px);
         }
-
-        .product-info-price{
+        .product-info-price {
             float: right;
             color: orangered;
             text-transform: capitalize;
@@ -76,37 +70,39 @@
             text-decoration: line-through;
             margin-right: 5px;
         }
-        .product-info-price-off{
+        .product-info-price-off {
             float: right;
             text-transform: capitalize;
             font-size: 19px;
             margin-right: 5px;
         }
-        .product-info-flavour{
+        .product-info-flavour {
             float: left;
             text-transform: capitalize;
             font-size: 19px;
             margin-left: 5px;
         }
-        .product-info-name{
+        .product-info-name {
             padding: 5px 0;
             font-size: 20px;
             color: black;
             text-align: center;
             font-weight: bold;
         }
-
-        .product-image{
+        .product-image {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px; /* Adjust this height as necessary */
         }
-        .product-image img{
-            padding-bottom: 3px;
-            width: 100%;
-            height: 60%;
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
             border-top-left-radius: 20px;
             border-top-right-radius: 20px;
         }
-        .product-sconto{
+        .product-sconto {
             position: absolute;
             background-color: #ffffff;
             padding: 5px;
@@ -116,7 +112,7 @@
             top: 10px;
             text-transform: capitalize;
         }
-        .product-card button{
+        .product-card button {
             text-align: center;
             font-size: 20px;
             color: white;
@@ -129,14 +125,12 @@
             border-bottom-right-radius: 20px;
             transition: .4s;
         }
-        .product-card button:hover{
+        .product-card button:hover {
             background-color: orangered;
             color: black;
         }
-
-
         @media only screen and (max-width: 1030px) {
-            .filtersContainer{
+            .filtersContainer {
                 justify-content: space-around;
             }
         }
@@ -144,7 +138,7 @@
     <script src="JS/FilterProductsStart.js"></script>
 </head>
 <body>
-<%@include file="Header.jsp"%>
+<%@ include file="Header.jsp" %>
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -196,42 +190,29 @@
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }
+
         if (products != null) {
             for (Prodotto p : products) {
     %>
     <div class="product-card">
         <div class="product-image">
-            <span class="product-sconto"><%=p.getSconto()%>% di Sconto</span>
-            <img src="<%=p.getImmagine()%>">
+            <% if (p.getSconto() > 0) { %>
+            <span class="product-sconto"><%= p.getSconto() %>% di Sconto</span>
+            <% } %>
+            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>">
         </div>
         <div class="product-info">
-            <h2 class="product-info-name">
-                <%= p.getNome() %>
-            </h2>
-            <%if(p.getSconto()==0)
-                {
+            <h2 class="product-info-name"><%= p.getNome() %></h2>
+            <% if (p.getSconto() > 0) {
+                float prezzoscontato = (p.getPrezzo() - ((p.getPrezzo() * p.getSconto()) / 100));
+                prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
             %>
-                    <span class="product-info-price-off">
-                        <%= p.getPrezzo() %>
-                    </span>
-            <%
-                }
-                else
-                {%>
-                    <span class="product-info-price-off">
-                        <%float prezzoscontato=p.getPrezzo()-((p.getPrezzo() * p.getSconto()) / 100);
-                        %>
-                        <%=prezzoscontato%>
-                    </span>
-                    <span class="product-info-price">
-                        <%= p.getPrezzo() %>
-                    </span>
-            <%
-                }%>
-
-            <span class="product-info-flavour">
-                <%= p.getGusto() %>
-            </span>
+            <span class="product-info-price-off"><%= prezzoscontato %></span>
+            <span class="product-info-price"><%= p.getPrezzo() %></span>
+            <% } else { %>
+            <span class="product-info-price-off"><%= p.getPrezzo() %></span>
+            <% } %>
+            <span class="product-info-flavour"><%= p.getGusto() %></span>
         </div>
         <button class="cartAdd">Aggiungi al Carrello</button>
     </div>
@@ -244,6 +225,6 @@
 <script src="JS/showTastes.js"></script>
 <script src="JS/resetProducts.js"></script>
 
-<%@include file="Footer.jsp"%>
+<%@ include file="Footer.jsp" %>
 </body>
 </html>

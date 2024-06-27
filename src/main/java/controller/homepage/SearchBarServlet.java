@@ -1,6 +1,5 @@
 package controller.homepage;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,6 +16,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static controller.Filters.GenericFilterServlet.getJsonObject;
+
 @WebServlet(value = "/searchBar")
 public class SearchBarServlet extends HttpServlet {
     @Override
@@ -24,46 +25,34 @@ public class SearchBarServlet extends HttpServlet {
         String name = req.getParameter("name");
         HttpSession session = req.getSession();
 
+        List<Prodotto> products = new ArrayList<>();
 
-        if (name != null) {
-            if (name.isEmpty()) {
-                List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("originalProducts");
-                addToJson(originalProducts, session, req, resp);
-            } else {
-                ProdottoDAO prodottoDAO = new ProdottoDAO();
-                List<Prodotto> products = new ArrayList<>();
-                products = prodottoDAO.doRetrieveByName(name);
-                addToJson(products, session, req, resp);
-            }
+        if (name != null && !name.isEmpty()) {
+            ProdottoDAO prodottoDAO = new ProdottoDAO();
+            products = prodottoDAO.doRetrieveByName(name);
+        } else {
+            products = (List<Prodotto>) session.getAttribute("originalProducts");
         }
 
+        // Save search results in originalProducts and products for further filtering
+        session.setAttribute("originalProducts", products);
+        session.setAttribute("products", products);
 
+        addToJson(products, session, req, resp);
     }
-
 
     private void addToJson(List<Prodotto> products, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         JSONArray jsonArray = new JSONArray();
 
-        for (Prodotto p: products){
-            System.out.println(p.getIdProdotto());
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("id", p.getIdProdotto());
-            jsonObject.put("nome", p.getNome());
-            jsonObject.put("categoria", p.getCategoria());
-            jsonObject.put("calorie", p.getCalorie());
-            jsonObject.put("prezzo", p.getPrezzo());
-            jsonObject.put("gusto", p.getGusto());
-            jsonObject.put("immagine", p.getImmagine());
+        for (Prodotto p: products) {
+            JSONObject jsonObject = getJsonObject(p);
             jsonArray.add(jsonObject);
         }
-
-        session.setAttribute("products", products);
 
         response.setContentType("application/json");
         PrintWriter o = response.getWriter();
         o.println(jsonArray);
         o.flush();
-
     }
 
     @Override

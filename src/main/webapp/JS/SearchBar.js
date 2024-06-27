@@ -7,13 +7,25 @@ document.addEventListener("DOMContentLoaded", function () {
             searchBar(inputValue);
     });
 
-    input.addEventListener("keypress", function (e){
-        if (e.key === 'Enter'){
+    input.addEventListener("keypress", function (e) {
+        if (e.key === 'Enter') {
             const inputValue = this.value;
+            const form = document.createElement("form");
 
-            window.location.href = "FilterProducts.jsp?name=" + encodeURIComponent(inputValue);
+            form.action = "genericFilter";
+            form.method = "GET";
+            const hiddenField = document.createElement("input");
+            hiddenField.type = "hidden";
+            hiddenField.name = "nameForm";
+            hiddenField.value = inputValue;
+            form.appendChild(hiddenField);
+            document.body.appendChild(form); // Append the form to the body
+            form.submit();
+
+
+
         }
-    })
+    });
 });
 
 function searchBar(inputValue) {
@@ -35,4 +47,5 @@ function searchBar(inputValue) {
             console.error(error);
         });
 }
+
 
