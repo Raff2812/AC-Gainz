@@ -34,6 +34,9 @@
         <%
             }
         %>
+        <div class="logOut">
+            <a href="logOut">LogOut</a>
+        </div>
 
         <p id="areautente-tags">Email:</p><%= utente.getEmail() %>
         <br><br><p id="areautente-tags">Password:</p><%= utente.getPassword() %>
@@ -152,10 +155,6 @@
         <h3>Dettagli Ordini</h3>
         <p></p>
     </div>
-</div>
-
-<div class="logOut">
-    <a href="logOut">LogOut</a>
 </div>
 
 <%

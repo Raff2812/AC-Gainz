@@ -3,9 +3,7 @@
 <head>
     <title>Carrello</title>
     <link rel="stylesheet" href="CSS/Cart.css">
-
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
-
 </head>
 <body>
 <%@include file="Header.jsp"%>

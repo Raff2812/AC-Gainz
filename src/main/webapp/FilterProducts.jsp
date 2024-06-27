@@ -33,14 +33,21 @@
         .filter label {
             margin-bottom: 5px;
         }
-        .filter select, button{
+        .filter select, button,#reset-button{
             appearance: none;
             min-width: 150px;
             padding: 12px 15px;
             border: 1px solid #d6d6d6;
-            border-radius: 10px;
-
+            border-radius: 15px;
+            transition: 0.3s;
         }
+        #reset-button:hover{
+            background-color: orangered;
+            color: black;
+        }
+
+
+
 
         .content-group{
             width: 100%;
@@ -49,35 +56,66 @@
             align-items: center;
             justify-content: center;
         }
-
         .product-card{
             width: 20%;
+            height: 40%;
             margin: 15px 15px 25px 15px;
             border-radius: 20px;
             box-shadow: 0 14px 14px black;
             transition: .3s;
-            text-align: center;
         }
-
         .product-card:hover{
             transform: translate(0,-8px);
         }
 
-        .product-info{
-            align-content: center;
+        .product-info-price{
+            float: right;
+            color: orangered;
+            text-transform: capitalize;
+            font-size: 19px;
+            text-decoration: line-through;
+            margin-right: 5px;
+        }
+        .product-info-price-off{
+            float: right;
+            text-transform: capitalize;
+            font-size: 19px;
+            margin-right: 5px;
+        }
+        .product-info-flavour{
+            float: left;
+            text-transform: capitalize;
+            font-size: 19px;
+            margin-left: 5px;
         }
         .product-info-name{
             padding: 5px 0;
-            font-size: 18px;
+            font-size: 20px;
             color: black;
+            text-align: center;
             font-weight: bold;
         }
-        .product-card img{
-            padding-top: 5px;
-            width: 40%;
-            height: 40%;
-        }
 
+        .product-image{
+            position: relative;
+        }
+        .product-image img{
+            padding-bottom: 3px;
+            width: 100%;
+            height: 60%;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+        }
+        .product-sconto{
+            position: absolute;
+            background-color: #ffffff;
+            padding: 5px;
+            border-radius: 5px;
+            color: orangered;
+            right: 10px;
+            top: 10px;
+            text-transform: capitalize;
+        }
         .product-card button{
             text-align: center;
             font-size: 20px;
@@ -91,7 +129,6 @@
             border-bottom-right-radius: 20px;
             transition: .4s;
         }
-
         .product-card button:hover{
             background-color: orangered;
             color: black;
@@ -108,8 +145,6 @@
 </head>
 <body>
 <%@include file="Header.jsp"%>
-
-
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -165,18 +200,38 @@
             for (Prodotto p : products) {
     %>
     <div class="product-card">
-        <img src="<%=p.getImmagine()%>">
+        <div class="product-image">
+            <span class="product-sconto"><%=p.getSconto()%>% di Sconto</span>
+            <img src="<%=p.getImmagine()%>">
+        </div>
         <div class="product-info">
-            <div class="product-info-name">
+            <h2 class="product-info-name">
                 <%= p.getNome() %>
-            </div>
-            <div class="product-info-price">
-                <%= p.getPrezzo() %>
-            </div>
-            <div class="product-info-flavour">
-                <%= p.getGusto() %>
+            </h2>
+            <%if(p.getSconto()==0)
+                {
+            %>
+                    <span class="product-info-price-off">
+                        <%= p.getPrezzo() %>
+                    </span>
+            <%
+                }
+                else
+                {%>
+                    <span class="product-info-price-off">
+                        <%float prezzoscontato=p.getPrezzo()-((p.getPrezzo() * p.getSconto()) / 100);
+                        %>
+                        <%=prezzoscontato%>
+                    </span>
+                    <span class="product-info-price">
+                        <%= p.getPrezzo() %>
+                    </span>
+            <%
+                }%>
 
-            </div>
+            <span class="product-info-flavour">
+                <%= p.getGusto() %>
+            </span>
         </div>
         <button class="cartAdd">Aggiungi al Carrello</button>
     </div>

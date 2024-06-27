@@ -40,8 +40,14 @@ header .header-container{
     font-weight: bold;
     color: black;
     text-decoration: none;
-;
+    transition: 0.3s;
 }
+
+.header-logo a:hover{
+    color: orangered;
+}
+
+
 /*forma della barra di ricerca*/
 .header-search-bar{
     position: relative;

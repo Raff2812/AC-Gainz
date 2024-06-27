@@ -109,16 +109,15 @@
         }
 
         .register-contenitore p{
-            font-size: 30px;
-            font-weight: bolder;
-            text-align: left;
+            font-size: 25px;
             color: orangered;
+            margin: -8px 0 0 0;
         }
         .register-contenitore a{
             font-size: 20px;
-            text-align: left;
             color: orangered;
-            margin-top: -30px;
+            text-decoration: none;
+            cursor: pointer;
         }
 
     </style>
@@ -166,8 +165,8 @@
         <button type="submit" class="submit-button">Invia</button>
     </form>
 
-    <p>Sei già registrato?</p>
-    <a href="Login.jsp">Login</a>
+    <p>Sei già registrato?<a href="Login.jsp"> Effettua il Login</a></p>
+
 </div>
 
 
