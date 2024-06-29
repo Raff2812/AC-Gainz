@@ -52,35 +52,6 @@ document.getElementById("sorting").addEventListener("change", function() {
     genericFilter();
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const queryString = window.location.search;
-    const urlSearchParams = new URLSearchParams(queryString);
-
-    if (urlSearchParams.has("name")) {
-        console.log("calling Filter by Name")
-        filterByName(urlSearchParams.get("name"));
-    }
-});
-
-function filterByName(name, updatePage = false) {
-    const urlSearch = new URLSearchParams();
-    urlSearch.append("name", name);
-
-    fetch(`genericFilter?${urlSearch.toString()}`)
-        .then(response => {
-            if (!response.ok) throw new Error();
-            return response.text();
-        })
-        .then(responseText => {
-            updateView(responseText);  // Aggiorna la vista
-            if (updatePage) {
-                window.location.href = "FilterProducts.jsp"; // Naviga verso la nuova pagina solo se updatePage è true
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
 
 function updateView(response) {
     const group = document.querySelector("#gr");
@@ -120,7 +91,7 @@ function updateView(response) {
         if (prodottoFiltrato.sconto > 0) {
             const spanPriceOff = document.createElement("span");
             spanPriceOff.className = "product-info-price-off";
-            const prezzoScontato = prodottoFiltrato.prezzo - (prodottoFiltrato.prezzo * prodottoFiltrato.sconto / 100);
+            const prezzoScontato = prodottoFiltrato.prezzo * (1 - (prodottoFiltrato.sconto / 100));
             spanPriceOff.innerText = prezzoScontato.toFixed(2);
             divProductInfo.appendChild(spanPriceOff);
 

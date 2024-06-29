@@ -1,18 +1,32 @@
 window.onload = function() {
-    const isLogged = Logged;
-    if (isLogged) {
+    if (Logged === true){
         document.getElementById("utente").innerHTML = `
-                <form action="AreaUtente.jsp" method="post">
-                    <input type="hidden" name="areaPersonale" value="areaPersonale">
-                    <button type="submit" class="header-custom_button">Area Personale</button>
-                </form>
-            `;
+                    <form action="AreaUtente.jsp" method="post">
+                        <input type="hidden" name="areaPersonale" value="areaPersonale">
+                        <button type="submit" class="header-custom_button">Area Personale</button>
+                    </form>
+                `;
     }
-    console.log(isLogged);
-}
+};
 
 
+    /*
+    isLoggedNow()
+        .then(logged => {
+            if (logged.isLogged === "true") {
+                document.getElementById("utente").innerHTML = `
+                    <form action="AreaUtente.jsp" method="post">
+                        <input type="hidden" name="areaPersonale" value="areaPersonale">
+                        <button type="submit" class="header-custom_button">Area Personale</button>
+                    </form>
+                `;
+            }
 
+            console.log(logged.isLogged);
+        })
+        .catch(err => {
+            console.error(err);
+        });*/
 
 /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
 function myFunction() {
