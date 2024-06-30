@@ -67,7 +67,8 @@ public class GenericFilterServlet extends HttpServlet {
                     resultProducts = filterByCalories(resultProducts, caloriesFilter);
                 }
                 if (tasteFilter != null) {
-                    resultProducts = filterByTaste(resultProducts, tasteFilter);
+                    String valueTaste = tasteFilter.split(" \\(")[0];  //split del gusto dividendo la stringa appena trova uno spazio seguito da una (
+                    resultProducts = filterByTaste(resultProducts, valueTaste);
                 }
                 if (sortingFilter != null) {
                     resultProducts = resultFromSorting(resultProducts, sortingFilter);

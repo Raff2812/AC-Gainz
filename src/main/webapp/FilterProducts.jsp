@@ -135,7 +135,6 @@
             }
         }
     </style>
-    <script src="JS/FilterProductsStart.js"></script>
 </head>
 <body>
 <%@ include file="Header.jsp" %>
@@ -214,7 +213,7 @@
             <% } %>
             <span class="product-info-flavour"><%= p.getGusto() %></span>
         </div>
-        <button class="cartAdd">Aggiungi al Carrello</button>
+        <button class="cartAdd" data-product = '<%=p.getIdProdotto()%>'>Aggiungi al Carrello</button>
     </div>
     <%
             }
