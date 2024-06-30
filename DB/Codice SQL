@@ -59,12 +59,14 @@ CREATE TABLE IF NOT EXISTS ordine (
 
 
 CREATE TABLE IF NOT EXISTS dettaglio_ordine (
-    id_dettaglio_ordine INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     id_ordine INT NOT NULL,
     id_prodotto VARCHAR(30) NOT NULL,
     quantità INT NOT NULL CHECK (quantità > 0),
     prezzo FLOAT NOT NULL CHECK (prezzo >= 0.0),
 
+
+
+  	PRIMARY KEY(id_ordine, id_prodotto),
     FOREIGN KEY (id_ordine) REFERENCES ordine(id_ordine) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (id_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE CASCADE
 );
