@@ -185,8 +185,8 @@
 <div id="gr" class="content-group">
     <%
         List<Prodotto> products = null;
-        if (session.getAttribute("productsByCriteria") != null) {
-            products = (List<Prodotto>) session.getAttribute("productsByCriteria");
+        if (session.getAttribute("originalProducts") != null) {
+            products = (List<Prodotto>) session.getAttribute("originalProducts");
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }

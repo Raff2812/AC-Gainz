@@ -34,7 +34,8 @@ public class CategoriesServlet extends HttpServlet {
         }
 
 
-        session.setAttribute("productsByCriteria", productsByCriteria);
+        /*session.setAttribute("productsByCriteria", productsByCriteria);*/
+
         session.setAttribute("originalProducts", productsByCriteria);
 
 

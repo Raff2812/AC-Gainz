@@ -18,7 +18,7 @@ public class ShowTasteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Prodotto> filteredProducts = (List<Prodotto>) req.getSession().getAttribute("products");
+        List<Prodotto> filteredProducts = (List<Prodotto>) req.getSession().getAttribute("originalProducts");
         List<String> tastes = new ArrayList<>();
 
         for(Prodotto p: filteredProducts){

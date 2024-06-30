@@ -122,7 +122,7 @@ public class GenericFilterServlet extends HttpServlet {
 
         resultProducts = filterByName(nameForm);
 
-        session.setAttribute("productsByCriteria", resultProducts);
+       /* session.setAttribute("productsByCriteria", resultProducts);*/
         session.setAttribute("originalProducts", resultProducts);
 
         request.getRequestDispatcher("FilterProducts.jsp").forward(request, response);
