@@ -238,13 +238,10 @@
     {
       background-color: #f5f5f5;
     }
-
-
   </style>
 </head>
 <body>
 <%@ include file="Header.jsp"%>
-
 
   <%
     Prodotto p=null;
@@ -367,7 +364,7 @@
     <button class="product-description-accordion">Valori Nutrizionali</button>
     <div class="product-description-panel">
       <table>
-        <p>Per 100gr.</p>
+        <p style="font-size: 14px; font-weight: 400">Per 100gr.</p>
         <tr>
           <td>Energia kcal </td>
           <td><%=p.getCalorie()%>kcal</td>

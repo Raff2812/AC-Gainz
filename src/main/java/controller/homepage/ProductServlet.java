@@ -27,6 +27,7 @@ public class ProductServlet extends HttpServlet {
                 if(prodotto!=null)
                 {
                     ProdottoDAO suggeritiDAO=new ProdottoDAO();
+                    //sezione dei suggeriti
                     List<Prodotto> suggeriti=suggeritiDAO.doRetrieveByCriteria("categoria",category);
                     req.setAttribute("suggeriti",suggeriti);
                     req.setAttribute("prodotto",prodotto);
