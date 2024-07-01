@@ -33,9 +33,7 @@ public class CategoriesServlet extends HttpServlet {
             productsByCriteria = prodottoDAO.doRetrieveByCriteria("categoria", filter);
         }
 
-
         session.setAttribute("productsByCriteria", productsByCriteria);
-
 
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("FilterProducts.jsp");
