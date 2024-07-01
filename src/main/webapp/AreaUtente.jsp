@@ -1,7 +1,7 @@
-<%@ page import="model.Utente" %>
 <%@ page import="java.util.Date" %>
 <%@ page import="java.text.SimpleDateFormat" %>
-<%@ page import="model.UtenteDAO" %>
+<%@ page import="model.*" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,6 +9,14 @@
     <link rel="stylesheet" href="CSS/AreaUtenteCSS.css">
     <title>Area utente</title>
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
+    <%
+        boolean isLoggedArea = (session.getAttribute("Utente") != null);
+    %>
+    <script>
+        const isLoggedNow = <%=isLoggedArea%>;
+        if (isLoggedNow === false)
+            window.location.href = "index.jsp";
+    </script>
 </head>
 <body>
 
@@ -26,10 +34,12 @@
     <div id="areautente" class="tabcontent">
         <h3>Dettagli Utente</h3>
         <%
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-            String formattedDate = simpleDateFormat.format(utente.getDataNascita());
-            boolean powers = utente.getPoteri();
-            if (powers) {%>
+            if (utente != null) {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+                String formattedDate = simpleDateFormat.format(utente.getDataNascita());
+                boolean powers = utente.getPoteri();
+                if (powers) {
+        %>
         <button id="areaAdmin">Area Admin</button>
         <%
             }
@@ -46,9 +56,10 @@
         <br><br><p id="areautente-tags">Codice fiscale:</p><%= utente.getCodiceFiscale() %>
         <br><br><p id="areautente-tags">Data di Nascita:</p><%= formattedDate %>
         <br><br><p id="areautente-tags">Telefono:</p><%= utente.getTelefono() %>
+        <%
+            }
+        %>
     </div>
-
-
 
     <div id="areamodifiche" class="tabcontent">
         <h3>Area Modifiche</h3>
@@ -106,7 +117,7 @@
             <form id="change-codice-fiscale-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="codice-fiscale">
                 <label for="new-codice-fiscale">Nuovo Codice Fiscale</label>
-                <input type="text" id="new-codice-fiscale" name="new-codice-fiscale" required pattern="^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$">
+                <input type="text" id="new-codice-fiscale" name="new-codice-fiscale" required pattern="^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$">
                 <input type="submit" class="submit" value="Modifica Codice Fiscale">
             </form>
         </div>
@@ -153,7 +164,19 @@
 
     <div id="areaordini" class="tabcontent">
         <h3>Dettagli Ordini</h3>
-        <p></p>
+        <%
+            if (utente != null) {
+                OrdineDao ordineDao = new OrdineDao();
+                List<Ordine> ordini = ordineDao.doRetrieveByEmail(utente.getEmail());
+                if (!ordini.isEmpty()) {
+                    for (Ordine order : ordini) {
+        %>
+        <p><%= order.getIdOrdine() %> <%= order.getDataOrdine() %> <%= order.getStato() %> <%= order.getTotale() %></p> <br>
+        <%
+                    }
+                }
+            }
+        %>
     </div>
 </div>
 

@@ -6,47 +6,71 @@ create database if not exists projectusTSW;
 use projectusTSW;
 
 
+CREATE TABLE IF NOT EXISTS utente (
+    email VARCHAR(100) PRIMARY KEY,
+    password VARCHAR(63) NOT NULL,
+    nome VARCHAR(40),
+    cognome VARCHAR(40),
+    codice_fiscale VARCHAR(16),
+    data_di_nascita DATE,
+    indirizzo VARCHAR(255),
+    numero_di_cellulare VARCHAR(20),
+    poteri TINYINT(1) DEFAULT 0
+);
 
-create table if not exists utente(
-  email varchar(100) primary key,
-  password varchar(63) not null,
-  nome varchar(40),
-  cognome varchar(40),
-  codice_fiscale varchar(16),
-	data_di_nascita date,
-  indirizzo varchar(255),
-  numero_di_cellulare varchar(20),
-  poteri tinyint(1) default 0
-  );
-
-create table if not exists prodotto(
-  id_prodotto varchar(30) primary key,
-  nome varchar(100),
-  descrizione varchar(3000),
-  prezzo float,
-  quantità int,
-  categoria varchar(100),
-  gusto varchar(50),
-  calorie int,
-  grassi int,
-  proteine int,
-  carboidrati int,
-  peso int,
-  immagine varchar(2083),
-  sconto int,
-  evidenza tinyint(1) default 0
+CREATE TABLE IF NOT EXISTS prodotto (
+    id_prodotto VARCHAR(30) PRIMARY KEY,
+    nome VARCHAR(100),
+    descrizione VARCHAR(3000),
+    prezzo FLOAT CHECK (prezzo >= 0.0),
+    quantità INT CHECK (quantità >= 0),
+    categoria VARCHAR(100),
+    gusto VARCHAR(50),
+    calorie INT CHECK (calorie >= 0),
+    grassi INT CHECK (grassi >= 0),
+    proteine INT CHECK (proteine >= 0),
+    carboidrati INT CHECK (carboidrati >= 0),
+    peso INT CHECK (peso >= 0),
+    immagine VARCHAR(2083),
+    sconto INT CHECK (sconto >= 0 AND sconto <= 100),
+    evidenza TINYINT(1) DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS carrello (
-  utente VARCHAR(100) NOT NULL,
-  prodotto VARCHAR(30) NOT NULL,
-  quantity INT NOT NULL CHECK (quantity > 0),
-  total_price DECIMAL(10, 2) NOT NULL CHECK (total_price >= 0.0),
+    utente VARCHAR(100) NOT NULL,
+    prodotto VARCHAR(30) NOT NULL,
+    quantity INT NOT NULL CHECK (quantity > 0),
+    total_price FLOAT NOT NULL CHECK (total_price >= 0.0),
 
-  PRIMARY KEY (utente, prodotto),
-  FOREIGN KEY (utente) REFERENCES utente(email),
-  FOREIGN KEY (prodotto) REFERENCES prodotto(id_prodotto)
+    PRIMARY KEY (utente, prodotto),
+    FOREIGN KEY (utente) REFERENCES utente(email) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (prodotto) REFERENCES prodotto(id_prodotto) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS ordine (
+    id_ordine INT AUTO_INCREMENT PRIMARY KEY,
+    email_utente VARCHAR(100) NOT NULL,
+    data DATE NOT NULL,
+    stato VARCHAR(255) NOT NULL,
+    totale FLOAT NOT NULL CHECK (totale >= 0.0),
+
+    FOREIGN KEY (email_utente) REFERENCES utente(email) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS dettaglio_ordine (
+    id_ordine INT NOT NULL,
+    id_prodotto VARCHAR(30) NOT NULL,
+    quantità INT NOT NULL CHECK (quantità > 0),
+    prezzo FLOAT NOT NULL CHECK (prezzo >= 0.0),
+
+
+
+  	PRIMARY KEY(id_ordine, id_prodotto),
+    FOREIGN KEY (id_ordine) REFERENCES ordine(id_ordine) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (id_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE CASCADE
+);
+
 
 
 INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES
@@ -114,3 +138,5 @@ INSERT INTO carrello (utente, prodotto, quantity, total_price) VALUES
 ('raffaelecoppola603@gmail.com', 'F004', 5, 34.95),
 ('raffaelecoppola603@gmail.com', 'S002', 5, 19.95),
 ('raffaelecoppola603@gmail.com', 'S003', 2, 11.98);
+
+

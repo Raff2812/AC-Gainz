@@ -34,6 +34,7 @@ public class GenericFilterServlet extends HttpServlet {
 
 
 
+
         String nameFilter = req.getParameter("name"); // SearchBar ajax
         System.out.println(nameFilter + "searched");
 
@@ -66,13 +67,14 @@ public class GenericFilterServlet extends HttpServlet {
                     resultProducts = filterByCalories(resultProducts, caloriesFilter);
                 }
                 if (tasteFilter != null) {
-                    resultProducts = filterByTaste(resultProducts, tasteFilter);
+                    String valueTaste = tasteFilter.split(" \\(")[0];  //split del gusto dividendo la stringa appena trova uno spazio seguito da una (
+                    resultProducts = filterByTaste(resultProducts, valueTaste);
                 }
                 if (sortingFilter != null) {
                     resultProducts = resultFromSorting(resultProducts, sortingFilter);
                 }
                 if (nameFilter != null) {
-                    resultProducts = filterByName(resultProducts, nameFilter);
+                    resultProducts = filterByName(nameFilter);
                 }
             }
 
@@ -101,13 +103,11 @@ public class GenericFilterServlet extends HttpServlet {
         jsonObject.put("calorie", p.getCalorie());
 
 
-        if (p.getSconto() > 0){
-            float price = p.getPrezzo() - (p.getPrezzo() * ((float) p.getSconto() / 100));
+        if (p.getSconto() > 0)
             jsonObject.put("sconto", p.getSconto());
-            jsonObject.put("prezzo", price);
-        }else {
-            jsonObject.put("prezzo", p.getPrezzo());
-        }
+
+        jsonObject.put("prezzo", p.getPrezzo());
+
 
 
         jsonObject.put("gusto", p.getGusto());
@@ -121,15 +121,16 @@ public class GenericFilterServlet extends HttpServlet {
 
         List<Prodotto> resultProducts = new ArrayList<>(originalProducts);
 
-        resultProducts = filterByName(resultProducts, nameForm);
+        resultProducts = filterByName(nameForm);
 
-        session.setAttribute("productsByCriteria", resultProducts);
+       /* session.setAttribute("productsByCriteria", resultProducts);*/
+        session.setAttribute("originalProducts", resultProducts);
 
         request.getRequestDispatcher("FilterProducts.jsp").forward(request, response);
         return;
     }
 
-    private List<Prodotto> filterByName(List<Prodotto> prodottos, String value) {
+    private List<Prodotto> filterByName(String value) {
         List<Prodotto> resultProducts = new ArrayList<>();
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         resultProducts = prodottoDAO.doRetrieveByName(value);
@@ -142,7 +143,13 @@ public class GenericFilterServlet extends HttpServlet {
         int minPrice = Integer.parseInt(priceRange[0]);
         int maxPrice = Integer.parseInt(priceRange[1]);
         for (Prodotto p : products) {
-            if (p.getPrezzo() >= minPrice && p.getPrezzo() <= maxPrice) {
+            float price = p.getPrezzo();
+            if (p.getSconto() > 0){
+                price = p.getPrezzo() - (p.getPrezzo() *  p.getSconto() / 100);
+                /*price = Math.round(price * 100.0f) / 100.0f;*/
+            }
+
+            if (price >= minPrice && price <= maxPrice) {
                 resultProducts.add(p);
             }
         }
@@ -173,38 +180,48 @@ public class GenericFilterServlet extends HttpServlet {
     }
 
     private List<Prodotto> resultFromSorting(List<Prodotto> products, String value) {
-        if (value.equals("sortUp")) {
-            products.sort((Prodotto o1, Prodotto o2) -> {
+        switch (value) {
+            case "sortUp" -> products.sort((o1, o2) -> {
                 float price1 = o1.getPrezzo();
                 float price2 = o2.getPrezzo();
 
-                if (o1.getSconto() > 0) price1 = price1 - (price1 * o1.getSconto() / 100);
-                if (o2.getSconto() > 0) price2 = price2 - (price2 * o2.getSconto() / 100);
+                if (o1.getSconto() > 0)
+                    price1 = Math.round(price1 * (1 - ((float) o1.getSconto() /100)) * 100.0f) / 100.0f;
+
+                if (o2.getSconto() > 0)
+                    price2 = Math.round(price2 * (1 - ((float) o2.getSconto() /100)) * 100.0f) / 100.0f;
+
 
                 return Float.compare(price1, price2);
             });
-        }else if (value.equals("sortDown")) {
-            products.sort((Prodotto o1, Prodotto o2) -> {
+            case "sortDown" -> products.sort((o1, o2) -> {
                 float price1 = o1.getPrezzo();
                 float price2 = o2.getPrezzo();
 
-                if (o1.getSconto() > 0) price1 = price1 - (price1 * o1.getSconto() / 100);
-                if (o2.getSconto() > 0) price2 = price2 - (price2 * o2.getSconto() / 100);
+                if (o1.getSconto() > 0)
+                    price1 = Math.round(price1 * (1 - ((float) o1.getSconto() /100)) * 100.0f) / 100.0f;
+
+                if (o2.getSconto() > 0)
+                    price2 = Math.round(price2 * (1 - ((float) o2.getSconto() /100)) * 100.0f) / 100.0f;
+
 
                 return Float.compare(price2, price1);
             });
-        } else if (value.equals("evidence")) {
-            List<Prodotto> evidenceProducts = new ArrayList<>();
-            for (Prodotto p : products) {
-                if (p.isEvidenza()) {
-                    evidenceProducts.add(p);
+            case "evidence" -> {
+                List<Prodotto> evidenceProducts = new ArrayList<>();
+                for (Prodotto p : products) {
+                    if (p.isEvidenza()) {
+                        evidenceProducts.add(p);
+                    }
                 }
+                System.out.println("Evidence products: " + evidenceProducts);
+                return evidenceProducts;
             }
-            System.out.println(evidenceProducts);
-            return evidenceProducts;
         }
+
         return products;
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

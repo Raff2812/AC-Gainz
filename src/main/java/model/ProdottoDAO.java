@@ -20,7 +20,14 @@ public class ProdottoDAO {
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                return new Prodotto(resultSet.getString(1),resultSet.getString(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getInt(5),resultSet.getString(6),resultSet.getString(7),resultSet.getFloat(8),resultSet.getFloat(9),resultSet.getFloat(10),resultSet.getFloat(11),resultSet.getInt(12),resultSet.getString(13),resultSet.getInt(14));
+                return new Prodotto(resultSet.getString("id_prodotto"),resultSet.getString("nome")
+                        ,resultSet.getString("descrizione"),resultSet.getFloat("prezzo"),
+                        resultSet.getInt("quantità"),resultSet.getString("categoria"),
+                        resultSet.getString("gusto"),resultSet.getInt("calorie"),
+                        resultSet.getInt("grassi"),resultSet.getInt("proteine"),
+                        resultSet.getInt("carboidrati"),resultSet.getInt("peso"),
+                        resultSet.getString("immagine"),resultSet.getInt("sconto"),
+                        resultSet.getBoolean("evidenza"));
             }
             return null;
 
@@ -53,10 +60,10 @@ public class ProdottoDAO {
                 p.setQuantita(rs.getInt("quantità"));
                 p.setCategoria(rs.getString("categoria"));
                 p.setGusto(rs.getString("gusto"));
-                p.setCalorie(rs.getFloat("calorie"));
-                p.setGrassi(rs.getFloat("grassi"));
-                p.setCarboidrati(rs.getFloat("carboidrati"));
-                p.setProteine(rs.getFloat("proteine"));
+                p.setCalorie(rs.getInt("calorie"));
+                p.setGrassi(rs.getInt("grassi"));
+                p.setCarboidrati(rs.getInt("carboidrati"));
+                p.setProteine(rs.getInt("proteine"));
                 p.setPeso(rs.getInt("peso"));
                 p.setImmagine(rs.getString("immagine"));
                 p.setSconto(rs.getInt("sconto"));
@@ -75,7 +82,7 @@ public class ProdottoDAO {
     public void doSave(Prodotto prodotto) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantità,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "INSERT INTO prodotto (id_prodotto,nome,descrizione,prezzo,quantità,categoria,Gusto,Calorie,Grassi,Carboidrati,Proteine,Peso,Immagine,Sconto, evidenza) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setString(1,prodotto.getIdProdotto());
             ps.setString(2, prodotto.getNome());
@@ -84,13 +91,16 @@ public class ProdottoDAO {
             ps.setInt(5, prodotto.getQuantita());
             ps.setString(6, prodotto.getCategoria());
             ps.setString(7, prodotto.getGusto());
-            ps.setFloat(8, prodotto.getCalorie());
-            ps.setFloat(9, prodotto.getGrassi());
-            ps.setFloat(10, prodotto.getCarboidrati());
-            ps.setFloat(11, prodotto.getProteine());
+            ps.setInt(8, prodotto.getCalorie());
+            ps.setInt(9, prodotto.getGrassi());
+            ps.setInt(10, prodotto.getCarboidrati());
+            ps.setInt(11, prodotto.getProteine());
             ps.setInt(12, prodotto.getPeso());
             ps.setString(13, prodotto.getImmagine());
             ps.setInt(14, prodotto.getSconto());
+            ps.setBoolean(15, prodotto.isEvidenza());
+
+
             if (ps.executeUpdate() != 1) {
                 throw new RuntimeException("INSERT error.");
             }
@@ -127,10 +137,10 @@ public class ProdottoDAO {
                 p.setQuantita(rs.getInt(5));
                 p.setCategoria(rs.getString(6));
                 p.setGusto(rs.getString(7));
-                p.setCalorie(rs.getFloat(8));
-                p.setGrassi(rs.getFloat(9));
-                p.setCarboidrati(rs.getFloat(10));
-                p.setProteine(rs.getFloat(11));
+                p.setCalorie(rs.getInt(8));
+                p.setGrassi(rs.getInt(9));
+                p.setCarboidrati(rs.getInt(10));
+                p.setProteine(rs.getInt(11));
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
@@ -173,10 +183,10 @@ public class ProdottoDAO {
                 p.setQuantita(rs.getInt(5));
                 p.setCategoria(rs.getString(6));
                 p.setGusto(rs.getString(7));
-                p.setCalorie(rs.getFloat(8));
-                p.setGrassi(rs.getFloat(9));
-                p.setCarboidrati(rs.getFloat(10));
-                p.setProteine(rs.getFloat(11));
+                p.setCalorie(rs.getInt(8));
+                p.setGrassi(rs.getInt(9));
+                p.setCarboidrati(rs.getInt(10));
+                p.setProteine(rs.getInt(11));
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));
@@ -221,10 +231,10 @@ public class ProdottoDAO {
                 p.setQuantita(rs.getInt(5));
                 p.setCategoria(rs.getString(6));
                 p.setGusto(rs.getString(7));
-                p.setCalorie(rs.getFloat(8));
-                p.setGrassi(rs.getFloat(9));
-                p.setCarboidrati(rs.getFloat(10));
-                p.setProteine(rs.getFloat(11));
+                p.setCalorie(rs.getInt(8));
+                p.setGrassi(rs.getInt(9));
+                p.setCarboidrati(rs.getInt(10));
+                p.setProteine(rs.getInt(11));
                 p.setPeso(rs.getInt(12));
                 p.setImmagine(rs.getString(13));
                 p.setSconto(rs.getInt(14));

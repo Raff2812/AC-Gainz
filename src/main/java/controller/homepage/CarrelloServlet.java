@@ -61,17 +61,19 @@ public class CarrelloServlet extends HttpServlet {
           price = Math.round(price * 100.0f) / 100.0f;
         }
         boolean itemExists = false;
-        for (Carrello item : cartItems) {
-            if (item.getIdProdotto().equals(id)) {
-                item.setQuantita(item.getQuantita() + 1);
-                item.setPrezzo(item.getPrezzo() + price);
-                itemExists = true;
-                break;
+        if (!cartItems.isEmpty()){
+            for (Carrello item : cartItems) {
+                if (item.getIdProdotto().equals(id)) {
+                    item.setQuantita(item.getQuantita() + 1);
+                    item.setPrezzo(item.getPrezzo() + price);
+                    itemExists = true;
+                    break;
+                }
             }
         }
 
         if (!itemExists)
-            cartItems.add(new Carrello("user@gmail.com", id, prodotto.getNome(), 1, price));
+            cartItems.add(new Carrello("guest@gmail.com", id, prodotto.getNome(), 1, price));
 
 
 
@@ -95,7 +97,6 @@ public class CarrelloServlet extends HttpServlet {
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
         if (cartItems != null && !cartItems.isEmpty()) {
-            System.out.println("sturnz");
             writeCartItemsToResponse(cartItems, prodottoDAO, out);
         } else {
             JSONArray jsonArray = new JSONArray();
@@ -110,7 +111,7 @@ public class CarrelloServlet extends HttpServlet {
         if (cartItems != null){
             String quantity = request.getParameter("quantity");
             String id = request.getParameter("id");
-            if (quantity != null && !quantity.isBlank() && id != null){
+            if (quantity != null && !quantity.isBlank() && id != null && Integer.parseInt(quantity) < prodottoDAO.doRetrieveById(id).getQuantita()){
                 int q = Integer.parseInt(quantity);
                 if (q <= 0){
                     handleRemoveAction(request, session, prodottoDAO, out);

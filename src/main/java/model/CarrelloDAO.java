@@ -13,16 +13,13 @@ public class CarrelloDAO {
     public void doSave(Carrello c){
         try (Connection con = ConPool.getConnection()){
             String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
-                    "VALUES (?, ?, ?, ?) " +
-                    "ON DUPLICATE KEY UPDATE " +
-                    "quantity = quantity + ?, total_price = total_price + ?";
+                    "VALUES (?, ?, ?, ?)";
             PreparedStatement preparedStatement = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, c.getEmailUtente());
             preparedStatement.setString(2, c.getIdProdotto());
             preparedStatement.setInt(3, c.getQuantita());
             preparedStatement.setFloat(4, c.getPrezzo());
-            preparedStatement.setInt(5, c.getQuantita());
-            preparedStatement.setFloat(6, c.getPrezzo());
+
 
             preparedStatement.executeUpdate();
         }catch (SQLException e){

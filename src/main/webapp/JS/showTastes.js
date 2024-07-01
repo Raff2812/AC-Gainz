@@ -38,5 +38,6 @@ function updateSelectView(response) {
 
 
 document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById('tastes').addEventListener('click', showTastes)
+    showTastes();
+    document.getElementById('tastes').addEventListener('click', showTastes);
 });

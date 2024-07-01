@@ -1,5 +1,46 @@
 document.addEventListener("DOMContentLoaded", function () {
     showCart();
+    document.getElementById("buyCart").addEventListener("click", function () {
+
+        if (Logged === false) {
+            const previousErrors = document.querySelector(".error-message-container");
+            if (previousErrors)
+                previousErrors.remove();
+
+            const errorMessageContainer = document.createElement("div");
+            errorMessageContainer.className = "error-message-container";
+
+            const errorMessage = document.createElement("p");
+            errorMessage.className = "error-message";
+            errorMessage.innerText = "Per poter confermare l'ordine bisogna essere loggati al sito!";
+            errorMessage.style.color = "red";
+
+            const login = document.createElement("a");
+            login.href = "Login.jsp";
+            login.className = "login-link";
+            login.innerText = "Login";
+
+            const register = document.createElement("a");
+            register.href = "Registrazione.jsp";
+            register.className = "register-link";
+            register.innerText = "Register";
+
+            errorMessageContainer.appendChild(errorMessage);
+            errorMessageContainer.appendChild(login);
+            errorMessageContainer.appendChild(register);
+
+            const summary = document.querySelector(".summary");
+            summary.appendChild(errorMessageContainer);
+
+        } else {
+            const form = document.createElement("form");
+            form.action = "orderServlet";
+            form.method = "POST";
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    })
 });
 
 function showCartCheckOut() {
@@ -142,3 +183,6 @@ function updateQuantity(quantity, id) {
             console.error(error);
         })
 }
+
+
+

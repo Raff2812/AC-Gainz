@@ -12,13 +12,13 @@ public class DettaglioOrdineDAO {
     {
         try(Connection con= ConPool.getConnection())
         {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_dettaglio_ordine,id_ordine,id_prodotto,quantita,prezzo FROM dettaglio_ordine WHERE id_dettaglio_ordine=?");
+            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_ordine,id_prodotto,quantità,prezzo FROM dettaglio_ordine WHERE id_ordine=?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                DettaglioOrdine o=new DettaglioOrdine(resultSet.getInt(1),resultSet.getInt(2),resultSet.getInt(3),resultSet.getInt(4),resultSet.getFloat(5));
-                return o;
+                return new DettaglioOrdine(resultSet.getInt("id_ordine"),resultSet.getString("id_prodotto"),
+                        resultSet.getInt("quantità"),resultSet.getFloat("prezzo"));
             }
             return null;
 
@@ -32,13 +32,12 @@ public class DettaglioOrdineDAO {
     public void doSave(DettaglioOrdine dettaglioOrdine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO dettaglio_ordine (id_dettaglio_ordine,id_ordine,id_prodotto,quantita,prezzo) VALUES(?,?,?,?,?)",
+                    "INSERT INTO dettaglio_ordine (id_ordine,id_prodotto,quantità,prezzo) VALUES(?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, dettaglioOrdine.getIdDettaglioOrdine());
-            ps.setInt(2, dettaglioOrdine.getIdOrdine());
-            ps.setInt(3, dettaglioOrdine.getIdProdotto());
-            ps.setInt(4, dettaglioOrdine.getQuantita());
-            ps.setFloat(5, dettaglioOrdine.getPrezzo());
+            ps.setInt(1, dettaglioOrdine.getIdOrdine());
+            ps.setString(2, dettaglioOrdine.getIdProdotto());
+            ps.setInt(3, dettaglioOrdine.getQuantita());
+            ps.setFloat(4, dettaglioOrdine.getPrezzo());
             if (ps.executeUpdate() != 1) {
                 throw new RuntimeException("INSERT error.");
             }
@@ -66,11 +65,10 @@ public class DettaglioOrdineDAO {
             while(rs.next()) {
 
                 o = new DettaglioOrdine();
-                o.setIdDettaglioOrdine(rs.getInt(1));
-                o.setIdOrdine(rs.getInt(2));
-                o.setIdProdotto(rs.getInt(3));
-                o.setQuantita(rs.getInt(4));
-                o.setPrezzo(rs.getFloat(5));
+                o.setIdOrdine(rs.getInt("id_ordine"));
+                o.setIdProdotto(rs.getString("id_prodotto"));
+                o.setQuantita(rs.getInt("quantità"));
+                o.setPrezzo(rs.getFloat("prezzo"));
 
                 dettagliordini.add(o);
             }
@@ -90,12 +88,11 @@ public class DettaglioOrdineDAO {
 
         try (Connection con = ConPool.getConnection()) {
             Statement st = con.createStatement();
-            String query = "update dettaglio_ordine set id_dettaglio_ordine='" + o.getIdDettaglioOrdine() +
-                    "', id_ordine='" + o.getIdOrdine() +
+            String query = "update dettaglio_ordine set id_ordine='" + o.getIdOrdine() +
                     "', id_prodotto='" + o.getIdProdotto() +
-                    "', quantita='"+ o.getQuantita() +
+                    "', quantità='"+ o.getQuantita() +
                     "', prezzo="+ o.getPrezzo()
-                    + " where id_dettaglio_ordine=" + o.getIdDettaglioOrdine() + ";";
+                    + " where id_ordine=" + o.getIdOrdine() + ";";
             st.executeUpdate(query);
         }
         catch (SQLException e) {

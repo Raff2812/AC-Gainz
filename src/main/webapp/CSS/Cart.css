@@ -70,11 +70,12 @@
 .summary h2 {
     margin-top: 0;
 }
-.summary p {
+.summary p, a{
     margin: 10px 0;
     display: flex;
     justify-content: space-between;
 }
+
 .summary .buy {
     text-align: center;
     margin-top: 20px;

@@ -18,19 +18,42 @@ public class ShowTasteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Prodotto> filteredProducts = (List<Prodotto>) req.getSession().getAttribute("products");
+        List<Prodotto> originalProducts = (List<Prodotto>) req.getSession().getAttribute("originalProducts");
         List<String> tastes = new ArrayList<>();
 
-        for(Prodotto p: filteredProducts){
-            if(!tastes.contains(p.getGusto()))
+        // Raccogliere tutti i gusti unici
+        for (Prodotto p : originalProducts) {
+            if (!tastes.contains(p.getGusto())) {
                 tastes.add(p.getGusto());
+            }
         }
 
+        // Ottenere la lista aggiornata dei prodotti filtrati dalla sessione
+        List<Prodotto> filteredProducts = (List<Prodotto>) req.getSession().getAttribute("products");
+        if (filteredProducts == null) {
+            filteredProducts = new ArrayList<>(originalProducts);
+        }
+
+        // Contare le occorrenze di ogni gusto nei prodotti filtrati
+        List<String> indexTastes = new ArrayList<>();
+        for (String taste : tastes) {
+            int counter = 0;
+            for (Prodotto p : filteredProducts) {
+                if (p.getGusto().equals(taste)) {
+                    counter++;
+                }
+            }
+            String tasteWithCount = taste + " " + "(" + counter + ")";
+            indexTastes.add(tasteWithCount);
+        }
+
+        // Creare il JSONArray per la risposta
         JSONArray jsonArray = new JSONArray();
-        for (String taste : tastes){
+        for (String taste : indexTastes) {
             jsonArray.add(taste);
         }
 
+        // Impostare il tipo di contenuto e inviare la risposta
         resp.setContentType("application/json");
         PrintWriter out = resp.getWriter();
         out.println(jsonArray);

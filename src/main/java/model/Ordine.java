@@ -3,13 +3,14 @@ package model;
 import java.util.Date;
 
 public class Ordine {
+    private static int last = 0;
     private String emailUtente;
     private int idOrdine;
     private String stato;
     private float totale;
-    private java.sql.Date dataOrdine;
+    private Date dataOrdine;
 
-    public Ordine(int idOrdine, java.sql.Date dataOrdine, String stato, float totale,String emailUtente) {
+    public Ordine(int idOrdine, String emailUtente, Date dataOrdine, String stato, float totale) {
         this.emailUtente = emailUtente;
         this.idOrdine = idOrdine;
         this.stato = stato;
@@ -17,11 +18,20 @@ public class Ordine {
         this.dataOrdine = dataOrdine;
     }
 
-    public Ordine(java.sql.Date dataOrdine, String stato, float totale,String emailUtente) {
+    public Ordine(Date dataOrdine, String stato, float totale,String emailUtente) {
+        this.idOrdine = last++;
         this.emailUtente = emailUtente;
         this.stato = stato;
         this.totale = totale;
         this.dataOrdine = dataOrdine;
+    }
+
+
+    public Ordine(String emailUtente, float totale){
+        this.emailUtente = emailUtente;
+        this.totale = totale;
+        this.stato = "In esecuzione";
+        this.dataOrdine = new Date();
     }
 
     public Ordine()
@@ -59,11 +69,11 @@ public class Ordine {
         this.totale = totale;
     }
 
-    public java.sql.Date getDataOrdine() {
+    public Date getDataOrdine() {
         return dataOrdine;
     }
 
-    public void setDataOrdine(java.sql.Date dataOrdine) {
+    public void setDataOrdine(Date dataOrdine) {
         this.dataOrdine = dataOrdine;
     }
 }

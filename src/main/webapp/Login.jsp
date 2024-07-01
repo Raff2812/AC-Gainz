@@ -7,6 +7,12 @@
     <title>Login Form</title>
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
 
+
+    <%
+        if (session.getAttribute("Utente")!=null)
+            response.sendRedirect("index.jsp");
+    %>
+
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap');
         * {
@@ -131,6 +137,8 @@
         }
     </style>
 
+
+
 </head>
 <body>
 
@@ -139,7 +147,7 @@
 %>
 
 <script defer src="JS/togglePassword.js"></script>
-
+<script defer src="JS/validateForm.js"></script>
 <div class="login-contenitore">
     <form action="login" method="post" autocomplete="on">
         <h1>Accedi</h1>
