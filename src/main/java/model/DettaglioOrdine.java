@@ -1,21 +1,12 @@
 package model;
 
 public class DettaglioOrdine {
-    private int idDettaglioOrdine;
     private int idOrdine;
-    private int idProdotto;
+    private String idProdotto;
     private int quantita;
     private float prezzo;
 
-    public DettaglioOrdine(int idDettaglioOrdine, int idOrdine, int idProdotto, int quantita, float prezzo) {
-        this.idDettaglioOrdine = idDettaglioOrdine;
-        this.idOrdine = idOrdine;
-        this.idProdotto = idProdotto;
-        this.quantita = quantita;
-        this.prezzo = prezzo;
-    }
-
-    public DettaglioOrdine(int idOrdine, int idProdotto, int quantita, float prezzo) {
+    public DettaglioOrdine(int idOrdine, String idProdotto, int quantita, float prezzo) {
         this.idOrdine = idOrdine;
         this.idProdotto = idProdotto;
         this.quantita = quantita;
@@ -27,13 +18,6 @@ public class DettaglioOrdine {
 
     }
 
-    public int getIdDettaglioOrdine() {
-        return idDettaglioOrdine;
-    }
-
-    public void setIdDettaglioOrdine(int idDettaglioOrdine) {
-        this.idDettaglioOrdine = idDettaglioOrdine;
-    }
 
     public int getIdOrdine() {
         return idOrdine;
@@ -43,11 +27,11 @@ public class DettaglioOrdine {
         this.idOrdine = idOrdine;
     }
 
-    public int getIdProdotto() {
+    public String getIdProdotto() {
         return idProdotto;
     }
 
-    public void setIdProdotto(int idProdotto) {
+    public void setIdProdotto(String idProdotto) {
         this.idProdotto = idProdotto;
     }
 

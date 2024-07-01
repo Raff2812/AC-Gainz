@@ -33,7 +33,12 @@ document.addEventListener("DOMContentLoaded", function () {
             summary.appendChild(errorMessageContainer);
 
         } else {
+            const form = document.createElement("form");
+            form.action = "orderServlet";
+            form.method = "POST";
 
+            document.body.appendChild(form);
+            form.submit();
         }
     })
 });

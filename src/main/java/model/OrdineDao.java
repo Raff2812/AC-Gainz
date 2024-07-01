@@ -1,11 +1,8 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 public class OrdineDao {
     public Ordine doRetrieveById(int id)
@@ -17,8 +14,7 @@ public class OrdineDao {
             ResultSet resultSet=preparedStatement.executeQuery();
             if(resultSet.next())
             {
-                Ordine o=new Ordine(resultSet.getInt(1),resultSet.getDate(2),resultSet.getString(3),resultSet.getFloat(4),resultSet.getString(5));
-                return o;
+                return new Ordine(resultSet.getInt("id_ordine"), resultSet.getString("email_utente"), resultSet.getDate("data"), resultSet.getString("stato"), resultSet.getFloat("totale"));
             }
             return null;
 
@@ -29,13 +25,57 @@ public class OrdineDao {
         }
     }
 
+
+    public List<Ordine> doRetrieveByEmail(String email){
+        List<Ordine> ordini = new ArrayList<>();
+        try (Connection connection = ConPool.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from ordine where email_utente = ?");
+            preparedStatement.setString(1, email);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()){
+                Ordine ordine = new Ordine(resultSet.getInt("id_ordine"), resultSet.getString("email_utente"),
+                                            resultSet.getDate("data"), resultSet.getString("stato"),
+                                            resultSet.getFloat("totale"));
+
+                ordini.add(ordine);
+            }
+
+
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+
+        return ordini;
+    }
+    public int getLastInsertedId(){
+        int id = 0;
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT LAST_INSERT_ID()");
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()){
+                id = resultSet.getInt(1);
+            }
+        }catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return id;
+    }
+
     public void doSave(Ordine ordine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO ordine (id_ordine,data,stato,totale,email_utente) VALUES(?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, ordine.getIdOrdine());
-            ps.setDate(2, ordine.getDataOrdine());
+
+            Date utilDate = ordine.getDataOrdine();
+            java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+
+            ps.setDate(2, sqlDate);
+
             ps.setString(3, ordine.getStato());
             ps.setFloat(4, ordine.getTotale());
             ps.setString(5, ordine.getEmailUtente());
@@ -67,7 +107,10 @@ public class OrdineDao {
 
                 o = new Ordine();
                 o.setIdOrdine(rs.getInt(1));
+
+
                 o.setDataOrdine(rs.getDate(2));
+
                 o.setStato(rs.getString(3));
                 o.setTotale(rs.getFloat(4));
                 o.setEmailUtente(rs.getString(5));
