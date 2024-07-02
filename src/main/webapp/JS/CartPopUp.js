@@ -1,12 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Aggiunta di eventi click per i pulsanti "Aggiungi al carrello"
-    document.querySelectorAll(".cartAdd").forEach(button => {
-        button.addEventListener("click", function () {
-            const product = this.getAttribute("data-product");
-            addCart(product);
-        });
-    });
-
     // Aggiunta dell'evento click per il carrello
     document.getElementById("cart").addEventListener("click", function () {
         toggleCartVisibility();

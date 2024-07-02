@@ -116,20 +116,21 @@ function updateView(response) {
         const button = document.createElement("button");
         button.innerHTML = "Aggiungi al carrello";
         button.className = "cartAdd";
-        button.setAttribute("data-product", prodottoFiltrato.id);
 
+        button.onclick = function (){
+            addCart(prodottoFiltrato.id);
+        }
         divProductCard.appendChild(button);
 
         group.appendChild(divProductCard);
     });
+}
 
-
-    // Rimuovi tutti i listener click precedenti e aggiungi nuovi listener
-    document.querySelectorAll(".cartAdd").forEach(button => {
-        button.addEventListener("click", function() {
-            const product = this.getAttribute("data-product");
-            addCart(product);
-        });
+function resetProducts() {
+    console.log("Resetting products...");
+    const selects = document.querySelectorAll('select');
+    selects.forEach(select => {
+        select.value = '';
     });
-
+    genericFilter();
 }

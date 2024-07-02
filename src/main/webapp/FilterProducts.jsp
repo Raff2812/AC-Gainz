@@ -62,7 +62,7 @@
     </style>
 </head>
 <body>
-<%@ include file="Header.jsp" %>
+<%@ include file="WEB-INF/Header.jsp" %>
 
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
@@ -100,17 +100,18 @@
             </select>
         </div>
 
-        <button id="reset-button">Reset</button>
+        <button id="reset-button" onclick="resetProducts()">Reset</button>
     </div>
 </div>
 
-<script src="JS/genericFilter.js"></script>
+<script defer src="JS/genericFilter.js"></script>
+<script defer src="JS/showTastes.js"></script>
 
 <div id="gr" class="content-group">
     <%
         List<Prodotto> products = null;
-        if (session.getAttribute("productsByCriteria") != null) {
-            products = (List<Prodotto>) session.getAttribute("productsByCriteria");
+        if (request.getAttribute("originalProducts") != null) {
+            products = (List<Prodotto>) request.getAttribute("originalProducts");
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }
@@ -144,7 +145,7 @@
             <% } %>
             <span class="product-info-flavour"><%= p.getGusto() %></span>
         </div>
-            <button class="cartAdd">Aggiungi al Carrello</button>
+            <button class="cartAdd"  onclick="addCart('<%=p.getIdProdotto()%>')">Aggiungi al Carrello</button>
     </div>
     <%
             }
@@ -152,9 +153,9 @@
     %>
 </div>
 
-<script src="JS/showTastes.js"></script>
-<script src="JS/resetProducts.js"></script>
 
-<%@ include file="Footer.jsp" %>
+
+
+<%@ include file="WEB-INF/Footer.jsp" %>
 </body>
 </html>

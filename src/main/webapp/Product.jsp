@@ -67,7 +67,7 @@
       padding: 6px;
     }
 
-    #cartAdd{
+    .cartAdd{
       margin-top: 50px;
       padding: 10px;
       color: white;
@@ -78,7 +78,7 @@
       border: none;
       border-radius: 15px;
     }
-    #cartAdd:hover{
+    .cartAdd:hover{
       color: black;
       transform: translate(0,-1px);
       cursor: pointer;
@@ -241,12 +241,12 @@
   </style>
 </head>
 <body>
-<%@ include file="Header.jsp"%>
+<%@ include file="WEB-INF/Header.jsp"%>
 
   <%
     Prodotto p=null;
     if(request.getAttribute("prodotto")!=null){
-      p= (Prodotto) request.getAttribute("prodotto");
+      p = (Prodotto) request.getAttribute("prodotto");
     }
   %>
   <div class="container-flex">
@@ -263,8 +263,9 @@
         %>
         <div class="product-info-risparmio">Risparmia
           <%
-            float costorisparmio=0;
+            float costorisparmio = 0;
             costorisparmio=(p.getPrezzo()*p.getSconto())/100;
+            costorisparmio = Math.round(costorisparmio * 100.0f) / 100.0f;
           %>
             <%=costorisparmio%>€
         </div>
@@ -301,7 +302,7 @@
             <option value="9">9</option>
             <option value="10">10</option>
           </select>
-          <button id="cartAdd">Aggiungi al Carrello</button>
+          <button class="cartAdd"  onclick="addCart('<%=p.getIdProdotto()%>')">Aggiungi al Carrello</button>
         </div>
       </div>
       <div class="info-right-name">
@@ -317,7 +318,7 @@
             if (suggeriti != null) {
               for (int i=0;i<3;i++) {
                 Random random=new Random();
-                Prodotto s=suggeriti.get(random.nextInt(0,suggeriti.size()-1));
+                Prodotto s = suggeriti.get(random.nextInt(0,suggeriti.size()-1));
           %>
           <div class="suggests-product-card">
             <div class="suggests-product-image">
@@ -326,7 +327,7 @@
               <% } %>
 
               <img src="<%= s.getImmagine() %>" alt="<%= s.getNome() %>">
-              <button class="suggests-cartAdd">Aggiungi al Carrello</button>
+              <button class="suggests-cartAdd" onclick="addCart('<%=s.getIdProdotto()%>')">Aggiungi al Carrello</button>
             </div>
             <div class="suggests-product-info">
                 <form action="Product" method="post">
@@ -401,6 +402,6 @@
     });
   }
 </script>
-<%@ include file="Footer.jsp" %>
+<%@ include file="WEB-INF/Footer.jsp" %>
 </body>
 </html>

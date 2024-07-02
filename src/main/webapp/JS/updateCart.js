@@ -138,7 +138,7 @@ function updateCartJSP(response) {
             rmvButton.innerText = "Rimuovi Elemento";
             rmvButton.style.display = "block";
             rmvButton.style.color = "black";
-            rmvButton.setAttribute("data-product-id", cartItem.id);
+
             rmvButton.onclick = function () {
                 removeItem(cartItem.id);
             };
@@ -153,6 +153,8 @@ function updateCartJSP(response) {
             checkOutItemContainer.appendChild(productDiv);
         });
 
+
+        //questo totale farlo con un ciclo nella jsp (giusto per far vedere che metto codice java in html)
         const total = cartItems[cartItems.length - 1];
 
         subtotalElement.innerText = `${total.totalPrice}`;

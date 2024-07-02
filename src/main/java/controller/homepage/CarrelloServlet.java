@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(value = "/cartServlet")
+@SuppressWarnings("unchecked")
 public class CarrelloServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

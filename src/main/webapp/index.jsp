@@ -57,7 +57,7 @@
     </style>
 </head>
 <body>
-<%@ include file="Header.jsp"%>
+<%@ include file="WEB-INF/Header.jsp"%>
 <div class="page-container">
     <div class="img-principale-container">
         <img class="discount-img" src="./Immagini/discount-immagine-homepage.png" alt="immagine sconto">
@@ -95,7 +95,7 @@
                     <span class="product-info-price"><%= p.getPrezzo() %></span>
                     <span class="product-info-flavour"><%= p.getGusto() %></span>
                 </div>
-                <button class="cartAdd">Aggiungi al Carrello</button>
+                <button class="cartAdd"  onclick="addCart('<%=p.getIdProdotto()%>')">Aggiungi al Carrello</button>
             </div>
             <%
                         }
@@ -140,7 +140,7 @@
                 <span class="product-info-price"><%= p.getPrezzo() %></span>
                 <span class="product-info-flavour"><%= p.getGusto() %></span>
             </div>
-            <button class="cartAdd">Aggiungi al Carrello</button>
+            <button class="cartAdd"  onclick="addCart('<%=p.getIdProdotto()%>')">Aggiungi al Carrello</button>
         </div>
         <%
                     }
@@ -149,6 +149,6 @@
         %>    </div>
 </div>
 
-<%@ include file="Footer.jsp"%>
+<%@ include file="WEB-INF/Footer.jsp"%>
 </body>
 </html>
