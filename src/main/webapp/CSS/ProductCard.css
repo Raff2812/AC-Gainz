@@ -1,0 +1,89 @@
+/*css di ogni product card*/
+
+.product-card {
+    width: 20%;
+    margin: 15px 15px 25px 15px;
+    border-radius: 20px;
+    box-shadow: 0 5px 5px rgb(128, 128, 128);
+    transition: .3s;
+}
+.product-card:hover {
+    transform: translateY(-8px);
+}
+.product-info-price {
+    float: right;
+    color: orangered;
+    text-transform: capitalize;
+    font-size: 19px;
+    text-decoration: line-through;
+    margin-right: 5px;
+}
+.product-info-price-off {
+    float: right;
+    text-transform: capitalize;
+    font-size: 19px;
+    margin-right: 5px;
+}
+.product-info-flavour {
+    float: left;
+    text-transform: capitalize;
+    font-size: 19px;
+    margin-left: 5px;
+}
+.product-info-name {
+    padding: 5px 0;
+    font-size: 22px;
+    color: black;
+    text-align: center;
+    font-weight: 450;
+}
+.product-info-name-redirect{
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    outline: none;
+}
+.product-image {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    padding: 6px;
+}
+.product-image img {
+    max-width: 100%;
+    max-height: 100%;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+.product-sconto {
+    position: absolute;
+    background-color: #ffffff;
+    padding: 5px;
+    border-radius: 5px;
+    color: orangered;
+    right: 10px;
+    top: 10px;
+    text-transform: capitalize;
+}
+.cartAdd {
+    text-align: center;
+    font-size: 20px;
+    color: white;
+    background-color: rgba(0,0,0,0.86);
+    width: 100%;
+    padding: 15px;
+    border: 0;
+    cursor: pointer;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    transition: .4s;
+}
+.cartAdd:hover {
+    background-color: orangered;
+    color: black;
+}

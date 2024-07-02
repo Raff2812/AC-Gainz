@@ -130,7 +130,7 @@
                 <form action="Product" method="post">
                     <input type="hidden" name="primarykey" value="<%=p.getIdProdotto()%>">
                     <input type="hidden" name="category" value="<%=p.getCategoria()%>">
-                    <button class="product-info-name-redirect"><%= p.getNome() %></button>
+                <button class="product-info-name-redirect"><%= p.getNome() %></button>
                 </form>
             </h2>
             <% if (p.getSconto() > 0) {
@@ -144,7 +144,7 @@
             <% } %>
             <span class="product-info-flavour"><%= p.getGusto() %></span>
         </div>
-        <button class="cartAdd" data-product = '<%=p.getIdProdotto()%>'>Aggiungi al Carrello</button>
+            <button class="cartAdd">Aggiungi al Carrello</button>
     </div>
     <%
             }
