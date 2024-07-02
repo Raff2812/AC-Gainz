@@ -22,6 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet(value = "/login")
+@SuppressWarnings("unchecked")
 public class LoginServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         super.doGet(request, response);
@@ -40,7 +41,9 @@ public class LoginServlet extends HttpServlet {
 
         if (!emailMatcher.matches()) {
 
-            response.sendRedirect("Login.jsp?err=patternMail");
+            request.setAttribute("patternEmail", "Pattern email non rispettato!");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.removeAttribute("patternEmail");
             return;
         }
 
@@ -50,14 +53,18 @@ public class LoginServlet extends HttpServlet {
 
         if (!passwordMatcher.matches()) {
 
-            response.sendRedirect("Login.jsp?err=patternPassword");
+            request.setAttribute("patternPassword", "Pattern password non rispettato!");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.removeAttribute("patternPassword");
             return;
         }
 
         // Se nel mio db non c'è alcuna corrispondenza con l'email passata dal form, ricarico la pagina del login
         // e faccio uscire un messaggio di errore
         if (utenteDAO.doRetrieveByEmail(email) == null) {
-            response.sendRedirect("Login.jsp?err=UtenteNonRegistrato");
+            request.setAttribute("userNotFound", "Utente non registrato!");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.removeAttribute("userNotFound");
             return;
         }
 
@@ -71,7 +78,9 @@ public class LoginServlet extends HttpServlet {
         // In questo caso, se arrivo qui significa che l'email è presente nel db ma ciò che è sbagliata è la password
         // per cui faccio ciò che ho fatto prima, con un messaggio di errore evidentemente diverso
         if (x == null) {
-            response.sendRedirect("Login.jsp?err=PasswordSbagliata");
+            request.setAttribute("wrongPassword", "Password errata!");
+            request.getRequestDispatcher("Login.jsp").forward(request, response);
+            request.removeAttribute("wrongPassword");
             return;
         }
 
@@ -110,7 +119,7 @@ public class LoginServlet extends HttpServlet {
         session.setAttribute("cart", dbCart);
 
         // Redirect to the index page
-        response.sendRedirect("index.jsp");
+        request.getRequestDispatcher("index.jsp").forward(request, response);
 
     }
 

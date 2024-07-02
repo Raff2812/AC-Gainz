@@ -39,8 +39,10 @@ public class CategoriesServlet extends HttpServlet {
         session.removeAttribute("products");
 
 
-        session.setAttribute("originalProducts", productsByCriteria);
+        req.setAttribute("originalProducts", productsByCriteria);
 
+        //setto nella session per usare i filtri in ajax
+        session.setAttribute("filteredProducts", productsByCriteria);
 
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("FilterProducts.jsp");

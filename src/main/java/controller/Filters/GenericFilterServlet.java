@@ -21,6 +21,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @WebServlet(value = "/genericFilter")
+@SuppressWarnings("unchecked")
 public class GenericFilterServlet extends HttpServlet {
 
     @Override
@@ -29,7 +30,7 @@ public class GenericFilterServlet extends HttpServlet {
 
         String nameForm = req.getParameter("nameForm"); //searchBar non ajax
         if (nameForm != null && !nameForm.isBlank()){
-           handleFormName(req, resp, session, nameForm);
+            handleFormName(req, resp, session, nameForm);
         }
 
 
@@ -51,7 +52,7 @@ public class GenericFilterServlet extends HttpServlet {
 
         synchronized (session) {
 
-            List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("originalProducts");
+            List<Prodotto> originalProducts = (List<Prodotto>) session.getAttribute("filteredProducts");
             if (originalProducts == null) originalProducts = new ArrayList<>();
 
 
@@ -88,7 +89,7 @@ public class GenericFilterServlet extends HttpServlet {
                 jsonArray.add(jsonObject);
             }
 
-            session.setAttribute("products", resultProducts);
+            session.setAttribute("products", resultProducts); //salvo per i gusti
 
             o.println(jsonArray);
             o.flush();
@@ -123,8 +124,10 @@ public class GenericFilterServlet extends HttpServlet {
 
         resultProducts = filterByName(nameForm);
 
-       /* session.setAttribute("productsByCriteria", resultProducts);*/
-        session.setAttribute("originalProducts", resultProducts);
+        /* session.setAttribute("productsByCriteria", resultProducts);*/
+
+        session.setAttribute("filteredProducts", resultProducts);
+        request.setAttribute("originalProducts", resultProducts);
 
         request.getRequestDispatcher("FilterProducts.jsp").forward(request, response);
         return;
@@ -146,7 +149,6 @@ public class GenericFilterServlet extends HttpServlet {
             float price = p.getPrezzo();
             if (p.getSconto() > 0){
                 price = p.getPrezzo() - (p.getPrezzo() *  p.getSconto() / 100);
-                /*price = Math.round(price * 100.0f) / 100.0f;*/
             }
 
             if (price >= minPrice && price <= maxPrice) {

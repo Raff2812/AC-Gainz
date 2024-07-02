@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet("/editServlet")
-public class EditServlet extends HttpServlet {
+public class editUserServlet extends HttpServlet {
 
 
     @Override

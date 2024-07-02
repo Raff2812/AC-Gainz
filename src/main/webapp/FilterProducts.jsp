@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Prodotti</title>
+    <link rel="stylesheet" href="CSS/ProductCard.css">
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <style>
         .pageContainer {
@@ -52,83 +53,7 @@
             align-items: center;
             justify-content: center;
         }
-        .product-card {
-            width: 20%;
-            margin: 15px 15px 25px 15px;
-            border-radius: 20px;
-            box-shadow: 0 14px 14px black;
-            transition: .3s;
-        }
-        .product-card:hover {
-            transform: translateY(-8px);
-        }
-        .product-info-price {
-            float: right;
-            color: orangered;
-            text-transform: capitalize;
-            font-size: 19px;
-            text-decoration: line-through;
-            margin-right: 5px;
-        }
-        .product-info-price-off {
-            float: right;
-            text-transform: capitalize;
-            font-size: 19px;
-            margin-right: 5px;
-        }
-        .product-info-flavour {
-            float: left;
-            text-transform: capitalize;
-            font-size: 19px;
-            margin-left: 5px;
-        }
-        .product-info-name {
-            padding: 5px 0;
-            font-size: 20px;
-            color: black;
-            text-align: center;
-            font-weight: bold;
-        }
-        .product-image {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 200px; /* Adjust this height as necessary */
-        }
-        .product-image img {
-            max-width: 100%;
-            max-height: 100%;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-        }
-        .product-sconto {
-            position: absolute;
-            background-color: #ffffff;
-            padding: 5px;
-            border-radius: 5px;
-            color: orangered;
-            right: 10px;
-            top: 10px;
-            text-transform: capitalize;
-        }
-        .product-card button {
-            text-align: center;
-            font-size: 20px;
-            color: white;
-            background-color: rgba(0,0,0,0.86);
-            width: 100%;
-            padding: 15px;
-            border: 0;
-            cursor: pointer;
-            border-bottom-left-radius: 20px;
-            border-bottom-right-radius: 20px;
-            transition: .4s;
-        }
-        .product-card button:hover {
-            background-color: orangered;
-            color: black;
-        }
+
         @media only screen and (max-width: 1030px) {
             .filtersContainer {
                 justify-content: space-around;
@@ -184,8 +109,8 @@
 <div id="gr" class="content-group">
     <%
         List<Prodotto> products = null;
-        if (session.getAttribute("originalProducts") != null) {
-            products = (List<Prodotto>) session.getAttribute("originalProducts");
+        if (session.getAttribute("productsByCriteria") != null) {
+            products = (List<Prodotto>) session.getAttribute("productsByCriteria");
         } else {
             products = (List<Prodotto>) application.getAttribute("Products");
         }
@@ -201,7 +126,13 @@
             <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>">
         </div>
         <div class="product-info">
-            <h2 class="product-info-name"><%= p.getNome() %></h2>
+            <h2 class="product-info-name">
+                <form action="Product" method="post">
+                    <input type="hidden" name="primarykey" value="<%=p.getIdProdotto()%>">
+                    <input type="hidden" name="category" value="<%=p.getCategoria()%>">
+                    <button class="product-info-name-redirect"><%= p.getNome() %></button>
+                </form>
+            </h2>
             <% if (p.getSconto() > 0) {
                 float prezzoscontato = (p.getPrezzo() - ((p.getPrezzo() * p.getSconto()) / 100));
                 prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;

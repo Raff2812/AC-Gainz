@@ -14,11 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet(value = "/showTastes")
+@SuppressWarnings("unchecked")
 public class ShowTasteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Prodotto> originalProducts = (List<Prodotto>) req.getSession().getAttribute("originalProducts");
+        List<Prodotto> originalProducts = (List<Prodotto>) req.getSession().getAttribute("filteredProducts");
         List<String> tastes = new ArrayList<>();
 
         // Raccogliere tutti i gusti unici

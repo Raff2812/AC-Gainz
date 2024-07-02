@@ -34,7 +34,7 @@
             <label>
                 <input type="search" id="search-input" placeholder="Search..">
             </label>
-            <img id="search-img" src="./Immagini/search.png" alt="search-img">
+            <img id="search-img" src="Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
             <div id="cart">Carrello (0)</div>

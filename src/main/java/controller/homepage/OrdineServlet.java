@@ -52,8 +52,8 @@ public class OrdineServlet extends HttpServlet {
             for (DettaglioOrdine dettaglioOrdineItem : dettaglioOrdine)
                 dettaglioOrdineDAO.doSave(dettaglioOrdineItem);
 
-            session.setAttribute("order", ordine);
-            session.setAttribute("orderDetails", dettaglioOrdine);
+            req.setAttribute("order", ordine);
+            req.setAttribute("orderDetails", dettaglioOrdine);
 
             req.getRequestDispatcher("Ordine.jsp").forward(req, resp);
         }

@@ -1,32 +1,13 @@
 window.onload = function() {
     if (Logged === true){
         document.getElementById("utente").innerHTML = `
-                    <form action="AreaUtente.jsp" method="post">
-                        <input type="hidden" name="areaPersonale" value="areaPersonale">
+                    <form action="areaUtenteServlet" method="post">
                         <button type="submit" class="header-custom_button">Area Personale</button>
                     </form>
                 `;
     }
 };
 
-
-    /*
-    isLoggedNow()
-        .then(logged => {
-            if (logged.isLogged === "true") {
-                document.getElementById("utente").innerHTML = `
-                    <form action="AreaUtente.jsp" method="post">
-                        <input type="hidden" name="areaPersonale" value="areaPersonale">
-                        <button type="submit" class="header-custom_button">Area Personale</button>
-                    </form>
-                `;
-            }
-
-            console.log(logged.isLogged);
-        })
-        .catch(err => {
-            console.error(err);
-        });*/
 
 /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
 function myFunction() {

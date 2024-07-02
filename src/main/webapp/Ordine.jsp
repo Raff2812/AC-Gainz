@@ -13,12 +13,12 @@
     <title>Ordine</title>
 </head>
 <body>
-<%@include file="Header.jsp"%>
+<%@include file="WEB-INF/Header.jsp"%>
 <p>Ordine confermato</p> <br>
 <p>Dettagli ordine:</p> <br>
 <%
-    Ordine ordine = (Ordine) session.getAttribute("order");
-    List<DettaglioOrdine> dettaglioOrdine = (List<DettaglioOrdine>) session.getAttribute("orderDetails");
+    Ordine ordine = (Ordine) request.getAttribute("order");
+    List<DettaglioOrdine> dettaglioOrdine = (List<DettaglioOrdine>) request.getAttribute("orderDetails");
     if (dettaglioOrdine != null && !dettaglioOrdine.isEmpty()){
         for (DettaglioOrdine item: dettaglioOrdine){
 %>
@@ -30,6 +30,6 @@
 <p>Totale ordine: <%=ordine.getTotale()%></p>
 
 
-<%@include file="Footer.jsp"%>
+<%@include file="WEB-INF/Footer.jsp"%>
 </body>
 </html>

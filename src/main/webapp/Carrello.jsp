@@ -6,7 +6,7 @@
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
 </head>
 <body>
-<%@include file="Header.jsp"%>
+<%@include file="WEB-INF/Header.jsp"%>
 
 <script src="JS/updateCart.js"></script>
 
@@ -24,6 +24,6 @@
     </div>
 </div>
 
-<%@include file="Footer.jsp"%>
+<%@include file="WEB-INF/Footer.jsp"%>
 </body>
 </html>

@@ -19,6 +19,7 @@ import java.util.List;
 import static controller.Filters.GenericFilterServlet.getJsonObject;
 
 @WebServlet(value = "/searchBar")
+@SuppressWarnings("unchecked")
 public class SearchBarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,11 +32,11 @@ public class SearchBarServlet extends HttpServlet {
             ProdottoDAO prodottoDAO = new ProdottoDAO();
             products = prodottoDAO.doRetrieveByName(name);
         } else {
-            products = (List<Prodotto>) session.getAttribute("originalProducts");
+            products = (List<Prodotto>) session.getAttribute("filteredProducts");
         }
 
         // Save search results in originalProducts and products for further filtering
-        session.setAttribute("originalProducts", products);
+        session.setAttribute("filteredProducts", products);
         session.setAttribute("products", products);
 
         addToJson(products, session, req, resp);

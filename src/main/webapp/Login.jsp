@@ -9,7 +9,7 @@
 
 
     <%
-        if (session.getAttribute("Utente")!=null)
+        if (session.getAttribute("Utente") != null)
             response.sendRedirect("index.jsp");
     %>
 
@@ -142,14 +142,13 @@
 </head>
 <body>
 
-<%
-    String err = request.getParameter("err");
-%>
+
 
 <script defer src="JS/togglePassword.js"></script>
-<script defer src="JS/validateForm.js"></script>
+<script src="JS/validateForm.js"></script>
+
 <div class="login-contenitore">
-    <form action="login" method="post" autocomplete="on">
+    <form action="login" method="post" autocomplete="on" onsubmit="return validateForm()">
         <h1>Accedi</h1>
         <div class="input-box">
             <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required>
@@ -173,45 +172,22 @@
         </div>
     </form>
 
-    <div class="errorMessage" id="errorMessage"></div>
+    <div class="errorMessage" id="errorMessage">
+        <% if (request.getAttribute("patternEmail") != null) { %>
+        <%= request.getAttribute("patternEmail") %>
+        <% } else if (request.getAttribute("patternPassword") != null) { %>
+        <%= request.getAttribute("patternPassword") %>
+        <% } else if (request.getAttribute("userNotFound") != null) { %>
+        <%= request.getAttribute("userNotFound") %>
+        <% } else if (request.getAttribute("wrongPassword") != null) { %>
+        <%= request.getAttribute("wrongPassword") %>
+        <% } %>
+    </div>
+
 </div>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function (){
-        var errorMessage = "<%= err %>";
-        console.log("Error Message: " + errorMessage);
 
-        if (errorMessage && errorMessage.trim() !== "") {
-            showError(errorMessage);
-        }
 
-        // Rimuovi il parametro `err` dalla query string senza ricaricare la pagina
-        var newURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
-        window.history.replaceState({ path: newURL }, "", newURL);
-    });
-
-    function showError(errorMessage) {
-        var errorMsgElement = document.getElementById("errorMessage");
-        errorMsgElement.style.display = "block";
-
-        switch (errorMessage) {
-            case "patternPassword":
-                errorMsgElement.innerHTML = "Password non valida. Deve contenere almeno 8 caratteri, un numero, una lettera maiuscola, una lettera minuscola e un carattere speciale.";
-                break;
-            case "patternMail":
-                errorMsgElement.innerHTML = "Email non valida. Inserisci un'email valida.";
-                break;
-            case "UtenteNonRegistrato":
-                errorMsgElement.innerHTML = "Utente non registrato.";
-                break;
-            case "PasswordSbagliata":
-                errorMsgElement.innerHTML = "Password Sbagliata.";
-                break;
-            default:
-               ;
-        }
-    }
-</script>
 
 </body>
 </html>

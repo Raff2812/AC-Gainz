@@ -92,17 +92,17 @@ function updateView(response) {
             const spanPriceOff = document.createElement("span");
             spanPriceOff.className = "product-info-price-off";
             const prezzoScontato = prodottoFiltrato.prezzo * (1 - (prodottoFiltrato.sconto / 100));
-            spanPriceOff.innerText = prezzoScontato.toFixed(2);
+            spanPriceOff.innerText = `${prezzoScontato.toFixed(2)}€`;
             divProductInfo.appendChild(spanPriceOff);
 
             const spanPrice = document.createElement("span");
             spanPrice.className = "product-info-price";
-            spanPrice.innerText = prodottoFiltrato.prezzo.toFixed(2);
+            spanPrice.innerText = `${prodottoFiltrato.prezzo.toFixed(2)}€`;
             divProductInfo.appendChild(spanPrice);
         } else {
             const spanPriceOff = document.createElement("span");
             spanPriceOff.className = "product-info-price-off";
-            spanPriceOff.innerText = prodottoFiltrato.prezzo.toFixed(2);
+            spanPriceOff.innerText = `${prodottoFiltrato.prezzo.toFixed(2)}€`;
             divProductInfo.appendChild(spanPriceOff);
         }
 

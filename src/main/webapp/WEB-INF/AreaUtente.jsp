@@ -26,10 +26,11 @@
 
 <div class="contenitore">
     <div class="tab">
-        <button class="tablinks" onclick="opentab('areautente')">Area Utente</button>
-        <button class="tablinks" onclick="opentab('areamodifiche')">Area Modifiche</button>
-        <button class="tablinks" onclick="opentab('areaordini')">Area Ordini</button>
+        <button class="tablinks" onclick="opentab(event, 'areautente')">Area Utente</button>
+        <button class="tablinks" onclick="opentab(event, 'areamodifiche')">Area Modifiche</button>
+        <button class="tablinks" onclick="opentab(event, 'areaordini')">Area Ordini</button>
     </div>
+
 
     <div id="areautente" class="tabcontent">
         <h3>Dettagli Utente</h3>
@@ -166,8 +167,7 @@
         <h3>Dettagli Ordini</h3>
         <%
             if (utente != null) {
-                OrdineDao ordineDao = new OrdineDao();
-                List<Ordine> ordini = ordineDao.doRetrieveByEmail(utente.getEmail());
+                List<Ordine> ordini = (List<Ordine>) request.getAttribute("ordini");
                 if (!ordini.isEmpty()) {
                     for (Ordine order : ordini) {
         %>
