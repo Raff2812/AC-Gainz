@@ -64,7 +64,7 @@
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     position: sticky;
-    top: 20px; /* Distance from the top */
+    top: 180px; /* Distance from the top */
     align-self: flex-start; /* Align to the start of the container */
 }
 .summary h2 {

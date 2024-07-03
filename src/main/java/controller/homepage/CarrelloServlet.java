@@ -46,6 +46,17 @@ public class CarrelloServlet extends HttpServlet {
 
     private void handleAddAction(HttpServletRequest req, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         String id = req.getParameter("id");
+        int quantity = 1;
+
+        if (req.getParameter("quantity") != null){
+            int x = Integer.parseInt(req.getParameter("quantity"));
+            if (x > 0) quantity = x;
+        }
+
+
+        System.out.println(quantity);
+
+
         Prodotto prodotto = prodottoDAO.doRetrieveById(id);
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -57,15 +68,22 @@ public class CarrelloServlet extends HttpServlet {
 
         float price = prodotto.getPrezzo();
 
+
+
+
         if (prodotto.getSconto() > 0){
           price = prodotto.getPrezzo() - (prodotto.getPrezzo() * ((float) prodotto.getSconto() / 100));
           price = Math.round(price * 100.0f) / 100.0f;
         }
+
+        price *= quantity;
+        System.out.println(price);
+
         boolean itemExists = false;
         if (!cartItems.isEmpty()){
             for (Carrello item : cartItems) {
                 if (item.getIdProdotto().equals(id)) {
-                    item.setQuantita(item.getQuantita() + 1);
+                    item.setQuantita(item.getQuantita() + quantity);
                     item.setPrezzo(item.getPrezzo() + price);
                     itemExists = true;
                     break;
@@ -74,7 +92,8 @@ public class CarrelloServlet extends HttpServlet {
         }
 
         if (!itemExists)
-            cartItems.add(new Carrello("guest@gmail.com", id, prodotto.getNome(), 1, price));
+            cartItems.add(new Carrello("guest@gmail.com", id, prodotto.getNome(), quantity, price));
+
 
 
 
@@ -86,12 +105,14 @@ public class CarrelloServlet extends HttpServlet {
         String idToRemove = req.getParameter("id");
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
+
         if (cartItems != null) {
             cartItems.removeIf(item -> item.getIdProdotto().equals(idToRemove));
             session.setAttribute("cart", cartItems);
-        }
 
-        writeCartItemsToResponse(cartItems, prodottoDAO, out);
+
+            writeCartItemsToResponse(cartItems, prodottoDAO, out);
+        }
     }
 
     private void handleShowAction(HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
@@ -117,12 +138,18 @@ public class CarrelloServlet extends HttpServlet {
                 if (q <= 0){
                     handleRemoveAction(request, session, prodottoDAO, out);
                 }else {
+                    boolean isInside = false;
                     for (Carrello c: cartItems){
                         if (c.getIdProdotto().equals(id)){
                             c.setQuantita(q);
                             c.setPrezzo(prodottoDAO.doRetrieveById(c.getIdProdotto()).getPrezzo() * q);
+                            isInside = true;
                             break;
                         }
+                    }
+                    if (!isInside){
+                        cartItems.add(new Carrello("guest@gmail.com", id, prodottoDAO.doRetrieveById(id).getNome(),
+                                                    q, q * prodottoDAO.doRetrieveById(id).getPrezzo()));
                     }
                     writeCartItemsToResponse(cartItems, prodottoDAO, out);
                 }

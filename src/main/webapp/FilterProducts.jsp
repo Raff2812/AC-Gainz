@@ -130,8 +130,7 @@
             <h2 class="product-info-name">
                 <form action="Product" method="post">
                     <input type="hidden" name="primarykey" value="<%=p.getIdProdotto()%>">
-                    <input type="hidden" name="category" value="<%=p.getCategoria()%>">
-                <button class="product-info-name-redirect"><%= p.getNome() %></button>
+                    <button type="submit" class="product-info-name-redirect"><%= p.getNome() %></button>
                 </form>
             </h2>
             <% if (p.getSconto() > 0) {

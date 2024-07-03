@@ -71,10 +71,10 @@ function updateView(response) {
             spanSconto.className = "product-sconto";
             spanSconto.innerText = `${prodottoFiltrato.sconto}% di Sconto`;
             divProductImage.appendChild(spanSconto);
-        }
+    }
 
-        const img = document.createElement("img");
-        img.src = prodottoFiltrato.immagine;
+    const img = document.createElement("img");
+    img.src = prodottoFiltrato.immagine;
         img.alt = prodottoFiltrato.nome;
         divProductImage.appendChild(img);
 
@@ -85,7 +85,26 @@ function updateView(response) {
 
         const h2ProductName = document.createElement("h2");
         h2ProductName.className = "product-info-name";
-        h2ProductName.innerText = prodottoFiltrato.nome;
+
+        const form = document.createElement("form");
+        form.action = "Product";
+        form.method = "POST";
+        const input1 = document.createElement("input");
+        input1.type = "hidden";
+        input1.name = "primarykey";
+        input1.value = `${prodottoFiltrato.id}`;
+        form.appendChild(input1);
+
+        const buttonForm = document.createElement("button");
+        buttonForm.type = "submit";
+        buttonForm.className = "product-info-name-redirect";
+        buttonForm.innerText = `${prodottoFiltrato.nome}`;
+
+        form.appendChild(buttonForm);
+
+        h2ProductName.appendChild(form);
+
+
         divProductInfo.appendChild(h2ProductName);
 
         if (prodottoFiltrato.sconto > 0) {

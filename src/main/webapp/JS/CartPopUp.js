@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     showCart();
 });
 
-
 function toggleCartVisibility() {
     const listCart = document.getElementById("listCart");
     if (listCart) {
@@ -27,10 +26,12 @@ function rmvClick() {
     removeItem(id);
 }
 
-function addCart(idProdotto) {
+function addCart(idProdotto, quantity) {
     const params = new URLSearchParams();
     params.append("action", "add");
     params.append("id", idProdotto);
+    if (quantity)
+        params.append("quantity", quantity);
 
     fetch("cartServlet?" + params.toString())
         .then(response => {
@@ -181,6 +182,5 @@ function updateCartView(action, response) {
         console.log("Response text:", response);
     }
 }
-
 
 
