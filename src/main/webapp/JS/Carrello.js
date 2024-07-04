@@ -1,5 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
-    showCart();
+
+
+    document.querySelectorAll(".modifyQuantity").forEach(button =>{
+        button.addEventListener("click", function (){
+            const input = this.closest(".product").querySelector(".inputQuantity");
+
+            const value = Number(input.value);   //utilizzato per vedere se qualcuno cambia il tipo di
+
+            const id = this.getAttribute("data-product");
+            console.log(id + " * " + value);
+
+            if (!Number.isNaN(value) && id !== null)
+                updateQuantity(value, id);
+        })
+    });
+
+
     document.getElementById("buyCart").addEventListener("click", function () {
 
         if (Logged === false) {
@@ -43,6 +59,30 @@ document.addEventListener("DOMContentLoaded", function () {
     })
 });
 
+
+
+function updateQuantity(quantity, id) {
+    const urlSearch = new URLSearchParams();
+    urlSearch.append("action", "quantity");
+    urlSearch.append("quantity", quantity);
+    urlSearch.append("id", id);
+    fetch("cartServlet?" + urlSearch.toString())
+        .then(response => {
+            if (!response.ok) throw new Error();
+
+            return response.text();
+        })
+        .then(responseText => {
+            showCartCheckOut();
+            showCart();
+        })
+        .catch(error => {
+            console.error(error);
+        })
+}
+
+
+
 function showCartCheckOut() {
     const urlParam = new URLSearchParams();
     urlParam.append("action", "show");
@@ -62,6 +102,7 @@ function showCartCheckOut() {
             console.error(error);
         });
 }
+
 
 function updateCartJSP(response) {
     try {
@@ -154,7 +195,6 @@ function updateCartJSP(response) {
         });
 
 
-        //questo totale farlo con un ciclo nella jsp (giusto per far vedere che metto codice java in html)
         const total = cartItems[cartItems.length - 1];
 
         subtotalElement.innerText = `${total.totalPrice}`;
@@ -166,25 +206,6 @@ function updateCartJSP(response) {
     }
 }
 
-function updateQuantity(quantity, id) {
-    const urlSearch = new URLSearchParams();
-    urlSearch.append("action", "quantity");
-    urlSearch.append("quantity", quantity);
-    urlSearch.append("id", id);
-    fetch("cartServlet?" + urlSearch.toString())
-        .then(response => {
-            if (!response.ok) throw new Error();
-
-            return response.text();
-        })
-        .then(responseText => {
-            showCartCheckOut();
-            showCart();
-        })
-        .catch(error => {
-            console.error(error);
-        })
-}
 
 
 

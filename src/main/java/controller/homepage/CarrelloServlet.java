@@ -138,18 +138,23 @@ public class CarrelloServlet extends HttpServlet {
                 if (q <= 0){
                     handleRemoveAction(request, session, prodottoDAO, out);
                 }else {
+                    Prodotto p = prodottoDAO.doRetrieveById(id);
+                    float price = p.getPrezzo();
+                    if (p.getSconto() > 0){
+                        price = Math.round((price - (price * p.getSconto() / 100)) * 100.0f) / 100.0f;
+                    }
                     boolean isInside = false;
                     for (Carrello c: cartItems){
                         if (c.getIdProdotto().equals(id)){
                             c.setQuantita(q);
-                            c.setPrezzo(prodottoDAO.doRetrieveById(c.getIdProdotto()).getPrezzo() * q);
+                            c.setPrezzo(price * q);
                             isInside = true;
                             break;
                         }
                     }
                     if (!isInside){
                         cartItems.add(new Carrello("guest@gmail.com", id, prodottoDAO.doRetrieveById(id).getNome(),
-                                                    q, q * prodottoDAO.doRetrieveById(id).getPrezzo()));
+                                                    q, q * price));
                     }
                     writeCartItemsToResponse(cartItems, prodottoDAO, out);
                 }

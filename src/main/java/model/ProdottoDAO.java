@@ -40,18 +40,23 @@ public class ProdottoDAO {
 
 
 
-    public List<Prodotto> doRetrieveByName(String nameProduct){
-        try (Connection connection = ConPool.getConnection()){
+    public List<Prodotto> doRetrieveByName(String nameProduct) {
+        try (Connection connection = ConPool.getConnection()) {
             List<Prodotto> productsFilteredByName = new ArrayList<>();
 
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from prodotto where nome like ?");
+            // Query to retrieve products with distinct names
+            String query = "SELECT * FROM prodotto WHERE nome LIKE ? AND id_prodotto IN " +
+                    "(SELECT MIN(id_prodotto) FROM prodotto WHERE nome LIKE ? GROUP BY nome)";
+
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
 
             String filter = "%" + nameProduct + "%";
             preparedStatement.setString(1, filter);
+            preparedStatement.setString(2, filter);
 
             ResultSet rs = preparedStatement.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
                 Prodotto p = new Prodotto();
                 p.setIdProdotto(rs.getString("id_prodotto"));
                 p.setNome(rs.getString("nome"));
@@ -73,10 +78,11 @@ public class ProdottoDAO {
             }
 
             return productsFilteredByName;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
 
     public void doSave(Prodotto prodotto) {
@@ -205,54 +211,74 @@ public class ProdottoDAO {
 
 
 
-    public List<Prodotto> doRetrieveAll(){
+    public List<Prodotto> doRetrieveAll() {
 
         ArrayList<Prodotto> prodotti = new ArrayList<>();
-
         Statement st;
-
         ResultSet rs;
-
         Prodotto p;
 
         try (Connection con = ConPool.getConnection()) {
 
             st = con.createStatement();
 
-            rs = st.executeQuery("SELECT * FROM prodotto");
+            // Query to retrieve products with distinct names
+            String query = "SELECT * FROM prodotto WHERE id_prodotto IN " +
+                    "(SELECT MIN(id_prodotto) FROM prodotto GROUP BY nome)";
+
+            rs = st.executeQuery(query);
 
             while(rs.next()) {
-
                 p = new Prodotto();
-                p.setIdProdotto(rs.getString(1));
-                p.setNome(rs.getString(2));
-                p.setDescrizione(rs.getString(3));
-                p.setPrezzo(rs.getFloat(4));
-                p.setQuantita(rs.getInt(5));
-                p.setCategoria(rs.getString(6));
-                p.setGusto(rs.getString(7));
-                p.setCalorie(rs.getInt(8));
-                p.setGrassi(rs.getInt(9));
-                p.setCarboidrati(rs.getInt(10));
-                p.setProteine(rs.getInt(11));
-                p.setPeso(rs.getInt(12));
-                p.setImmagine(rs.getString(13));
-                p.setSconto(rs.getInt(14));
-                p.setEvidenza(rs.getBoolean(15));
+                p.setIdProdotto(rs.getString("id_prodotto"));
+                p.setNome(rs.getString("nome"));
+                p.setDescrizione(rs.getString("descrizione"));
+                p.setPrezzo(rs.getFloat("prezzo"));
+                p.setQuantita(rs.getInt("quantità"));
+                p.setCategoria(rs.getString("categoria"));
+                p.setGusto(rs.getString("gusto"));
+                p.setCalorie(rs.getInt("calorie"));
+                p.setGrassi(rs.getInt("grassi"));
+                p.setCarboidrati(rs.getInt("carboidrati"));
+                p.setProteine(rs.getInt("proteine"));
+                p.setPeso(rs.getInt("peso"));
+                p.setImmagine(rs.getString("immagine"));
+                p.setSconto(rs.getInt("sconto"));
+                p.setEvidenza(rs.getBoolean("evidenza"));
 
                 prodotti.add(p);
             }
 
-            con.close();
-
             return prodotti;
-        }
-
-        catch (SQLException e) {
-
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+
+    public List<Prodotto> doRetrieveSimilarProducts(String name){
+        List<Prodotto> similarProducts = new ArrayList<>();
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from prodotto where nome = ?");
+
+            preparedStatement.setString(1, name);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                similarProducts.add(new Prodotto(resultSet.getString("id_prodotto"), resultSet.getString("nome"),
+                                        resultSet.getString("descrizione"), resultSet.getFloat("prezzo"),
+                                        resultSet.getInt("quantità"), resultSet.getString("categoria"),
+                                        resultSet.getString("gusto"), resultSet.getInt("calorie"),
+                                        resultSet.getInt("grassi"), resultSet.getInt("proteine"), resultSet.getInt("carboidrati"),
+                                        resultSet.getInt("peso"), resultSet.getString("immagine"), resultSet.getInt("sconto"), resultSet.getBoolean("evidenza")));
+            }
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+        return similarProducts;
+    }
+
 
     public void doUpdateProduct (Prodotto u){
 

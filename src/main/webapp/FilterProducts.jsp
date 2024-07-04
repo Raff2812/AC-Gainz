@@ -67,7 +67,7 @@
 <div class="pageContainer">
     <div class="filtersContainer" id="filtersContainer">
         <div class="filter">
-            <select id="sorting" name="sort">
+            <select id="sorting" name="sort" onchange="genericFilter()">
                 <option value="">Sort by:</option>
                 <option value="sortDown">Prezzo: da alto a basso</option>
                 <option value="sortUp">Prezzo: da basso ad alto</option>
@@ -76,7 +76,7 @@
         </div>
 
         <div class="filter">
-            <select id="prices" name="price">
+            <select id="prices" name="price" onchange="genericFilter()">
                 <option value="">Seleziona un range di prezzo</option>
                 <option value="0-30">0-30</option>
                 <option value="30-60">30-60</option>
@@ -85,13 +85,13 @@
         </div>
 
         <div class="filter">
-            <select id="tastes" name="taste">
+            <select id="tastes" name="taste" onchange="genericFilter()">
                 <option value="">Seleziona un gusto</option>
             </select>
         </div>
 
         <div class="filter">
-            <select id="calories" name="calorie">
+            <select id="calories" name="calorie" onchange="genericFilter()">
                 <option value="">Seleziona un range di calorie</option>
                 <option value="0-100">0-100</option>
                 <option value="100-200">100-200</option>

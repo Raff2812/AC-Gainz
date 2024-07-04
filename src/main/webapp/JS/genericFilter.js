@@ -32,25 +32,7 @@ function genericFilter() {
     console.log("Calling genericFilter with URL: " + urlServlet);
 }
 
-document.getElementById("prices").addEventListener("change", function() {
-    console.log(`Price changed: ${this.value}`);
-    genericFilter();
-});
 
-document.getElementById("tastes").addEventListener("change", function() {
-    console.log(`Taste changed: ${this.value}`);
-    genericFilter();
-});
-
-document.getElementById("calories").addEventListener("change", function() {
-    console.log(`Calories changed: ${this.value}`);
-    genericFilter();
-});
-
-document.getElementById("sorting").addEventListener("change", function() {
-    console.log(`Sorting changed: ${this.value}`);
-    genericFilter();
-});
 
 
 function updateView(response) {

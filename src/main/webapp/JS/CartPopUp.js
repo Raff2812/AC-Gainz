@@ -64,7 +64,7 @@ function removeItem(id) {
             updateCartView("remove", responseText);
             showCart();
 
-            if (window.location.pathname.includes("Carrello")){
+            if (window.location.pathname.includes("cart")){
                 console.log("Stong ndo cart")
                 showCartCheckOut();
             }
@@ -170,11 +170,21 @@ function updateCartView(action, response) {
         totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
         cartItemDiv.appendChild(totalPriceDiv);
 
-        const goToCheckOut = document.createElement("a");
+
+        const goToCheckOutForm = document.createElement("form");
+        goToCheckOutForm.method = "POST";
+        goToCheckOutForm.action = "cart";
+
+
+
+        const goToCheckOut = document.createElement("button");
+        goToCheckOut.type = "submit";
         goToCheckOut.className = "checkOut";
-        goToCheckOut.href = "Carrello.jsp";
         goToCheckOut.innerText = "Vai al CheckOut";
-        cartItemDiv.appendChild(goToCheckOut);
+
+        goToCheckOutForm.appendChild(goToCheckOut);
+
+        cartItemDiv.appendChild(goToCheckOutForm);
 
 
     } catch (error) {
