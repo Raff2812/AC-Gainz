@@ -64,19 +64,19 @@
             <li>
                 <form action="categories" method="get">
                     <input type="hidden" name="category" value="proteine">
-                    <button type="submit" value="proteine">Proteine</button>
+                    <button type="submit">Proteine</button>
                 </form>
             </li>
             <li>
                 <form action="categories" method="get">
                     <input type="hidden" name="category" value="creatina">
-                    <button type="submit" value="proteine">Creatina</button>
+                    <button type="submit">Creatina</button>
                 </form>
             </li>
             <li>
                 <form action="categories" method="get">
                     <input type="hidden" name="category" value="salse">
-                    <button type="submit" value="proteine">Salse</button>
+                    <button type="submit">Salse</button>
                 </form>
             </li>
         </ul>

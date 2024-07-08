@@ -1,6 +1,7 @@
 <%@ page import="model.Prodotto" %>
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Random" %><%--
+<%@ page import="java.util.Random" %>
+<%@ page import="model.Variante" %><%--
   Created by IntelliJ IDEA.
   User: luigiauriemma
   Date: 27/06/24
@@ -272,8 +273,10 @@
 
 <%
     Prodotto p = null;
+    Variante v = null;
     if (request.getAttribute("prodotto") != null) {
         p = (Prodotto) request.getAttribute("prodotto");
+        v = p.getVarianti().get(0);
     }
 %>
 <div class="container-flex">
@@ -285,36 +288,36 @@
         <div class="info-right-name"><%=p.getNome()%>
         </div>
         <div class="product-info">
-            <% if (p.getSconto() > 0) {
-                float prezzoscontato = (p.getPrezzo() - ((p.getPrezzo() * p.getSconto()) / 100));
+            <% if (v.getSconto() > 0) {
+                float prezzoscontato = v.getPrezzo() * (1 - (float) v.getSconto() /100);
                 prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
             %>
             <div class="product-info-risparmio">Risparmia
                 <%
                     float costorisparmio = 0;
-                    costorisparmio = (p.getPrezzo() * p.getSconto()) / 100;
+                    costorisparmio = (v.getPrezzo() * v.getSconto()) / 100;
                     costorisparmio = Math.round(costorisparmio * 100.0f) / 100.0f;
                 %>
                 <%=costorisparmio%>€
             </div>
             <div>
                 <span class="product-info-costoattuale"><%=prezzoscontato%>€</span>
-                <span class="product-info-costooriginale">Era <%=p.getPrezzo()%>€</span>
+                <span class="product-info-costooriginale">Era <%=v.getPrezzo()%>€</span>
             </div>
             <%} else {%>
-            <span class="product-info-costoattuale"><%=p.getPrezzo()%>€</span>
+            <span class="product-info-costoattuale"><%=v.getPrezzo()%>€</span>
             <% } %>
             <div class="product-info-gusto">
                 Gusto:
                 <select id="tastes" name="taste">
-                    <option value=""><%=p.getGusto()%>
+                    <option value=""><%=v.getGusto()%>
                     </option>
                 </select>
             </div>
             <div class="product-info-peso">
                 Peso:
                 <select id="weights" name="weight">
-                    <option value=""><%=p.getPeso()%>
+                    <option value=""><%=v.getPesoConfezione()%>
                     </option>
                 </select>
             </div>
@@ -348,8 +351,8 @@
                 %>
                 <div class="suggests-product-card">
                     <div class="suggests-product-image">
-                        <% if (s.getSconto() > 0) { %>
-                        <span class="suggests-product-sconto"><%= s.getSconto() %>% di Sconto</span>
+                        <% if (v.getSconto() > 0) { %>
+                        <span class="suggests-product-sconto"><%= v.getSconto() %>% di Sconto</span>
                         <% } %>
 
                         <img src="<%= s.getImmagine() %>" alt="<%= s.getNome() %>">
@@ -364,18 +367,18 @@
                             <button class="suggests-product-info-name-redirect"><%= s.getNome() %>
                             </button>
                         </form>
-                        <% if (s.getSconto() > 0) {
-                            float prezzoscontato = (s.getPrezzo() - ((s.getPrezzo() * s.getSconto()) / 100));
+                        <% if (v.getSconto() > 0) {
+                            float prezzoscontato = (v.getPrezzo() - ((v.getPrezzo() * v.getSconto()) / 100));
                             prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
                         %>
                         <span class="suggests-product-info-costoattuale"><%=prezzoscontato%>€</span>
-                        <span class="suggests-product-info-costooriginale"><%=s.getPrezzo()%>€</span>
+                        <span class="suggests-product-info-costooriginale"><%=v.getPrezzo()%>€</span>
                         <% } else { %>
-                        <span class="suggests-product-info-costoattuale"><%=s.getPrezzo()%>€</span>
+                        <span class="suggests-product-info-costoattuale"><%=v.getPrezzo()%>€</span>
                         <% } %>
-                        <div class="suggests-product-info-flavour"><%= s.getGusto()%>
+                        <div class="suggests-product-info-flavour"><%= v.getGusto()%>
                         </div>
-                        <div class="suggests-product-info-weight"><%=s.getPeso()%>gr.</div>
+                        <div class="suggests-product-info-weight"><%=v.getPesoConfezione()%>gr.</div>
                     </div>
                 </div>
                 <%

@@ -4,25 +4,30 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 public class OrdineDao {
-    public Ordine doRetrieveById(int id)
-    {
+    public Ordine doRetrieveById(int id) {
+        Ordine ordine = new Ordine();
         try(Connection con= ConPool.getConnection())
         {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_ordine,data,stato,totale,email_utente FROM ordine WHERE id_ordine=?");
+            PreparedStatement preparedStatement=con.prepareStatement("SELECT * FROM ordine WHERE id_ordine=?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                return new Ordine(resultSet.getInt("id_ordine"), resultSet.getString("email_utente"), resultSet.getDate("data"), resultSet.getString("stato"), resultSet.getFloat("totale"));
+            while (resultSet.next()){
+                ordine.setIdOrdine(resultSet.getInt("id_ordine"));
+                ordine.setEmailUtente(resultSet.getString("email_utente"));
+                ordine.setDataOrdine(resultSet.getDate("data"));
+                ordine.setStato(resultSet.getString("stato"));
+                ordine.setTotale(resultSet.getFloat("totale"));
             }
-            return null;
 
         }
         catch (SQLException sqlException)
         {
             throw new RuntimeException(sqlException);
         }
+
+        return ordine;
     }
 
 
@@ -34,10 +39,12 @@ public class OrdineDao {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()){
-                Ordine ordine = new Ordine(resultSet.getInt("id_ordine"), resultSet.getString("email_utente"),
-                                            resultSet.getDate("data"), resultSet.getString("stato"),
-                                            resultSet.getFloat("totale"));
-
+                Ordine ordine = new Ordine();
+                ordine.setIdOrdine(resultSet.getInt("id_ordine"));
+                ordine.setEmailUtente(resultSet.getString("email_utente"));
+                ordine.setDataOrdine(resultSet.getDate("data"));
+                ordine.setStato(resultSet.getString("stato"));
+                ordine.setTotale(resultSet.getFloat("totale"));
                 ordini.add(ordine);
             }
 

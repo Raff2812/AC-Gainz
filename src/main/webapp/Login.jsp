@@ -8,11 +8,6 @@
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
 
 
-    <%
-        if (session.getAttribute("Utente") != null)
-            response.sendRedirect("index.jsp");
-    %>
-
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap');
         * {

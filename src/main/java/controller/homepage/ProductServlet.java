@@ -12,21 +12,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-@WebServlet(value = "/Product")
+@WebServlet(value = "/ProductInfo")
 public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String primarykey=req.getParameter("primarykey");
-        /*String category=req.getParameter("category");*/
-        if(primarykey != null)
-        {
-            try {
-                ProdottoDAO prodottoDAO=new ProdottoDAO();
-                Prodotto prodotto = prodottoDAO.doRetrieveById(primarykey);
+        String primaryKey = req.getParameter("primaryKey");
+        System.out.println(primaryKey);
+        if(primaryKey != null) {
+                ProdottoDAO prodottoDAO = new ProdottoDAO();
+                Prodotto prodotto = prodottoDAO.doRetrieveById(primaryKey);
                 if(prodotto != null)
                 {
-                    ProdottoDAO suggeritiDAO=new ProdottoDAO();
+                    ProdottoDAO suggeritiDAO = new ProdottoDAO();
                     //sezione dei suggeriti
                     String category = prodotto.getCategoria();
                     List<Prodotto> suggeriti = suggeritiDAO.doRetrieveByCriteria("categoria",category);
@@ -34,19 +32,6 @@ public class ProductServlet extends HttpServlet {
                     req.setAttribute("prodotto",prodotto);
                     req.getRequestDispatcher("Product.jsp").forward(req,resp);
                 }
-                else
-                {
-                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Product not found");
-                }
-
-            }catch (Exception e)
-            {
-                throw new ServletException(e);
-            }
-        }
-        else
-        {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Invalid Product Id");
         }
     }
 

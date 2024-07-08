@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="CSS/AreaUtenteCSS.css">
     <title>Area utente</title>
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
-    <%
+ <%--   <%
         boolean isLoggedArea = (session.getAttribute("Utente") != null);
     %>
     <script>
@@ -17,6 +17,7 @@
         if (isLoggedNow === false)
             window.location.href = "index.jsp";
     </script>
+    --%>
 </head>
 <body>
 

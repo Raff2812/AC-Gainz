@@ -6,52 +6,50 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Prodotto;
+import model.Variante;
+import model.VarianteDAO;
 import org.json.simple.JSONArray;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-@WebServlet(value = "/showTastes")
+@WebServlet("/showTastes")
 @SuppressWarnings("unchecked")
 public class ShowTasteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<Prodotto> originalProducts = (List<Prodotto>) req.getSession().getAttribute("filteredProducts");
-        List<String> tastes = new ArrayList<>();
 
-        // Raccogliere tutti i gusti unici
-        for (Prodotto p : originalProducts) {
-            if (!tastes.contains(p.getGusto())) {
-                tastes.add(p.getGusto());
-            }
+        if (originalProducts == null) {
+            originalProducts = new ArrayList<>();
         }
 
-        // Ottenere la lista aggiornata dei prodotti filtrati dalla sessione
-        List<Prodotto> filteredProducts = (List<Prodotto>) req.getSession().getAttribute("products");
-        if (filteredProducts == null) {
-            filteredProducts = new ArrayList<>(originalProducts);
-        }
+        // Creare una mappa per contare le occorrenze di ciascun gusto
+        Map<String, Integer> tasteCounts = new HashMap<>();
+        VarianteDAO varianteDAO = new VarianteDAO();
 
-        // Contare le occorrenze di ogni gusto nei prodotti filtrati
-        List<String> indexTastes = new ArrayList<>();
-        for (String taste : tastes) {
-            int counter = 0;
-            for (Prodotto p : filteredProducts) {
-                if (p.getGusto().equals(taste)) {
-                    counter++;
-                }
-            }
-            String tasteWithCount = taste + " " + "(" + counter + ")";
-            indexTastes.add(tasteWithCount);
+
+        /*List<Variante> varianti = new ArrayList<>();
+        for(Prodotto p: originalProducts){
+            Variante variante = p.getVarianti().get(0);
+            varianti.add(variante);
+        }*/
+        // Raccogliere tutte le varianti dei prodotti filtrati in una singola query
+         List<Variante> varianti = varianteDAO.doRetrieveVariantiByProdotti(originalProducts);
+
+        // Contare le occorrenze di ciascun gusto
+        for (Variante v : varianti) {
+            String gusto = v.getGusto();
+            tasteCounts.put(gusto, tasteCounts.getOrDefault(gusto, 0) + 1);
         }
 
         // Creare il JSONArray per la risposta
         JSONArray jsonArray = new JSONArray();
-        for (String taste : indexTastes) {
-            jsonArray.add(taste);
+        for (Map.Entry<String, Integer> entry : tasteCounts.entrySet()) {
+            String tasteWithCount = entry.getKey() + " (" + entry.getValue() + ")";
+            jsonArray.add(tasteWithCount);
         }
 
         // Impostare il tipo di contenuto e inviare la risposta

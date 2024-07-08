@@ -1,14 +1,17 @@
 package model;
 
-public class DettaglioOrdine {
-    private int idOrdine;
-    private String idProdotto;
+public class Variante {
     private int idVariante;
-    private int quantita;
-    private float prezzo;
-
+    private String idProdotto;
+    private int idGusto;
     private String gusto;
+    private int idConfezione;
     private int pesoConfezione;
+    private int quantita; //Quantità disponibile
+    private float prezzo;
+    private int sconto;
+    private boolean evidenza;
+
 
     public String getGusto() {
         return gusto;
@@ -34,20 +37,28 @@ public class DettaglioOrdine {
         this.idVariante = idVariante;
     }
 
-    public int getIdOrdine() {
-        return idOrdine;
-    }
-
-    public void setIdOrdine(int idOrdine) {
-        this.idOrdine = idOrdine;
-    }
-
     public String getIdProdotto() {
         return idProdotto;
     }
 
     public void setIdProdotto(String idProdotto) {
         this.idProdotto = idProdotto;
+    }
+
+    public int getIdGusto() {
+        return idGusto;
+    }
+
+    public void setIdGusto(int idGusto) {
+        this.idGusto = idGusto;
+    }
+
+    public int getIdConfezione() {
+        return idConfezione;
+    }
+
+    public void setIdConfezione(int idConfezione) {
+        this.idConfezione = idConfezione;
     }
 
     public int getQuantita() {
@@ -64,5 +75,21 @@ public class DettaglioOrdine {
 
     public void setPrezzo(float prezzo) {
         this.prezzo = prezzo;
+    }
+
+    public int getSconto() {
+        return sconto;
+    }
+
+    public void setSconto(int sconto) {
+        this.sconto = sconto;
+    }
+
+    public boolean isEvidenza() {
+        return evidenza;
+    }
+
+    public void setEvidenza(boolean evidenza) {
+        this.evidenza = evidenza;
     }
 }

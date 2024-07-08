@@ -1,5 +1,6 @@
 package controller.Filters;
 
+import controller.homepage.LoadOnStartup;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -7,12 +8,11 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.Prodotto;
-import model.ProdottoDAO;
+import model.*;
+import controller.homepage.LoadOnStartup.*;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @WebServlet(value = "/categories")
 public class CategoriesServlet extends HttpServlet {
@@ -34,13 +34,15 @@ public class CategoriesServlet extends HttpServlet {
         }
 
 
-
         //rimuovo per mantenere coerenza con i gusti
         session.removeAttribute("products");
-
+        session.removeAttribute("searchBarName");
 
         req.setAttribute("originalProducts", productsByCriteria);
 
+
+
+        session.setAttribute("categoria", filter);
         //setto nella session per usare i filtri in ajax
         session.setAttribute("filteredProducts", productsByCriteria);
 
@@ -48,6 +50,7 @@ public class CategoriesServlet extends HttpServlet {
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("FilterProducts.jsp");
         requestDispatcher.forward(req, resp);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

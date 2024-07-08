@@ -1,142 +1,282 @@
-drop database if exists projectusTSW;
-
-create database if not exists projectusTSW;
-
-
-use projectusTSW;
+drop database if exists final_TSW_DB;
+create database if not exists final_TSW_DB;
+use final_TSW_DB;
 
 
-CREATE TABLE IF NOT EXISTS utente (
-    email VARCHAR(100) PRIMARY KEY,
-    password VARCHAR(63) NOT NULL,
-    nome VARCHAR(40),
-    cognome VARCHAR(40),
-    codice_fiscale VARCHAR(16),
-    data_di_nascita DATE,
-    indirizzo VARCHAR(255),
-    numero_di_cellulare VARCHAR(20),
-    poteri TINYINT(1) DEFAULT 0
+create table if not exists utente(
+  email varchar(100) primary key,
+  password varchar(63) not null,
+  nome varchar(40) not null,
+  cognome varchar(40) not null,
+  codice_fiscale varchar(16),
+  data_di_nascita date,
+  indirizzo varchar(255),
+  numero_di_cellulare varchar(20),
+  poteri tinyint(1) default 0
 );
 
-CREATE TABLE IF NOT EXISTS prodotto (
-    id_prodotto VARCHAR(30) PRIMARY KEY,
-    nome VARCHAR(100),
-    descrizione VARCHAR(3000),
-    prezzo FLOAT CHECK (prezzo >= 0.0),
-    quantità INT CHECK (quantità >= 0),
-    categoria VARCHAR(100),
-    gusto VARCHAR(50),
-    calorie INT CHECK (calorie >= 0),
-    grassi INT CHECK (grassi >= 0),
-    proteine INT CHECK (proteine >= 0),
-    carboidrati INT CHECK (carboidrati >= 0),
-    peso INT CHECK (peso >= 0),
-    immagine VARCHAR(2083),
-    sconto INT CHECK (sconto >= 0 AND sconto <= 100),
-    evidenza TINYINT(1) DEFAULT 0
+create table if not exists prodotto(
+	id_prodotto varchar(30) primary key,
+  nome varchar(100) not null,
+  descrizione varchar(3000),
+  categoria varchar(50) not null,
+  immagine varchar(2083) not null,
+  calorie int check (calorie >= 0),
+  carboidrati int check (carboidrati >= 0),
+  proteine int check (proteine >= 0),
+  grassi int check (grassi >= 0)
 );
 
-CREATE TABLE IF NOT EXISTS carrello (
-    utente VARCHAR(100) NOT NULL,
-    prodotto VARCHAR(30) NOT NULL,
-    quantity INT NOT NULL CHECK (quantity > 0),
-    total_price FLOAT NOT NULL CHECK (total_price >= 0.0),
-
-    PRIMARY KEY (utente, prodotto),
-    FOREIGN KEY (utente) REFERENCES utente(email) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (prodotto) REFERENCES prodotto(id_prodotto) ON DELETE CASCADE ON UPDATE CASCADE
+create table if not exists gusto(
+	id_gusto int AUTO_INCREMENT primary key,
+  nomeGusto varchar(50) not null
 );
 
-CREATE TABLE IF NOT EXISTS ordine (
+create table if not exists confezione(
+	id_confezione int AUTO_INCREMENT primary key,
+  peso int not null check (peso >= 0)
+);
+
+create table if not exists variante(
+	id_variante int AUTO_INCREMENT primary key,
+  id_prodotto_variante varchar(30) not null,
+  id_gusto int not null,
+  id_confezione int not null,
+  prezzo float check (prezzo >= 0.0),
+  quantità int check (quantità >= 0),
+  sconto int check (sconto >= 0),
+  evidenza tinyint(1) default 0,
+
+  foreign key (id_prodotto_variante) references prodotto(id_prodotto),
+  foreign key (id_gusto) references gusto(id_gusto),
+  foreign key (id_confezione) references confezione(id_confezione)
+);
+
+
+create table if not exists carrello(
+	email_utente varchar(100) not null,
+  id_prodotto varchar(30) not null,
+  id_variante int not null,
+  quantità int not null check (quantità > 0),
+  prezzo float not null check (prezzo >= 0),
+
+  primary key(email_utente, id_prodotto, id_variante),
+  foreign key(email_utente) references utente(email),
+  foreign key(id_prodotto) references prodotto(id_prodotto),
+  foreign key(id_variante) references variante(id_variante)
+);
+
+CREATE TABLE IF NOT EXISTS ordine(
     id_ordine INT AUTO_INCREMENT PRIMARY KEY,
     email_utente VARCHAR(100) NOT NULL,
-    data DATE NOT NULL,
-    stato VARCHAR(255) NOT NULL,
+    data DATE DEFAULT (CURRENT_DATE),
+    stato VARCHAR(255) DEFAULT 'in esecuzione' NOT NULL,
     totale FLOAT NOT NULL CHECK (totale >= 0.0),
-
-    FOREIGN KEY (email_utente) REFERENCES utente(email) ON DELETE CASCADE ON UPDATE CASCADE
+    FOREIGN KEY (email_utente) REFERENCES utente(email) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS dettaglio_ordine(
+	id_ordine int not null,
+  id_prodotto varchar(30) not null,
+  id_variante int not null,
+  quantità int not null check (quantità > 0),
+  prezzo float not null check (prezzo >= 0.0),
 
-CREATE TABLE IF NOT EXISTS dettaglio_ordine (
-    id_ordine INT NOT NULL,
-    id_prodotto VARCHAR(30) NOT NULL,
-    quantità INT NOT NULL CHECK (quantità > 0),
-    prezzo FLOAT NOT NULL CHECK (prezzo >= 0.0),
+  primary key(id_ordine, id_prodotto, id_variante),
+  foreign key(id_ordine) references ordine (id_ordine),
+  foreign key(id_prodotto) references prodotto (id_prodotto),
+  foreign key(id_variante) references variante (id_variante)
+)
+;
 
+-- Indici sulla tabella prodotto
+CREATE INDEX idx_prodotto_categoria ON prodotto(categoria);
+CREATE INDEX idx_prodotto_nome ON prodotto(nome);
 
+-- Indici sulla tabella variante
+CREATE INDEX idx_variante_id_prodotto_variante ON variante(id_prodotto_variante);
+CREATE INDEX idx_variante_prezzo_sconto ON variante((prezzo * (1 - sconto / 100.0)));
+CREATE INDEX idx_variante_evidenza ON variante(evidenza);
+CREATE INDEX idx_variante_id_gusto ON variante(id_gusto);
+CREATE INDEX idx_variante_id_confezione ON variante(id_confezione);
 
-  	PRIMARY KEY(id_ordine, id_prodotto),
-    FOREIGN KEY (id_ordine) REFERENCES ordine(id_ordine) ON DELETE CASCADE ON UPDATE CASCADE,
-    FOREIGN KEY (id_prodotto) REFERENCES prodotto(id_prodotto) ON UPDATE CASCADE
-);
+-- Indici sulla tabella gusto
+CREATE INDEX idx_gusto_nomeGusto ON gusto(nomeGusto);
 
+-- Indici sulla tabella confezione
+CREATE INDEX idx_confezione_peso ON confezione(peso);
 
-
-INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES
-('luigiaureimma21@gmail.com', '938992937be7b24c8d25f82e68be130b11ca0e61', 'Luigi', 'Auriemma', 'ARMLGU03E21G812E', '2003-05-21', 'Via Raggi 14', '3925303194', 1),
-('raffaelecoppola603@gmail.com', '05b532c78680ae5ec2fa8abe256495ec58186a22', 'Raffaele', 'Coppola', 'CPPRFL03T28H703E', '2003-12-28', 'Via Giovanni Verga', '3896630640', 1),
-('utentex@gmail.com', 'eb701d6c70f1d528becb9173f0ce7d7b8fa755b9', 'Utente', 'X', 'YHLVDS73M49C122X', '2000-12-15', 'Via Napoli', '3201703145', 0),
-('utentey@gmail.com', 'c57558b2f0198f62db7db52d38025038c8f40bdd', 'Utente', 'Y', 'RSSMRA91M14H501E', '2004-01-01', 'Via Vetice', '329456789', 0);
-
-INSERT INTO prodotto (id_prodotto, nome, descrizione, prezzo, quantità, categoria, gusto, calorie, grassi, proteine, carboidrati, peso, immagine, sconto, evidenza) VALUES
-('B001', 'Barretta Proteica al Cioccolato', 'Barretta proteica al gusto di cioccolato', 1.99, 200, 'barrette', 'Cioccolato', 200, 7, 20, 15, 50, 'Immagini/protein.png', 10, 0),
-('B002', 'Barretta Energetica ai Frutti Rossi', 'Barretta energetica ai frutti rossi', 1.79, 180, 'barrette', 'Frutti Rossi', 180, 5, 15, 20, 50, 'Immagini/protein.png', 0, 0),
-('B003', 'Barretta Vegana alla Nocciola', 'Barretta vegana con nocciole', 2.29, 160, 'barrette', 'Nocciola', 210, 10, 12, 22, 50, 'Immagini/protein.png', 0, 0),
-('B004', 'Barretta al Caramello e Arachidi', 'Barretta proteica con caramello e arachidi', 2.49, 150, 'barrette', 'Caramello e Arachidi', 220, 12, 18, 17, 50, 'Immagini/protein.png', 5, 0),
-('B005', 'Barretta al Miele e Mandorle', 'Barretta energetica con miele e mandorle', 1.89, 170, 'barrette', 'Miele e Mandorle', 190, 8, 10, 25, 50, 'Immagini/protein.png', 0, 0),
-('C001', 'Crema alla Nocciola', 'Deliziosa crema spalmabile alla nocciola', 5.99, 50, 'creme spalmabili', 'Nocciola', 200, 12, 3, 25, 400, 'Immagini/protein.png', 10, 0),
-('C002', 'Crema al Cacao', 'Squisita crema spalmabile al cacao', 4.99, 100, 'creme spalmabili', 'Cacao', 220, 15, 4, 30, 350, 'Immagini/protein.png', 15, 0),
-('C003', 'Crema al Pistacchio', 'Gustosa crema spalmabile al pistacchio', 6.49, 75, 'creme spalmabili', 'Pistacchio', 250, 18, 5, 28, 300, 'Immagini/protein.png', 5, 0),
-('C004', 'Crema di Mandorle', 'Delicata crema spalmabile alle mandorle', 7.99, 30, 'creme spalmabili', 'Mandorle', 210, 14, 6, 27, 450, 'Immagini/protein.png', 20, 0),
-('C005', 'Crema al Caramello', 'Irresistibile crema spalmabile al caramello', 5.49, 80, 'creme spalmabili', 'Caramello', 240, 16, 3, 35, 380, 'Immagini/protein.png', 0, 0),
-('CRT001', 'Creatina Monoidrato', 'Creatina di alta qualità per migliorare la forza e le prestazioni', 19.99, 50, 'creatina', 'Neutro', 0, 0, 0, 0, 300, 'Immagini/protein.png', 10, 0),
-('CRT002', 'Creatina Micronizzata', 'Creatina micronizzata per un migliore assorbimento e digeribilità', 22.99, 40, 'creatina', 'Neutro', 0, 0, 0, 0, 250, 'Immagini/protein.png', 15, 0),
-('CRT003', 'Creatina Etil Estere', 'Creatina avanzata con etil estere per un rapido assorbimento', 25.99, 30, 'creatina', 'Neutro', 0, 0, 0, 0, 200, 'Immagini/protein.png', 20, 0),
-('CRT004', 'Creatina HCL', 'Creatina cloridrato per un migliore assorbimento e meno ritenzione idrica', 24.99, 25, 'creatina', 'Neutro', 0, 0, 0, 0, 180, 'Immagini/protein.png', 0, 0),
-('CRT005', 'Creatina Alkaline', 'Creatina alcalina per una maggiore stabilità e assorbimento', 27.99, 20, 'creatina', 'Neutro', 0, 0, 0, 0, 220, 'Immagini/protein.png', 5, 0),
-('CRT006', 'Creatina dell\'anima buona', 'rerbetb', 10, 58, 'creatina', 'Neutro', 0, 0, 0, 0, 100, 'Immagini/protein.png', 0, 0),
-('F001', 'Farina di Mandorle', 'Farina finemente macinata da mandorle', 15.99, 20, 'farine', 'Neutro', 600, 54, 20, 10, 500, 'Immagini/protein.png', 0, 0),
-('F002', 'Farina di Cocco', 'Farina di cocco biologica', 9.99, 15, 'farine', 'Neutro', 450, 33, 8, 21, 500, 'Immagini/protein.png', 0, 0),
-('F003', 'Farina di Avena', 'Farina di avena integrale', 5.99, 40, 'farine', 'Neutro', 400, 7, 14, 70, 500, 'Immagini/protein.png', 0, 0),
-('F004', 'Farina di Grano Saraceno', 'Farina senza glutine', 6.99, 25, 'farine', 'Neutro', 340, 3, 13, 72, 500, 'Immagini/protein.png', 0, 0),
-('F005', 'Farina di Riso', 'Farina di riso bianca', 4.99, 50, 'farine', 'Neutro', 360, 1, 7, 80, 500, 'Immagini/protein.png', 0, 0),
-('P001', 'Proteina Whey 100%', 'Proteine del siero del latte ad alta concentrazione', 29.99, 50, 'proteine', 'Cioccolato', 120, 2, 25, 3, 500, 'Immagini/protein.png', 10, 1),
-('P002', 'Proteina Vegana', 'Mix di proteine vegetali per un apporto completo', 34.99, 40, 'proteine', 'Vaniglia', 110, 1, 23, 2, 500, 'Immagini/protein.png', 15, 0),
-('P003', 'Caseina Micellare', 'Proteine a rilascio lento per un recupero notturno ottimale', 27.99, 30, 'proteine', 'Fragola', 130, 2, 24, 4, 500, 'Immagini/protein.png', 20, 0),
-('P004', 'Proteina Isolata di Soia', 'Alta concentrazione di proteine vegetali isolate', 24.99, 25, 'proteine', 'Neutro', 115, 1, 27, 1, 500, 'Immagini/protein.png', 0, 0),
-('P005', 'Proteina dell\'Albume', 'Proteine dell\'albume d\'uovo in polvere', 32.99, 35, 'proteine', 'Neutro', 108, 0, 22, 1, 500, 'Immagini/protein.png', 5, 0),
-('PROD001', 'Cioccolato fondente', 'Barretta di cioccolato fondente al 70%', 1.99, 100, 'Snack', 'Fondente', 250, 12, 3, 30, 50, 'Immagini/protein.png', 0, 0),
-('PROD002', 'Acqua Minerale', 'Bottiglia di acqua minerale naturale', 0.5, 500, 'Snack', 'Neutro', 0, 0, 0, 0, 1000, 'Immagini/protein.png', 0, 0),
-('PROD003', 'Yogurt alla Fragola', 'Vasetto di yogurt alla fragola', 2.49, 150, 'Latticini', 'Fragola', 150, 5, 8, 20, 200, 'Immagini/protein.png', 0, 0),
-('PROD004', 'Mela Verde', 'Mela verde fresca', 0.8, 150, 'Frutta', 'Neutro', 60, 1, 1, 15, 150, 'Immagini/protein.png', 0, 0),
-('PROD005', 'Pasta Penne', 'Pacchetto di pasta penne rigate', 1.29, 200, 'Frutta', 'Neutro', 350, 1, 12, 75, 500, 'Immagini/protein.png', 0, 0),
-('PW001', 'Pre-Workout Boost', 'Formula pre-allenamento per aumentare energia e concentrazione', 29.99, 45, 'pre-workout', 'Arancia', 10, 0, 2, 3, 300, 'Immagini/protein.png', 10, 0),
-('PW002', 'Pre-Workout Explosive', 'Potente pre-allenamento per massimizzare le prestazioni', 34.99, 40, 'pre-workout', 'Limonata', 15, 0, 1, 4, 350, 'Immagini/protein.png', 15, 0),
-('PW003', 'Pre-Workout Surge', 'Pre-allenamento con ingredienti avanzati per un’energia esplosiva', 32.99, 35, 'pre-workout', 'Mela Verde', 12, 0, 2, 3, 280, 'Immagini/protein.png', 20, 0),
-('PW004', 'Pre-Workout Nitro', 'Pre-allenamento con alta concentrazione di caffeina e beta-alanina', 28.99, 30, 'pre-workout', 'Cola', 10, 0, 1, 2, 290, 'Immagini/protein.png', 0, 0),
-('PW005', 'Pre-Workout Intense', 'Pre-allenamento per aumentare forza e resistenza', 31.99, 25, 'pre-workout', 'Frutti Rossi', 14, 0, 2, 3, 310, 'Immagini/protein.png', 5, 0),
-('S001', 'Salsa Barbecue', 'Salsa barbecue affumicata', 4.99, 100, 'salse', 'Affumicata', 50, 0, 1, 12, 500, 'Immagini/protein.png', 0, 0),
-('S002', 'Salsa di Pomodoro', 'Salsa di pomodoro biologica', 3.99, 80, 'salse', 'Pomodoro', 40, 1, 2, 9, 500, 'Immagini/protein.png', 0, 0),
-('S003', 'Maionese Vegana', 'Maionese senza uova', 5.99, 60, 'salse', 'Neutro', 90, 10, 0, 2, 500, 'Immagini/protein.png', 0, 0),
-('S004', 'Salsa al Pesto', 'Salsa al pesto genovese', 6.99, 70, 'salse', 'Basilico', 80, 7, 2, 4, 500, 'Immagini/protein.png', 0, 0),
-('S005', 'Salsa di Soia', 'Salsa di soia a basso contenuto di sodio', 2.99, 90, 'salse', 'Soia', 15, 0, 1, 2, 500, 'Immagini/protein.png', 0, 0);
-
-INSERT INTO carrello (utente, prodotto, quantity, total_price) VALUES
-('luigiaureimma21@gmail.com', 'CRT003', 3, 77.97),
-('luigiaureimma21@gmail.com', 'P001', 6, 179.94),
-('luigiaureimma21@gmail.com', 'P003', 3, 83.97),
-('luigiaureimma21@gmail.com', 'S005', 6, 17.94),
-('raffaelecoppola603@gmail.com', 'B001', 4, 7.96),
-('raffaelecoppola603@gmail.com', 'B002', 5, 8.95),
-('raffaelecoppola603@gmail.com', 'B003', 3, 6.87),
-('raffaelecoppola603@gmail.com', 'B004', 2, 4.98),
-('raffaelecoppola603@gmail.com', 'B005', 2, 3.78),
-('raffaelecoppola603@gmail.com', 'C002', 4, 19.96),
-('raffaelecoppola603@gmail.com', 'CRT005', 2, 55.98),
-('raffaelecoppola603@gmail.com', 'CRT006', 4, 40),
-('raffaelecoppola603@gmail.com', 'F004', 5, 34.95),
-('raffaelecoppola603@gmail.com', 'S002', 5, 19.95),
-('raffaelecoppola603@gmail.com', 'S003', 2, 11.98);
+-- Indice combinato sulla tabella variante
+CREATE INDEX idx_variante_prezzo_sconto_evidenza ON variante((prezzo * (1 - sconto / 100.0)), evidenza);
 
 
+
+INSERT INTO prodotto (id_prodotto, nome, descrizione, categoria, immagine, calorie, carboidrati, proteine, grassi) VALUES
+('B000', 'Barretta Proteica', 'Barretta proteica al gusto di cioccolato', 'barrette', 'Immagini/protein.png', 200, 15, 20, 7),
+('B001', 'Barretta Proteica Plus', 'Barretta proteica al gusto di cioccolato', 'barrette', 'Immagini/protein.png', 200, 15, 20, 7),
+('B002', 'Barretta Energetica', 'Barretta energetica ai frutti rossi', 'barrette', 'Immagini/protein.png', 180, 20, 15, 5),
+('B003', 'Barretta Vegana', 'Barretta vegana con nocciole', 'barrette', 'Immagini/protein.png', 210, 22, 12, 10),
+('B004', 'Barretta Proteica Caramello', 'Barretta proteica con caramello e arachidi', 'barrette', 'Immagini/protein.png', 220, 17, 18, 12),
+('B005', 'Barretta Energetica Miele', 'Barretta energetica con miele e mandorle', 'barrette', 'Immagini/protein.png', 190, 25, 10, 8),
+('C001', 'Crema alla Nocciola', 'Deliziosa crema spalmabile alla nocciola', 'creme spalmabili', 'Immagini/protein.png', 200, 25, 3, 12),
+('C002', 'Crema al Cacao', 'Squisita crema spalmabile al cacao', 'creme spalmabili', 'Immagini/protein.png', 220, 30, 4, 15),
+('C003', 'Crema al Pistacchio', 'Gustosa crema spalmabile al pistacchio', 'creme spalmabili', 'Immagini/protein.png', 250, 28, 5, 18),
+('C004', 'Crema di Mandorle', 'Delicata crema spalmabile alle mandorle', 'creme spalmabili', 'Immagini/protein.png', 210, 27, 6, 14),
+('C005', 'Crema al Caramello', 'Irresistibile crema spalmabile al caramello', 'creme spalmabili', 'Immagini/protein.png', 240, 35, 3, 16),
+('CRT001', 'Creatina Monoidrato', 'Creatina di alta qualità per migliorare la forza e le prestazioni', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('CRT002', 'Creatina Micronizzata', 'Creatina micronizzata per un migliore assorbimento e digeribilità', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('CRT003', 'Creatina Etil Estere', 'Creatina avanzata con etil estere per un rapido assorbimento', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('CRT004', 'Creatina HCL', 'Creatina cloridrato per un migliore assorbimento e meno ritenzione idrica', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('CRT005', 'Creatina Alkaline', 'Creatina alcalina per una maggiore stabilità e assorbimento', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('CRT006', 'Creatina Avanzata', 'Creatina di alta qualità per migliorare la forza e le prestazioni', 'creatina', 'Immagini/protein.png', 0, 0, 0, 0),
+('F001', 'Farina di Mandorle', 'Farina finemente macinata da mandorle', 'farine', 'Immagini/protein.png', 600, 10, 20, 54),
+('F002', 'Farina di Cocco', 'Farina di cocco biologica', 'farine', 'Immagini/protein.png', 450, 21, 8, 33),
+('F003', 'Farina di Avena', 'Farina di avena integrale', 'farine', 'Immagini/protein.png', 400, 70, 14, 7),
+('F004', 'Farina di Grano Saraceno', 'Farina senza glutine', 'farine', 'Immagini/protein.png', 340, 72, 13, 3),
+('F005', 'Farina di Riso', 'Farina di riso bianca', 'farine', 'Immagini/protein.png', 360, 80, 7, 1),
+('P001', 'Proteina Whey 100%', 'Proteine del siero del latte ad alta concentrazione', 'proteine', 'Immagini/protein.png', 120, 3, 25, 2),
+('P002', 'Proteina Vegana', 'Mix di proteine vegetali per un apporto completo', 'proteine', 'Immagini/protein.png', 110, 2, 23, 1),
+('P003', 'Caseina Micellare', 'Proteine a rilascio lento per un recupero notturno ottimale', 'proteine', 'Immagini/protein.png', 130, 4, 24, 2),
+('P004', 'Proteina di Soia Isolata', 'Alta concentrazione di proteine vegetali isolate', 'proteine', 'Immagini/protein.png', 115, 1, 27, 1),
+('P005', 'Proteina dell\'Albume', 'Proteine dell\'albume d\'uovo in polvere', 'proteine', 'Immagini/protein.png', 108, 1, 22, 0),
+('PW001', 'Pre-Workout Boost', 'Formula pre-allenamento per aumentare energia e concentrazione', 'pre-workout', 'Immagini/protein.png', 10, 3, 2, 0),
+('PW002', 'Pre-Workout Explosive', 'Potente pre-allenamento per massimizzare le prestazioni', 'pre-workout', 'Immagini/protein.png', 15, 4, 1, 0),
+('PW003', 'Pre-Workout Surge', 'Pre-allenamento con ingredienti avanzati per un’energia esplosiva', 'pre-workout', 'Immagini/protein.png', 12, 3, 2, 0),
+('PW004', 'Pre-Workout Nitro', 'Pre-allenamento con alta concentrazione di caffeina e beta-alanina', 'pre-workout', 'Immagini/protein.png', 10, 2, 1, 0),
+('PW005', 'Pre-Workout Intense', 'Pre-allenamento per aumentare forza e resistenza', 'pre-workout', 'Immagini/protein.png', 14, 3, 2, 0),
+('S001', 'Salsa Barbecue', 'Salsa barbecue affumicata', 'salse', 'Immagini/protein.png', 50, 12, 1, 0),
+('S002', 'Salsa di Pomodoro', 'Salsa di pomodoro biologica', 'salse', 'Immagini/protein.png', 40, 9, 2, 1),
+('S003', 'Maionese Vegana', 'Maionese senza uova', 'salse', 'Immagini/protein.png', 90, 2, 0, 10),
+('S004', 'Salsa al Pesto', 'Salsa al pesto genovese', 'salse', 'Immagini/protein.png', 80, 4, 2, 7),
+('S005', 'Salsa di Soia', 'Salsa di soia a basso contenuto di sodio', 'salse', 'Immagini/protein.png', 15, 2, 1, 0);
+
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (1, 'Cioccolato');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (2, 'Caramello');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (3, 'Frutti Rossi');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (4, 'Nocciole');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (5, 'Mandorle');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (6, 'Vaniglia');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (7, 'Cacao');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (8, 'Pistacchio');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (9, 'Soia');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (10, 'Barbecue');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (11, 'Pomodoro');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (12, 'Pesto');
+INSERT INTO gusto (id_gusto, nomeGusto) VALUES (13, 'Soia a basso contenuto di sodio');
+
+
+INSERT INTO confezione (id_confezione, peso) VALUES (1, 50);
+INSERT INTO confezione (id_confezione, peso) VALUES (2, 100);
+INSERT INTO confezione (id_confezione, peso) VALUES (3, 200);
+INSERT INTO confezione (id_confezione, peso) VALUES (4, 250);
+INSERT INTO confezione (id_confezione, peso) VALUES (5, 500);
+INSERT INTO confezione (id_confezione, peso) VALUES (6, 1000);
+
+
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (161, 'B000', 1, 1, 2.5, 100, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (162, 'B000', 2, 2, 4, 50, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (163, 'B001', 1, 1, 3, 100, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (164, 'B001', 3, 2, 4.5, 50, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (165, 'B002', 3, 2, 2.8, 80, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (166, 'B002', 4, 3, 5.5, 40, 20, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (167, 'B003', 4, 3, 3.5, 70, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (168, 'B003', 5, 4, 6, 35, 25, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (169, 'B004', 2, 2, 3.75, 90, 15, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (170, 'B004', 5, 4, 7, 30, 30, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (171, 'B005', 5, 4, 4.2, 60, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (172, 'B005', 4, 5, 8, 25, 35, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (173, 'C001', 4, 3, 5, 70, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (174, 'C001', 7, 5, 9.5, 30, 25, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (175, 'C002', 7, 5, 5.75, 80, 15, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (176, 'C002', 9, 6, 11, 20, 30, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (177, 'C003', 8, 5, 6.3, 50, 20, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (178, 'C003', 5, 6, 12, 15, 35, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (179, 'C004', 5, 4, 5.2, 60, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (180, 'C004', 9, 5, 10, 25, 30, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (181, 'C005', 2, 4, 6.5, 55, 20, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (182, 'C005', 5, 5, 11.5, 20, 35, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (183, 'CRT001', 1, 2, 15, 100, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (184, 'CRT001', 2, 3, 25, 50, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (185, 'CRT002', 3, 2, 18, 80, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (186, 'CRT002', 4, 3, 28, 40, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (187, 'CRT003', 2, 3, 22, 60, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (188, 'CRT003', 1, 4, 30, 30, 15, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (189, 'CRT004', 3, 3, 20, 70, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (190, 'CRT004', 5, 4, 32, 25, 20, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (191, 'CRT005', 4, 4, 25, 60, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (192, 'CRT005', 6, 5, 35, 20, 25, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (193, 'CRT006', 5, 5, 28, 50, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (194, 'CRT006', 2, 6, 40, 15, 40, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (195, 'F001', 5, 4, 10, 40, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (196, 'F001', 4, 5, 15, 20, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (197, 'F002', 3, 3, 8, 50, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (198, 'F002', 5, 4, 12, 25, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (199, 'F003', 2, 2, 5, 70, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (200, 'F003', 1, 3, 9, 35, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (201, 'F004', 3, 4, 6, 60, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (202, 'F004', 4, 5, 11, 30, 20, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (203, 'F005', 1, 2, 4, 80, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (204, 'F005', 2, 3, 7.5, 40, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (205, 'P001', 1, 1, 20, 50, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (206, 'P001', 2, 2, 35, 25, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (207, 'P002', 9, 2, 18, 60, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (208, 'P002', 5, 3, 30, 30, 15, 0);
+INSERT INTO variante(id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (209, 'P003', 1, 2, 22, 40, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (210, 'P003', 3, 3, 36, 20, 20, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (211, 'P004', 9, 2, 19, 55, 5, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (212, 'P004', 8, 3, 32, 28, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (213, 'P005', 10, 4, 17, 65, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (214, 'P005', 5, 3, 28, 35, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (215, 'PW001', 7, 1, 10, 80, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (216, 'PW001', 5, 2, 18, 40, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (217, 'PW002', 3, 1, 12, 70, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (218, 'PW002', 9, 2, 20, 35, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (219, 'PW003', 2, 1, 15, 75, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (220, 'PW003', 4, 2, 22, 37, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (221, 'PW004', 5, 1, 14, 85, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (222, 'PW004', 2, 2, 21, 42, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (223, 'PW005', 1, 1, 13, 90, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (224, 'PW005', 7, 2, 23, 45, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (225, 'S001', 10, 3, 5, 50, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (226, 'S001', 7, 4, 7, 25, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (227, 'S002', 11, 2, 3, 60, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (228, 'S002', 4, 3, 5.5, 30, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (229, 'S003', 4, 2, 6, 55, 0, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (230, 'S003', 5, 3, 8.5, 27, 10, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (231, 'S004', 12, 3, 5.5, 48, 0, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (232, 'S004', 4, 4, 9, 24, 10, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (233, 'S005', 13, 2, 4, 70, 5, 1);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (234, 'S005', 5, 3, 7.5, 35, 15, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (236, 'CRT006', 3, 4, 40, 16, 39, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (237, 'P001', 5, 4, 25, 10, 12, 0);
+INSERT INTO variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (238, 'P001', 1, 2, 15, 20, 2, 0);
+
+INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES ('luigiaureimma21@gmail.com', '938992937be7b24c8d25f82e68be130b11ca0e61', 'Luigi', 'Auriemma', 'ARMLGU03E21G812E', '2003-05-21', 'Via Raggi 14', '3925303194', 1);
+INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES ('raffaelecoppola603@gmail.com', '2645b14e38601e8675c430e5eccfb9bf5e5462bf', 'Raffaele', 'Coppola', 'CPPRFL03T28H703E', '2003-12-28', 'Via Giovanni Verga', '3896630640', 1);
+INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES ('utentex@gmail.com', 'eb701d6c70f1d528becb9173f0ce7d7b8fa755b9', 'Utente', 'X', 'YHLVDS73M49C122X', '2000-12-15', 'Via Napoli', '3201703145', 0);
+INSERT INTO utente (email, password, nome, cognome, codice_fiscale, data_di_nascita, indirizzo, numero_di_cellulare, poteri) VALUES ('utentey@gmail.com', 'c57558b2f0198f62db7db52d38025038c8f40bdd', 'Utente', 'Y', 'RSSMRA91M14H501E', '2004-01-01', 'Via Vetice', '329456789', 0);
+
+
+INSERT INTO ordine (id_ordine, email_utente, totale) VALUES (1, 'raffaelecoppola603@gmail.com', 361.4);
+INSERT INTO ordine (id_ordine, email_utente, data, stato, totale) VALUES (2, 'raffaelecoppola603@gmail.com', '2024-07-08', 'In esecuzione', 220.2);
+INSERT INTO ordine (id_ordine, email_utente, data, stato, totale) VALUES (3, 'raffaelecoppola603@gmail.com', '2024-07-08', 'In esecuzione', 217.5);
+INSERT INTO ordine (id_ordine, email_utente, data, stato, totale) VALUES (4, 'raffaelecoppola603@gmail.com', '2024-07-08', 'In esecuzione', 282.92);
+
+
+
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (1, 'CRT001', 183, 5, 75);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (1, 'P001', 238, 6, 88.2);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (1, 'P004', 211, 4, 72.2);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (1, 'P005', 214, 5, 126);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (2, 'P001', 237, 6, 132);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (2, 'P001', 238, 6, 88.2);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (3, 'CRT001', 183, 5, 75);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (3, 'CRT001', 184, 6, 142.5);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'B000', 161, 1, 2.25);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'B001', 163, 1, 2.85);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'B002', 165, 1, 2.66);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'B003', 167, 2, 6.3);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'B005', 171, 2, 7.56);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'C001', 173, 3, 13.5);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'P001', 206, 6, 189);
+INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'P001', 238, 4, 58.8);

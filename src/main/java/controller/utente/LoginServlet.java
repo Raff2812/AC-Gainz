@@ -104,7 +104,7 @@ public class LoginServlet extends HttpServlet {
         for (Carrello sessionCartEntry : sessionCart) {
             boolean found = false;
             for (Carrello dbCartEntry : dbCart) {
-                if (dbCartEntry.getIdProdotto().equals(sessionCartEntry.getIdProdotto())) {
+                if (dbCartEntry.getIdVariante() == sessionCartEntry.getIdVariante()) {
                     dbCartEntry.setQuantita(dbCartEntry.getQuantita() + sessionCartEntry.getQuantita());
                     dbCartEntry.setPrezzo(dbCartEntry.getPrezzo() + sessionCartEntry.getPrezzo());
                     found = true;

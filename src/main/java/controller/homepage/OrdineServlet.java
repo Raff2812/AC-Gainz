@@ -10,9 +10,12 @@ import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @WebServlet(value = "/orderServlet")
+@SuppressWarnings("unchecked")
+
 public class OrdineServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +32,15 @@ public class OrdineServlet extends HttpServlet {
             float orderTotal = 0;
             for (Carrello cartItem: cart) orderTotal += cartItem.getPrezzo();
 
-            Ordine ordine = new Ordine(x.getEmail(), orderTotal);
+
+
+            Ordine ordine = new Ordine();
+            ordine.setEmailUtente(x.getEmail());
+            ordine.setDataOrdine(new Date());
+            ordine.setStato("In esecuzione");
+            ordine.setTotale(orderTotal);
+            //Ordine ordine = new Ordine(x.getEmail(), orderTotal);
+
 
             OrdineDao ordineDao = new OrdineDao();
             ordineDao.doSave(ordine);
@@ -40,7 +51,15 @@ public class OrdineServlet extends HttpServlet {
 
             List<DettaglioOrdine> dettaglioOrdine = new ArrayList<>();
             for (Carrello cartItem: cart){
-                DettaglioOrdine dettaglioOrdineItem = new DettaglioOrdine(id_order, cartItem.getIdProdotto(), cartItem.getQuantita(), cartItem.getPrezzo());
+                DettaglioOrdine dettaglioOrdineItem = new DettaglioOrdine();
+                dettaglioOrdineItem.setIdOrdine(id_order);
+                dettaglioOrdineItem.setIdVariante(cartItem.getIdVariante());
+                dettaglioOrdineItem.setIdProdotto(cartItem.getIdProdotto());
+                dettaglioOrdineItem.setQuantita(cartItem.getQuantita());
+                dettaglioOrdineItem.setPrezzo(cartItem.getPrezzo());
+                dettaglioOrdineItem.setGusto(cartItem.getGusto());
+                dettaglioOrdineItem.setPesoConfezione(cartItem.getPesoConfezione());
+
                 dettaglioOrdine.add(dettaglioOrdineItem);
             }
 
@@ -55,7 +74,7 @@ public class OrdineServlet extends HttpServlet {
             req.setAttribute("order", ordine);
             req.setAttribute("orderDetails", dettaglioOrdine);
 
-            req.getRequestDispatcher("Ordine.jsp").forward(req, resp);
+            req.getRequestDispatcher("WEB-INF/Ordine.jsp").forward(req, resp);
         }
     }
 }

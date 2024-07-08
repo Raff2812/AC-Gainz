@@ -13,7 +13,7 @@
     <title>Ordine</title>
 </head>
 <body>
-<%@include file="WEB-INF/Header.jsp"%>
+<%@include file="Header.jsp"%>
 <p>Ordine confermato</p> <br>
 <p>Dettagli ordine:</p> <br>
 <%
@@ -30,6 +30,6 @@
 <p>Totale ordine: <%=ordine.getTotale()%></p>
 
 
-<%@include file="WEB-INF/Footer.jsp"%>
+<%@include file="Footer.jsp"%>
 </body>
 </html>

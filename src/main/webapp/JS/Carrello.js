@@ -1,21 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-
-
-    document.querySelectorAll(".modifyQuantity").forEach(button =>{
-        button.addEventListener("click", function (){
-            const input = this.closest(".product").querySelector(".inputQuantity");
-
-            const value = Number(input.value);   //utilizzato per vedere se qualcuno cambia il tipo di
-
-            const id = this.getAttribute("data-product");
-            console.log(id + " * " + value);
-
-            if (!Number.isNaN(value) && id !== null)
-                updateQuantity(value, id);
-        })
-    });
-
-
     document.getElementById("buyCart").addEventListener("click", function () {
 
         if (Logged === false) {
@@ -60,15 +43,16 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
-function updateQuantity(quantity, id) {
+function updateQuantity(quantity, idProdotto, taste, weight) {
     const urlSearch = new URLSearchParams();
-    urlSearch.append("action", "quantity");
+    urlSearch.append("action", "quantityVariant");
     urlSearch.append("quantity", quantity);
-    urlSearch.append("id", id);
+    urlSearch.append("id", idProdotto);
+    urlSearch.append("gusto", taste);
+    urlSearch.append("pesoConfezione", weight);
     fetch("cartServlet?" + urlSearch.toString())
         .then(response => {
-            if (!response.ok) throw new Error();
+            if (!response.ok) throw new Error(`Network Error: ${response.status} - ${response.statusText}`);
 
             return response.text();
         })
@@ -133,16 +117,16 @@ function updateCartJSP(response) {
 
             const img = document.createElement("img");
             img.src = cartItem.imgSrc;
-            img.alt = cartItem.nome;
+            img.alt = cartItem.nomeProdotto;
 
             const productInfoDiv = document.createElement("div");
             productInfoDiv.className = "product-info";
 
             const productName = document.createElement("h3");
-            productName.innerText = cartItem.nome;
+            productName.innerText = cartItem.nomeProdotto;
 
             const productFlavour = document.createElement("p");
-            productFlavour.innerText = cartItem.flavour;
+            productFlavour.innerText =`${cartItem.flavour}`;
 
             const productWeight = document.createElement("p");
             productWeight.innerText = `${cartItem.weight} grammi`;
@@ -160,7 +144,7 @@ function updateCartJSP(response) {
             updateQuantities.innerText = 'Modifica';
             updateQuantities.onclick = function () {
                 if (quantity.value !== '')
-                    updateQuantity(quantity.value, cartItem.id);
+                    updateQuantity(quantity.value, cartItem.idProdotto, cartItem.flavour, cartItem.weight);
             }
 
             quantityDiv.appendChild(quantity);
@@ -181,7 +165,7 @@ function updateCartJSP(response) {
             rmvButton.style.color = "black";
 
             rmvButton.onclick = function () {
-                removeItem(cartItem.id);
+                removeItemVariant(cartItem.idProdotto, cartItem.flavour, cartItem.weight);
             };
             rmvDiv.appendChild(rmvButton);
 
@@ -206,6 +190,90 @@ function updateCartJSP(response) {
     }
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+function updateQuantity(idProdotto, taste, weight, quantity) {
+    const form = document.createElement("form");
+    form.action = "cartServlet";
+    form.method = "GET";
+
+    const actionInput = document.createElement("input");
+    actionInput.type = "hidden";
+    actionInput.name = "action";
+    actionInput.value = "quantityVariant";
+
+    const idInput = document.createElement("input");
+    idInput.type = "hidden";
+    idInput.name = "id";
+    idInput.value = idProdotto;
+
+    const tasteInput = document.createElement("input");
+    tasteInput.type = "hidden";
+    tasteInput.name = "gusto";
+    tasteInput.value = taste;
+
+    const weightInput = document.createElement("input");
+    weightInput.type = "hidden";
+    weightInput.name = "pesoConfezione";
+    weightInput.value = weight;
+
+    const quantityInput = document.createElement("input");
+    quantityInput.type = "hidden";
+    quantityInput.name = "quantity";
+    quantityInput.value = quantity;
+
+    const reloadInput = document.createElement("input");
+    reloadInput.type = "hidden";
+    reloadInput.name = "reload";
+    reloadInput.value = "true";
+
+    form.append(actionInput, idInput, tasteInput, weightInput, quantityInput, reloadInput);
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+*/
 
 
 

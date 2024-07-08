@@ -7,37 +7,45 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+
+
 public class DettaglioOrdineDAO {
-    public DettaglioOrdine doRetrieveById(int id)
-    {
+    public DettaglioOrdine doRetrieveById(int id) {
+        DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
         try(Connection con= ConPool.getConnection())
         {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT id_ordine,id_prodotto,quantità,prezzo FROM dettaglio_ordine WHERE id_ordine=?");
+            PreparedStatement preparedStatement=con.prepareStatement("SELECT dettaglio_ordine.*, g.nomeGusto, c.peso FROM dettaglio_ordine join variante v on dettaglio_ordine.id_variante = v.id_variante join confezione c on v.id_confezione join gusto g on v.id_gusto = g.id_gusto " +
+                    "WHERE id_ordine = ?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
-            if(resultSet.next())
-            {
-                return new DettaglioOrdine(resultSet.getInt("id_ordine"),resultSet.getString("id_prodotto"),
-                        resultSet.getInt("quantità"),resultSet.getFloat("prezzo"));
-            }
-            return null;
-
+           while (resultSet.next()){
+             dettaglioOrdine.setIdOrdine(resultSet.getInt("id_ordine"));
+             dettaglioOrdine.setIdProdotto(resultSet.getString("id_prodotto"));
+             dettaglioOrdine.setIdVariante(resultSet.getInt("id_variante"));
+             dettaglioOrdine.setQuantita(resultSet.getInt("quantità"));
+             dettaglioOrdine.setPrezzo(resultSet.getFloat("prezzo"));
+             dettaglioOrdine.setGusto(resultSet.getString("nomeGusto"));
+             dettaglioOrdine.setPesoConfezione(resultSet.getInt("peso"));
+           }
         }
         catch (SQLException sqlException)
         {
             throw new RuntimeException(sqlException);
         }
+
+        return dettaglioOrdine;
     }
 
     public void doSave(DettaglioOrdine dettaglioOrdine) {
         try (Connection con = ConPool.getConnection()) {
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO dettaglio_ordine (id_ordine,id_prodotto,quantità,prezzo) VALUES(?,?,?,?)",
+                    "INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES(?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
             ps.setInt(1, dettaglioOrdine.getIdOrdine());
             ps.setString(2, dettaglioOrdine.getIdProdotto());
-            ps.setInt(3, dettaglioOrdine.getQuantita());
-            ps.setFloat(4, dettaglioOrdine.getPrezzo());
+            ps.setInt(3, dettaglioOrdine.getIdVariante());
+            ps.setInt(4, dettaglioOrdine.getQuantita());
+            ps.setFloat(5, dettaglioOrdine.getPrezzo());
             if (ps.executeUpdate() != 1) {
                 throw new RuntimeException("INSERT error.");
             }
@@ -46,7 +54,7 @@ public class DettaglioOrdineDAO {
         }
     }
 
-    public List<DettaglioOrdine> doRetrieveAll(){
+   /* public List<DettaglioOrdine> doRetrieveAll(){
 
         ArrayList<DettaglioOrdine> dettagliordini = new ArrayList<>();
 
@@ -98,5 +106,5 @@ public class DettaglioOrdineDAO {
         catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 }

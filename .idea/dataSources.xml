@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="projectustsw@localhost" uuid="9172aae8-6b4d-4189-a047-1f196bd63136">
+    <data-source source="LOCAL" name="final_tsw_db@localhost" uuid="9172aae8-6b4d-4189-a047-1f196bd63136">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/projectustsw</jdbc-url>
+      <jdbc-url>jdbc:mysql://localhost:3306/final_tsw_db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

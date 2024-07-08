@@ -12,13 +12,14 @@ public class CarrelloDAO {
 
     public void doSave(Carrello c){
         try (Connection con = ConPool.getConnection()){
-            String query = "INSERT INTO carrello (utente, prodotto, quantity, total_price) " +
-                    "VALUES (?, ?, ?, ?)";
+            String query = "INSERT INTO carrello (email_utente, id_prodotto, id_variante, quantità, prezzo) " +
+                    "VALUES (?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = con.prepareStatement(query,Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, c.getEmailUtente());
             preparedStatement.setString(2, c.getIdProdotto());
-            preparedStatement.setInt(3, c.getQuantita());
-            preparedStatement.setFloat(4, c.getPrezzo());
+            preparedStatement.setInt(3, c.getIdVariante());
+            preparedStatement.setInt(4, c.getQuantita());
+            preparedStatement.setFloat(5, c.getPrezzo());
 
 
             preparedStatement.executeUpdate();
@@ -30,7 +31,7 @@ public class CarrelloDAO {
     public void doRemoveCartByUser(String emailUtente){
         try (Connection connection = ConPool.getConnection()){
 
-            PreparedStatement preparedStatement = connection.prepareStatement("Delete from carrello where utente = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("Delete from carrello where email_utente = ?");
             preparedStatement.setString(1, emailUtente);
 
             int rowsDeleted = preparedStatement.executeUpdate();
@@ -48,17 +49,25 @@ public class CarrelloDAO {
         List<Carrello> carrelli = new ArrayList<>();
 
         try (Connection connection = ConPool.getConnection()) {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM carrello WHERE utente = ?");
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM carrello join variante v " +
+                    "on carrello.id_variante = v.id_variante join gusto g on v.id_gusto = g.id_gusto join confezione c on v.id_confezione = c.id_confezione join prodotto p on carrello.id_prodotto = p.id_prodotto " +
+                    "WHERE email_utente = ?");
             preparedStatement.setString(1, emailUtente);
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 Carrello carrello = new Carrello();
-                carrello.setEmailUtente(resultSet.getString("utente"));
-                carrello.setIdProdotto(resultSet.getString("prodotto"));
-                carrello.setQuantita(resultSet.getInt("quantity"));
-                carrello.setPrezzo(resultSet.getFloat("total_price"));
+                carrello.setEmailUtente(resultSet.getString("email_utente"));
+                carrello.setIdProdotto(resultSet.getString("id_prodotto"));
+                carrello.setIdVariante(resultSet.getInt("id_variante"));
+                carrello.setQuantita(resultSet.getInt("quantità"));
+                carrello.setPrezzo(resultSet.getFloat("prezzo"));
+
+                carrello.setGusto(resultSet.getString("nomeGusto"));
+                carrello.setPesoConfezione(resultSet.getInt("peso"));
+                carrello.setNomeProdotto(resultSet.getString("nome"));
+                carrello.setImmagineProdotto(resultSet.getString("immagine"));
 
                 carrelli.add(carrello);
             }

@@ -1,17 +1,33 @@
 function genericFilter() {
     console.log("Calling genericFilter");
 
-    const price = document.getElementById("prices").value;
+  /*  const category = window.location.search;
+    let valueCategory = "";
+    if (category.includes("category")){
+
+
+        valueCategory = category.split("=")[1].toString();
+        console.log(valueCategory);
+    }*/
+
+
+    //const calories = document.getElementById("calories").value;
+    //const price = document.getElementById("prices").value;
+
     const taste = document.getElementById("tastes").value;
-    const calories = document.getElementById("calories").value;
     const sorting = document.getElementById("sorting").value;
+    const weight = document.getElementById("weights").value;
+
 
     const params = new URLSearchParams();
 
-    if (price) params.append("price", price);
+
+    //if (valueCategory !== "") params.append("categoryJS", valueCategory);
+    //if (price) params.append("price", price);
     if (taste) params.append("taste", taste);
-    if (calories) params.append("calories", calories);
+    //if (calories) params.append("calories", calories);
     if (sorting) params.append("sorting", sorting);
+    if (weight) params.append("weight", weight);
 
     const urlServlet = `genericFilter?${params.toString()}`;
 
@@ -34,12 +50,19 @@ function genericFilter() {
 
 
 
-
-function updateView(response) {
+ function updateView(response) {
     const group = document.querySelector("#gr");
     group.innerHTML = "";
 
-    const products = JSON.parse(response);
+    let products;
+
+     try {
+         products = JSON.parse(response);
+     } catch (e) {
+         console.error("Error parsing JSON response:", e);
+         return;
+     }
+
 
     products.forEach(prodottoFiltrato => {
         const divProductCard = document.createElement("div");
@@ -127,6 +150,8 @@ function updateView(response) {
     });
 }
 
+
+
 function resetProducts() {
     console.log("Resetting products...");
     const selects = document.querySelectorAll('select');
@@ -135,3 +160,27 @@ function resetProducts() {
     });
     genericFilter();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+document.addEventListener("click", function (event) {
+    const divOption = document.querySelector(".centered-div");
+    if (divOption.style.display === "flex" && !divOption.contains(event.target) && !event.target.classList.contains('cartAdd')) {
+        divOption.style.display = "none";
+    }
+});
+
+

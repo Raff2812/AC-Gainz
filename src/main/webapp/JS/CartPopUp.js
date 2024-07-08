@@ -23,56 +23,12 @@ function toggleCartVisibility() {
 function rmvClick() {
     console.log("buttonRemove clicked");
     const id = this.getAttribute("data-product-id");
-    removeItem(id);
+    const flavour = this.getAttribute("data-product-flavour");
+    const weight = this.getAttribute("data-product-weight");
+
+    removeItemVariant(id, flavour, weight);
 }
 
-function addCart(idProdotto, quantity) {
-    const params = new URLSearchParams();
-    params.append("action", "add");
-    params.append("id", idProdotto);
-    if (quantity)
-        params.append("quantity", quantity);
-
-    fetch("cartServlet?" + params.toString())
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Network error: ${response.status} - ${response.statusText}`);
-            }
-            return response.text();
-        })
-        .then(responseText => {
-            updateCartView("add", responseText);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
-
-function removeItem(id) {
-    const urlParam = new URLSearchParams();
-    urlParam.append("action", "remove");
-    urlParam.append("id", id);
-
-    fetch("cartServlet?" + urlParam.toString())
-        .then(response => {
-            if (!response.ok)
-                throw new Error(`Network error: ${response.status} - ${response.statusText}`);
-
-            return response.text();
-        })
-        .then(responseText => {
-            updateCartView("remove", responseText);
-            showCart();
-
-            if (window.location.pathname.includes("cart")){
-                console.log("Stong ndo cart")
-                showCartCheckOut();
-            }
-        })
-        .catch(error => {
-            console.error(error);
-        });
-}
 
 function showCart() {
     const urlParam = new URLSearchParams();
@@ -136,14 +92,16 @@ function updateCartView(action, response) {
         for (let i = 0; i < cartItems.length - 1; i++) {
             const item = cartItems[i];
             const div = document.createElement("div");
-            div.innerText = `${item.nome} ${item.quantity} ${item.prezzo}`;
+            div.innerText = `${item.nomeProdotto} ${item.quantity} ${item.prezzo}`;
             const rmvButton = document.createElement("button");
 
             rmvButton.className = "rmvButton";
             rmvButton.innerText = "Rimuovi Elemento";
             rmvButton.style.display = "block";
             rmvButton.style.color = "black";
-            rmvButton.setAttribute("data-product-id", item.id);
+            rmvButton.setAttribute("data-product-id", item.idProdotto);
+            rmvButton.setAttribute("data-product-flavour", item.flavour);
+            rmvButton.setAttribute("data-product-weight", item.weight);
 
             // Associate click event to the remove button
             rmvButton.addEventListener("click", rmvClick);
@@ -171,20 +129,22 @@ function updateCartView(action, response) {
         cartItemDiv.appendChild(totalPriceDiv);
 
 
-        const goToCheckOutForm = document.createElement("form");
-        goToCheckOutForm.method = "POST";
-        goToCheckOutForm.action = "cart";
+        const goToCheckOutForm = document.createElement("a");
+        goToCheckOutForm.href = "Carrello.jsp";
+        goToCheckOutForm.innerText = "Vai al Checkout";
+        cartItemDiv.appendChild(goToCheckOutForm);
 
-
+        let inputForm = document.getElementById("primaryKeyForm");
+        inputForm.setAttribute("primaryKey", `${item.idProdotto}`);
 
         const goToCheckOut = document.createElement("button");
-        goToCheckOut.type = "submit";
         goToCheckOut.className = "checkOut";
         goToCheckOut.innerText = "Vai al CheckOut";
 
-        goToCheckOutForm.appendChild(goToCheckOut);
+        goToCheckOut.onclick = function (){ window.location.href = "Carrello.jsp"};
 
-        cartItemDiv.appendChild(goToCheckOutForm);
+
+        cartItemDiv.appendChild(goToCheckOut);
 
 
     } catch (error) {
@@ -192,5 +152,61 @@ function updateCartView(action, response) {
         console.log("Response text:", response);
     }
 }
+
+
+
+function addCartVariant(idProdotto, quantity, gusto, pesoConfezione){
+    const params = new URLSearchParams();
+    params.append("action", "addVariant");
+    params.append("id", idProdotto);
+    if (quantity)
+        params.append("quantity", quantity);
+
+    params.append("gusto", gusto);
+    params.append("pesoConfezione", pesoConfezione)
+
+    fetch("cartServlet?" + params.toString())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network error: ${response.status} - ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            updateCartView("add", responseText);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
+function removeItemVariant(idProdotto, gusto, pesoConfezione){
+    const params = new URLSearchParams();
+    params.append("action", "removeVariant");
+    params.append("id", idProdotto);
+    params.append("gusto", gusto);
+    params.append("pesoConfezione", pesoConfezione)
+
+    fetch("cartServlet?" + params.toString())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Network error: ${response.status} - ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then(responseText => {
+            updateCartView("remove", responseText);
+            showCart();
+
+            if (window.location.pathname.includes("cart")){
+                console.log("Stong ndo cart")
+                showCartCheckOut();
+            }
+        })
+        .catch(error => {
+            console.error(error);
+        });
+}
+
 
 

@@ -8,15 +8,20 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
 import model.ProdottoDAO;
+import model.Variante;
+import model.VarianteDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static controller.Filters.GenericFilterServlet.getJsonObject;
+
 
 @WebServlet(value = "/searchBar")
 @SuppressWarnings("unchecked")
@@ -27,13 +32,25 @@ public class SearchBarServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         List<Prodotto> products = new ArrayList<>();
+        VarianteDAO varianteDAO = new VarianteDAO();
 
         if (name != null && !name.isEmpty()) {
+            session.removeAttribute("categoria");  //per applicare i filtri
             ProdottoDAO prodottoDAO = new ProdottoDAO();
-            products = prodottoDAO.doRetrieveByName(name);
+            try {
+                products = prodottoDAO.filterProducts("", "", "", "", name);
+                session.setAttribute("searchBarName", name);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         } else {
             products = (List<Prodotto>) session.getAttribute("filteredProducts");
         }
+
+
+
+
+
 
         // Save search results in originalProducts and products for further filtering
         session.setAttribute("filteredProducts", products);

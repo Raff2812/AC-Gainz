@@ -17,31 +17,30 @@
     <div id="checkOutItem">
         <%
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
-            List<Prodotto> productsCart = (List<Prodotto>) request.getAttribute("productsCart");
 
             float total = 0;
-            if (cartItems != null && productsCart != null && cartItems.size() == productsCart.size()){
-                for (int i = 0; i < cartItems.size(); i++) {
-                    Carrello cartItem = cartItems.get(i);
-                    Prodotto p = productsCart.get(i);
+            if (cartItems != null){
+               for(Carrello cartItem: cartItems){
                     total += cartItem.getPrezzo();
         %>
         <div class="product">
-            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>">
+            <img src="<%= cartItem.getImmagineProdotto() %>" alt="<%= cartItem.getNomeProdotto() %>">
             <div class="product-info">
-                <h3><%= p.getNome() %></h3>
-                <p><%= p.getGusto() %></p>
-                <p><%= p.getPeso() %> grammi</p>
+                <h3><%= cartItem.getNomeProdotto() %></h3>
+                <p><%= cartItem.getGusto() %></p>
+                <p><%= cartItem.getPesoConfezione() %> grammi</p>
             </div>
             <div class="quantity-div">
                 <input class="inputQuantity" type="number" value="<%= cartItem.getQuantita() %>">
-                <button data-product = '<%=p.getIdProdotto()%>' class="modifyQuantity">Modifica</button>
+                <button data-product-id = '<%=cartItem.getIdProdotto()%>' data-product-taste = '<%=cartItem.getGusto()%>' data-product-weight = '<%=cartItem.getPesoConfezione()%>'
+                         class="modifyQuantity">Modifica</button>
             </div>
             <div class="price-div">
                 <p><%= Math.round(cartItem.getPrezzo() * 100.0f) / 100.0f %></p>
             </div>
             <div class="rmv-div">
-                <button class="rmvButton" onclick="removeItem('<%= p.getIdProdotto() %>')">Rimuovi Elemento</button>
+                <button class="rmvButton" data-product-id = '<%=cartItem.getIdProdotto()%>' data-product-taste = '<%=cartItem.getGusto()%>' data-product-weight = '<%=cartItem.getPesoConfezione()%>'
+                        onclick="removeItem()">Rimuovi Elemento</button>
             </div>
         </div>
             <%

@@ -22,7 +22,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebServlet("/editServlet")
-public class editUserServlet extends HttpServlet {
+public class ModificaDatiUtenteServlet extends HttpServlet {
 
 
     @Override
@@ -41,7 +41,7 @@ public class editUserServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
         Utente utente = (Utente) session.getAttribute("Utente");
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("AreaUtente.jsp");
+        RequestDispatcher requestDispatcher = request.getRequestDispatcher("areaUtenteServlet");
         UtenteDAO utenteDAO = new UtenteDAO();
 
         switch (field) {
