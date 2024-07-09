@@ -32,19 +32,22 @@
 }
 .product-info-name {
     padding: 5px 0;
-    font-size: 22px;
-    color: black;
     text-align: center;
-    font-weight: 450;
 }
-.product-info-name-redirect{
-    background: none;
+.product-info-name-redirect {
+    padding: 10px;
+    background: #f5f5f5;
     border: none;
-    color: inherit;
-    font: inherit;
+    font-size: 21px;
+    border-radius: 8px;
     cursor: pointer;
-    padding: 0;
+    transition: .3s;
     outline: none;
+}
+/* Styling form button */
+.product-info-name-redirect:hover{
+    background-color: orangered;
+    color: black;
 }
 .product-image {
     position: relative;

@@ -30,6 +30,7 @@
             font-weight: 550;
             text-align: left;
             max-width: 50%;
+            backdrop-filter: blur(40px);
             box-sizing: border-box;
         }
         .prodotti-phrase {
@@ -44,7 +45,8 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
-        }.centered-div {
+        }
+        .centered-div {
              display: none;
              flex-direction: column;
              align-items: center;
@@ -124,21 +126,6 @@
             cursor: pointer;
             font-size: 1em;
             margin-bottom: 20px;
-        }
-
-        /* Styling form button */
-        .product-info-name-redirect {
-            padding: 10px 20px;
-            background: #f1f1f1;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-        }
-        /* Styling form button */
-        .product-info-name-redirect:hover{
-            background-color: orangered;
-            color: black;
         }
 
     </style>

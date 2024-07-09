@@ -32,12 +32,13 @@
             display: grid;
             justify-content: center;
             height: fit-content;
+            width: fit-content;
             border: 2px solid black;
             backdrop-filter: blur(40px);
             box-shadow: 0 0 5px black;
             border-radius: 20px;
             padding: 30px 40px;
-            margin: 30px 40px 10px 40px;
+            margin: 30px auto;
 
         }
 
@@ -62,12 +63,26 @@
         .register-contenitore .submit-button:hover{
             color: black;
         }
+        .password-requirements {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: white;
+            color: black;
+            border: 1px solid black;
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 14px;
+            z-index: 10;
+        }
 
         .register-contenitore .input-box{
             position: relative;
             height: 50px;
             background: white;
-            margin: 30px 0;
+            margin: 20px 0;
             border-radius: 40px;
         }
 
@@ -87,7 +102,7 @@
         .input-box img{
             position: absolute;
             top: 50%;
-            left: 85%;
+            left: 80%;
             transform: translateY(-50%);
             cursor: pointer;
             width: 30px;
@@ -98,7 +113,7 @@
             width: fit-content;
         }
 
-        .register-first-row .register-second-row{
+        .register-first-row, .register-second-row{
             width: 100%;
             display: inline-grid;
         }
@@ -135,8 +150,20 @@
                     <label for="email"></label><input type="email" name="email" id="email" placeholder="Email" required autocomplete="">
                 </div>
                 <div class="input-box">
-                    <label for="password"></label><input type="password" name="password" id="password" placeholder="Password" required autocomplete="">
-                    <img id="imgPass" src="Immagini/hide.png" alt="Hide" onclick="togglePassword('password', 'imgPass')">
+                    <label for="password"></label>
+                    <input type="password" name="password" id="password" placeholder="Password" required
+                           onfocus="showPasswordRequirements(true)" onblur="showPasswordRequirements(false)">
+                    <img src="Immagini/hide.png" alt="hide png" id="imgPass" onclick="togglePassword('password', 'imgPass')">
+                    <div class="password-requirements" id="password-requirements">
+                        <p>La password deve contenere:</p>
+                        <ul>
+                            <li>Almeno 8 caratteri</li>
+                            <li>Una lettera maiuscola</li>
+                            <li>Una lettera minuscola</li>
+                            <li>Un numero</li>
+                            <li>Un carattere speciale</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div class="input-box">
@@ -168,7 +195,6 @@
     <p>Sei già registrato?<a href="Login.jsp"> Effettua il Login</a></p>
 
 </div>
-
 
 </body>
 </html>

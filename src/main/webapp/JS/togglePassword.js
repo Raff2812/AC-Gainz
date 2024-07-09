@@ -11,3 +11,11 @@ function togglePassword(idInput, idImg){
         }
 }
 
+function showPasswordRequirements(show) {
+    const requirementsBox = document.getElementById('password-requirements');
+    if (show) {
+        requirementsBox.style.display = 'block';
+    } else {
+        requirementsBox.style.display = 'none';
+    }
+}
