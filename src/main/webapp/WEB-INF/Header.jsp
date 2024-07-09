@@ -19,6 +19,7 @@
 
 <script src="JS/CartPopUp.js" defer></script>
 <script src="JS/SearchBar.js"></script>
+<script src="JS/genericFilter.js"></script>
 
 <header>
     <div class="header-container">

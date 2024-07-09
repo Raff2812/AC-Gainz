@@ -21,9 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
             form.appendChild(hiddenField);
             document.body.appendChild(form); // Append the form to the body
             form.submit();
-
-
-
         }
     });
 });

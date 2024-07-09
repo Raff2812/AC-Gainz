@@ -5,7 +5,10 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import model.*;
+import model.Prodotto;
+import model.ProdottoDAO;
+import model.Variante;
+import model.VarianteDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -111,6 +114,7 @@ public class ShowOptions extends HttpServlet {
                 VarianteDAO varianteDAO = new VarianteDAO();
                 Variante v = varianteDAO.doRetrieveVariantByFlavourAndWeight(idProdotto, flavour, weight).get(0);
 
+                System.out.println(v.getIdVariante());
                 JSONObject jsonResponse = new JSONObject();
                 jsonResponse.put("prezzo", v.getPrezzo());
                 jsonResponse.put("sconto", v.getSconto());

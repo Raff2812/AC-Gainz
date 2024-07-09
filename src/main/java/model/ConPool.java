@@ -1,8 +1,7 @@
 package model;
 
-import org.apache.tomcat.jdbc.pool.PoolProperties;
-
 import org.apache.tomcat.jdbc.pool.DataSource;
+import org.apache.tomcat.jdbc.pool.PoolProperties;
 
 import java.sql.Connection;
 import java.sql.SQLException;

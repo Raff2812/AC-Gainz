@@ -142,8 +142,9 @@ function genericFilter() {
         button.className = "cartAdd";
 
         button.onclick = function (){
-            addCart(prodottoFiltrato.id);
+            optionsVarianti(`${prodottoFiltrato.idVariante}`);
         }
+
         divProductCard.appendChild(button);
 
         group.appendChild(divProductCard);
@@ -176,6 +177,8 @@ function resetProducts() {
 
 
 
+/*
+
 document.addEventListener("click", function (event) {
     const divOption = document.querySelector(".centered-div");
     if (divOption.style.display === "flex" && !divOption.contains(event.target) && !event.target.classList.contains('cartAdd')) {
@@ -183,4 +186,4 @@ document.addEventListener("click", function (event) {
     }
 });
 
-
+*/

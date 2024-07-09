@@ -1,11 +1,10 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public class ProdottoDAO {
 
@@ -56,6 +55,9 @@ public class ProdottoDAO {
         List<Prodotto> filteredProducts = new ArrayList<>();
         VarianteDAO varianteDAO = new VarianteDAO();
         boolean filterOnEvidence;
+
+
+        System.out.println("nameFilterDAO: " + nameFilter);
 
         try (Connection connection = ConPool.getConnection()) {
             StringBuilder sql = new StringBuilder();

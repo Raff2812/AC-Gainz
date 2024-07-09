@@ -1,6 +1,5 @@
 package controller.Filters;
 
-import controller.homepage.LoadOnStartup;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -8,11 +7,12 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import model.*;
-import controller.homepage.LoadOnStartup.*;
+import model.Prodotto;
+import model.ProdottoDAO;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet(value = "/categories")
 public class CategoriesServlet extends HttpServlet {
@@ -43,6 +43,7 @@ public class CategoriesServlet extends HttpServlet {
 
 
         session.setAttribute("categoria", filter);
+        session.setAttribute("categoriaRecovery", filter);
         //setto nella session per usare i filtri in ajax
         session.setAttribute("filteredProducts", productsByCriteria);
 

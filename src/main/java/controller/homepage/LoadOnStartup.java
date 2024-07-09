@@ -4,13 +4,10 @@ import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
+import model.Prodotto;
+import model.ProdottoDAO;
 
-import model.*;
-
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @WebServlet(value = "/loadOnStartUp", loadOnStartup = 1)
 public class LoadOnStartup extends HttpServlet {

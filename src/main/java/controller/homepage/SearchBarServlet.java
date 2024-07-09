@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
 import model.ProdottoDAO;
-import model.Variante;
 import model.VarianteDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -17,7 +16,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static controller.Filters.GenericFilterServlet.getJsonObject;
@@ -33,10 +31,13 @@ public class SearchBarServlet extends HttpServlet {
 
         List<Prodotto> products = new ArrayList<>();
         VarianteDAO varianteDAO = new VarianteDAO();
+        String categoria = (String) session.getAttribute("categoriaRecovery");
+        System.out.println("categoriaSearch:"  + categoria);
+        ProdottoDAO prodottoDAO = new ProdottoDAO();
 
         if (name != null && !name.isEmpty()) {
             session.removeAttribute("categoria");  //per applicare i filtri
-            ProdottoDAO prodottoDAO = new ProdottoDAO();
+
             try {
                 products = prodottoDAO.filterProducts("", "", "", "", name);
                 session.setAttribute("searchBarName", name);
@@ -44,7 +45,13 @@ public class SearchBarServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
         } else {
-            products = (List<Prodotto>) session.getAttribute("filteredProducts");
+            session.removeAttribute("searchBarName");
+            session.setAttribute("categoria", categoria);
+            try {
+                products = prodottoDAO.filterProducts(categoria, "", "", "", "");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         }
 
 

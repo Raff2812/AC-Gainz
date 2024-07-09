@@ -129,22 +129,18 @@ function updateCartView(action, response) {
         cartItemDiv.appendChild(totalPriceDiv);
 
 
-        const goToCheckOutForm = document.createElement("a");
-        goToCheckOutForm.href = "Carrello.jsp";
-        goToCheckOutForm.innerText = "Vai al Checkout";
-        cartItemDiv.appendChild(goToCheckOutForm);
 
-        let inputForm = document.getElementById("primaryKeyForm");
-        inputForm.setAttribute("primaryKey", `${item.idProdotto}`);
 
+        const divCheckOut = document.createElement("div");
         const goToCheckOut = document.createElement("button");
         goToCheckOut.className = "checkOut";
         goToCheckOut.innerText = "Vai al CheckOut";
 
         goToCheckOut.onclick = function (){ window.location.href = "Carrello.jsp"};
+        divCheckOut.appendChild(goToCheckOut);
 
 
-        cartItemDiv.appendChild(goToCheckOut);
+        cartItemDiv.appendChild(divCheckOut);
 
 
     } catch (error) {

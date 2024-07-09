@@ -148,8 +148,6 @@ function updateDivOptions(response){
     console.log(firstOne.idProdotto);
 
 
-
-    console.log(firstOne.idProdotto);
 }
 
 function updatePrice(idProdotto, flavour, weight){

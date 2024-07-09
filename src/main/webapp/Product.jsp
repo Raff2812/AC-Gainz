@@ -274,6 +274,8 @@
 <%
     Prodotto p = null;
     Variante v = null;
+    List<String> tastes = (List<String>) request.getAttribute("allTastes");
+    List<Integer> pesi = (List<Integer>) request.getAttribute("firstWeights");
     if (request.getAttribute("prodotto") != null) {
         p = (Prodotto) request.getAttribute("prodotto");
         v = p.getVarianti().get(0);
@@ -281,7 +283,7 @@
 %>
 <div class="container-flex">
     <div class="info-left">
-        <img src="<%=p.getImmagine()%>">
+        <img src="<%=p.getImmagine()%>" alt="<%=p.getNome()%>">
     </div>
 
     <div class="info-right">
@@ -309,16 +311,34 @@
             <% } %>
             <div class="product-info-gusto">
                 Gusto:
-                <select id="tastes" name="taste">
-                    <option value=""><%=v.getGusto()%>
-                    </option>
+                <select data-product-id = "<%=p.getIdProdotto()%>" id="tastes" name="taste">
+                    <option selected value="<%=v.getGusto()%>"><%=v.getGusto()%></option>
+                    <% if (tastes != null && !tastes.isEmpty()){
+                            for (String taste: tastes){
+                                if (!taste.equals(v.getGusto())){
+                    %>
+                    <option value="<%=taste%>"><%=taste%></option>
+                    <%
+                                }
+                            }
+                        }
+                    %>
                 </select>
             </div>
             <div class="product-info-peso">
                 Peso:
                 <select id="weights" name="weight">
-                    <option value=""><%=v.getPesoConfezione()%>
-                    </option>
+                    <option selected value="<%=v.getPesoConfezione()%>"><%=v.getPesoConfezione()%></option>
+                    <% if (pesi != null && !pesi.isEmpty()){
+                        for (Integer peso: pesi){
+                            if (peso != v.getPesoConfezione()){
+                    %>
+                    <option value="<%=peso%>"><%=peso%> grammi</option>
+                    <%
+                                }
+                            }
+                        }
+                    %>
                 </select>
             </div>
             <div class="product-info-quantita">
@@ -326,7 +346,7 @@
                   <%
                     for (int i = 1; i <= 10; i++){
                   %>
-                    <option value= "<%=i%>"><%=i%></option>
+                   <option value="<%=i%>"><%=i%></option>
                   <%
                     }
                   %>
@@ -361,8 +381,8 @@
                         </button>
                     </div>
                     <div class="suggests-product-info">
-                        <form action="Product" method="post">
-                            <input type="hidden" name="primarykey" value="<%=s.getIdProdotto()%>">
+                        <form action="ProductInfo" method="post">
+                            <input type="hidden" name="primaryKey" value="<%=s.getIdProdotto()%>">
                             <input type="hidden" name="category" value="<%=s.getCategoria()%>">
                             <button class="suggests-product-info-name-redirect"><%= s.getNome() %>
                             </button>

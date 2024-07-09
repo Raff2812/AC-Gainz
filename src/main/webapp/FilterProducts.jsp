@@ -197,7 +197,7 @@
 
 
         <div class="filter">
-            <select id="tastes" name="taste" onchange="genericFilter()">
+            <select id="tastes" name="taste" onclick="showTastes()" onchange="genericFilter()">
                 <option value="">Seleziona un gusto</option>
             </select>
         </div>

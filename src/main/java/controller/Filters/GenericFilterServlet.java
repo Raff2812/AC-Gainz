@@ -1,6 +1,5 @@
 package controller.Filters;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -10,7 +9,6 @@ import jakarta.servlet.http.HttpSession;
 import model.Prodotto;
 import model.ProdottoDAO;
 import model.Variante;
-import model.VarianteDAO;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -28,7 +26,7 @@ public class GenericFilterServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         String nameForm = req.getParameter("nameForm");
-        if (nameForm != null && !nameForm.isBlank()){
+        if (nameForm != null){
             try {
                 handleNameForm(nameForm, req, resp, session);
             } catch (SQLException e) {
@@ -40,7 +38,8 @@ public class GenericFilterServlet extends HttpServlet {
 
 
         String category = (String) session.getAttribute("categoria");
-        String nameFilter = req.getParameter("name");
+        String nameFilter = "";
+        if(session.getAttribute("searchBarName") != null) nameFilter = (String) session.getAttribute("searchBarName");
         String weightFilter = req.getParameter("weight");
         String tasteFilter = req.getParameter("taste");
         String sortingFilter = req.getParameter("sorting");
@@ -54,7 +53,7 @@ public class GenericFilterServlet extends HttpServlet {
         List<Prodotto> filteredProducts = new ArrayList<>();
         ProdottoDAO prodottoDAO = new ProdottoDAO();
 
-        if (session.getAttribute("searchBarName") != null) nameFilter = (String) session.getAttribute("nameFilter");
+        if (session.getAttribute("searchBarName") != null) nameFilter = (String) session.getAttribute("searchBarName");
 
         try {
             filteredProducts = prodottoDAO.filterProducts(category, sortingFilter, weightFilter, tasteFilter, nameFilter);
@@ -74,9 +73,14 @@ public class GenericFilterServlet extends HttpServlet {
 
         ProdottoDAO prodottoDAO = new ProdottoDAO();
 
-        products = prodottoDAO.filterProducts("", "", "", "", nameForm);
-
+        if (nameForm.isBlank()){
+            products = prodottoDAO.doRetrieveAll();
+            session.removeAttribute("categoria");
+        }else {
+            products = prodottoDAO.filterProducts("", "", "", "", nameForm);
+        }
         request.setAttribute("originalProducts", products);
+        session.setAttribute("searchBarName", nameForm);
         session.setAttribute("filteredProducts", products);
 
         request.getRequestDispatcher("FilterProducts.jsp").forward(request, response);
@@ -108,6 +112,8 @@ public class GenericFilterServlet extends HttpServlet {
 
 
         Variante variante = p.getVarianti().get(0);
+
+        jsonObject.put("idVariante", variante.getIdVariante());
 
         if (variante.getSconto() > 0){
             jsonObject.put("sconto", variante.getSconto());

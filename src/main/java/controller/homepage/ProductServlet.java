@@ -7,6 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Prodotto;
 import model.ProdottoDAO;
+import model.Variante;
+import model.VarianteDAO;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,9 +24,35 @@ public class ProductServlet extends HttpServlet {
         if(primaryKey != null) {
                 ProdottoDAO prodottoDAO = new ProdottoDAO();
                 Prodotto prodotto = prodottoDAO.doRetrieveById(primaryKey);
-                if(prodotto != null)
-                {
+                if(prodotto != null) {
                     ProdottoDAO suggeritiDAO = new ProdottoDAO();
+
+                    VarianteDAO varianteDAO = new VarianteDAO();
+                    List<Variante> varianti = prodotto.getVarianti();
+
+
+                    List<String> gusti = new ArrayList<>();
+                    for (Variante v: varianti){
+                        if (!gusti.contains(v.getGusto())){
+                            gusti.add(v.getGusto());
+                        }
+                    }
+
+
+                    //Lista di pesi associati al gusto della variante di costo inferiore
+                    List<Integer> pesi = new ArrayList<>();
+                    List<Variante> variantiCriteria = varianteDAO.doRetrieveVariantByCriteria(prodotto.getIdProdotto(), "flavour", varianti.get(0).getGusto());
+
+                    for (Variante y: variantiCriteria){
+                        if (!pesi.contains(y.getPesoConfezione()))
+                            pesi.add(y.getPesoConfezione());
+                    }
+
+                    req.setAttribute("allTastes", gusti);
+                    req.setAttribute("firstWeights", pesi);
+
+
+
                     //sezione dei suggeriti
                     String category = prodotto.getCategoria();
                     List<Prodotto> suggeriti = suggeritiDAO.doRetrieveByCriteria("categoria",category);

@@ -1,6 +1,5 @@
 package controller.utente;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,8 +10,6 @@ import model.Carrello;
 import model.CarrelloDAO;
 import model.Utente;
 import model.UtenteDAO;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
 
 import java.io.IOException;
 import java.sql.SQLException;
