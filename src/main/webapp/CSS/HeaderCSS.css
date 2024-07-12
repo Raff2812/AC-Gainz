@@ -31,10 +31,6 @@ header .header-container{
     justify-content: space-between;
 }
 
-
-
-
-
 /* valori del logo*/
 .header-logo a{
     margin-left: 15px;
@@ -231,11 +227,9 @@ header .header-carrello{
 }
 
 
-
-
-
 header .header-lista{
     margin-top: -10px;
+
 }
 /*gestione della lista*/
 header .header-lista ul{

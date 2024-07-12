@@ -27,9 +27,11 @@
             transform: translate(-50%, -50%);
             color: white;
             font-size: 35px;
+            padding: 5px;
             font-weight: 550;
             text-align: left;
             max-width: 50%;
+            border-radius: 20px;
             backdrop-filter: blur(40px);
             box-sizing: border-box;
         }
@@ -45,99 +47,18 @@
             flex-wrap: wrap;
             align-items: center;
             justify-content: center;
+            gap: 15px;
         }
-        .centered-div {
-             display: none;
-             flex-direction: column;
-             align-items: center;
-             justify-content: center;
-             width: 400px;
-             margin: 0 auto;
-             padding: 20px;
-             background: white;
-             border-radius: 10px;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-             position: fixed;
-             top: 50%;
-             left: 50%;
-             transform: translate(-50%, -50%);
-             box-sizing: border-box;
-         }
-
-        /* Styling the name */
-        .nome-div-options {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        /* Styling the prices */
-        .price-span {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-        }
-
-        .current-price {
-            color: red;
-            font-size: 22px;
-            margin: 0;
-        }
-
-        .original-price {
-            color: #666;
-            text-decoration: line-through;
-            font-size: 16px;
-        }
-
-        /* Styling the select element */
-        .flavour-container,
-        .weight-container {
-            width: 100%;
-            margin-bottom: 20px;
-        }
-
-        .flavour-select,
-        .weight-select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-
-        /* Styling quantity select */
-        .quantity-select {
-            width: 100%;
-            padding: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 1em;
-        }
-
-        /* Styling add to cart button */
-        .add-to-cart-button {
-            padding: 10px 20px;
-            background: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
-
     </style>
 </head>
-<body>
 
+<body>
 <script src="JS/productOptions.js"></script>
 
 <div class="page-container">
     <div class="img-container">
         <img class="main-img" src="./Immagini/discount-immagine-homepage.png" alt="immagine sconto">
-        <div class="text-overlay">Carburante per L'attività Fisica, fino al <!--mettere il max di sconto --> di sconto</div>
+        <div class="text-overlay">Carburante per L'attività Fisica, dai uno occhio ai nostri prodotti scontati</div>
         <div class="prodotti-phrase">In Sconto: </div>
     </div>
     <div class="prodotti-list">

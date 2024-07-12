@@ -90,3 +90,108 @@
     background-color: orangered;
     color: black;
 }
+
+
+.centered-div {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 55%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+}
+
+/* Styling the name */
+.nome-div-options {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Styling the prices */
+.price-span {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+}
+
+.current-price {
+    color: orangered;
+    font-size: 21px;
+    margin: 0;
+}
+
+.original-price {
+    color: #666;
+    text-decoration: line-through;
+    font-size: 19px;
+}
+
+/* Styling the select element */
+.flavour-container,
+.weight-container {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.flavour-select,
+.weight-select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+/* Styling quantity select */
+.quantity-select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+/* Styling add to cart button */
+.add-to-cart-button {
+    padding: 10px 20px;
+    background: orangered;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+/* Styling form button */
+.product-info-name-redirect {
+    padding: 10px 20px;
+    background: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+/* Styling form button */
+.product-info-name-redirect:hover{
+    background-color: orangered;
+    color: black;
+}
+
+
+@media only screen and (max-width: 1030px) {
+    .filtersContainer {
+        justify-content: space-around;
+    }
+}

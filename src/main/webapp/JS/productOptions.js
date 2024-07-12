@@ -36,13 +36,13 @@ function updateDivOptions(response){
     prezzoSpan.innerHTML = '';
     const prezzo = document.createElement("h3");
     prezzo.className = "current-price";
-    prezzo.innerText = `${(firstOne.cheapestPrice * (1-firstOne.cheapestDiscount/100)).toFixed(2)}`;
+    prezzo.innerText = `${(firstOne.cheapestPrice * (1-firstOne.cheapestDiscount/100)).toFixed(2)}€`;
     prezzoSpan.appendChild(prezzo);
 
     if(firstOne.cheapestDiscount > 0){
         const prezzoOriginale = document.createElement("span");
         prezzoOriginale.className = "original-price";
-        prezzoOriginale.innerText = `${firstOne.cheapestPrice}`;
+        prezzoOriginale.innerText = `${firstOne.cheapestPrice}€`;
         prezzoSpan.appendChild(prezzoOriginale);
     }
 
@@ -183,13 +183,13 @@ function updatePriceView(response){
     prezzoSpan.innerHTML = '';
     const prezzo = document.createElement("h3");
     prezzo.className = "current-price";
-    prezzo.innerText = `${(price.prezzo * (1-price.sconto/100)).toFixed(2)}`;
+    prezzo.innerText = `${(price.prezzo * (1-price.sconto/100)).toFixed(2)}€`;
     prezzoSpan.appendChild(prezzo);
 
     if(price.sconto > 0){
         const prezzoOriginale = document.createElement("span");
         prezzoOriginale.className = "original-price";
-        prezzoOriginale.innerText = `${price.prezzo}`;
+        prezzoOriginale.innerText = `${price.prezzo}€`;
         prezzoSpan.appendChild(prezzoOriginale);
     }
 
