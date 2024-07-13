@@ -2,7 +2,7 @@ package model;
 
 public class Gusto {
     private int idGusto;
-    private String nome;
+    private String nomeGusto;
 
 
     public int getIdGusto() {
@@ -13,11 +13,11 @@ public class Gusto {
         this.idGusto = idGusto;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNomeGusto() {
+        return nomeGusto;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNome(String nomeGusto) {
+        this.nomeGusto = nomeGusto;
     }
 }

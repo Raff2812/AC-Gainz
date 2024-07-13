@@ -16,7 +16,7 @@ public class GustoDAO {
 
             while (resultSet.next()){
                 gusto.setIdGusto(resultSet.getInt("id_gusto"));
-                gusto.setNome(resultSet.getString("nome"));
+                gusto.setNome(resultSet.getString("nomeGusto"));
             }
 
         }catch (SQLException e){
