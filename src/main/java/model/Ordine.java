@@ -5,10 +5,19 @@ import java.util.Date;
 public class Ordine {
     private String emailUtente;
     private int idOrdine;
-    private String stato;
-    private float totale;
+    private String stato = "in esecuzione";
+    private float totale = 0;
     private Date dataOrdine;
 
+    private String descrizione = "";
+
+    public String getDescrizione() {
+        return descrizione;
+    }
+
+    public void setDescrizione(String descrizione) {
+        this.descrizione = descrizione;
+    }
 
     public String getEmailUtente() {
         return emailUtente;

@@ -10,6 +10,26 @@ public class DettaglioOrdine {
     private String gusto;
     private int pesoConfezione;
 
+    private String immagineProdotto;
+    private String nomeProdotto;
+
+
+    public String getImmagineProdotto() {
+        return immagineProdotto;
+    }
+
+    public void setImmagineProdotto(String immagineProdotto) {
+        this.immagineProdotto = immagineProdotto;
+    }
+
+    public String getNomeProdotto() {
+        return nomeProdotto;
+    }
+
+    public void setNomeProdotto(String nomeProdotto) {
+        this.nomeProdotto = nomeProdotto;
+    }
+
     public String getGusto() {
         return gusto;
     }

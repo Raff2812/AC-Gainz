@@ -18,32 +18,6 @@ public class Utente {
     private String telefono;
     private boolean poteri;
 
-    public Utente()
-    {}
-
-    public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono, boolean poteri) {
-        this.email = email;
-        this.password = password;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.codiceFiscale = codiceFiscale;
-        this.dataNascita = dataNascita;
-        this.indirizzo = indirizzo;
-        this.telefono = telefono;
-        this.poteri = poteri;
-    }
-    public Utente(String email, String password, String nome, String cognome, String codiceFiscale, Date dataNascita, String indirizzo, String telefono) {
-        this.email = email;
-        this.password = password;
-        this.nome = nome;
-        this.cognome = cognome;
-        this.codiceFiscale = codiceFiscale;
-        this.dataNascita = dataNascita;
-        this.indirizzo = indirizzo;
-        this.telefono = telefono;
-        this.poteri = false;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -55,6 +29,8 @@ public class Utente {
     public String getPassword() {
         return password;
     }
+
+
 
     public void setPassword(String password) {   // password
         try {
@@ -124,4 +100,23 @@ public class Utente {
     public void setPoteri(boolean poteri) {
         this.poteri = poteri;
     }
+
+
+    public static void main(String[] args){
+        String password = "Admin10@";
+        try {
+            var digest =
+                    MessageDigest.getInstance("SHA-1");
+            digest.reset();
+            digest.update(password.getBytes(StandardCharsets.UTF_8));
+            password = String.format("%040x", new
+                    BigInteger(1, digest.digest()));
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(password);
+    }
+
+
 }

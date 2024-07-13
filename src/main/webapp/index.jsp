@@ -58,7 +58,7 @@
 <div class="page-container">
     <div class="img-container">
         <img class="main-img" src="./Immagini/discount-immagine-homepage.png" alt="immagine sconto">
-        <div class="text-overlay">Carburante per L'attività Fisica, dai uno occhio ai nostri prodotti scontati</div>
+        <div class="text-overlay">Carburante per L'attività Fisica, dai un occhio ai nostri prodotti scontati</div>
         <div class="prodotti-phrase">In Sconto: </div>
     </div>
     <div class="prodotti-list">

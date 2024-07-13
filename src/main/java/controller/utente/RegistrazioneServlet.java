@@ -52,7 +52,16 @@ public class RegistrazioneServlet extends HttpServlet {
         String indirizzo = request.getParameter("indirizzo");
         String numCellulare = request.getParameter("numCellulare");
 
-        Utente x = new Utente(email, password, nome, cognome, codiceFiscale, dataDiNascita, indirizzo, numCellulare);
+        Utente x = new Utente();
+        x.setEmail(email);
+        x.setPassword(password);
+        x.setCodiceFiscale(codiceFiscale);
+        x.setNome(nome);
+        x.setCognome(cognome);
+        x.setIndirizzo(indirizzo);
+        x.setTelefono(numCellulare);
+        x.setDataNascita(dataDiNascita);
+
         utenteDAO.doSave(x);
 
 

@@ -30,6 +30,8 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
+        System.out.println(email);
+        System.out.println(password);
         UtenteDAO utenteDAO = new UtenteDAO();
 
         String emailPattern = "^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}$";

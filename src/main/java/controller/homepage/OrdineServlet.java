@@ -36,9 +36,10 @@ public class OrdineServlet extends HttpServlet {
 
             Ordine ordine = new Ordine();
             ordine.setEmailUtente(x.getEmail());
-            ordine.setDataOrdine(new Date());
+            /*ordine.setDataOrdine(new Date());
             ordine.setStato("In esecuzione");
-            ordine.setTotale(orderTotal);
+            ordine.setTotale(0);
+            /*ordine.setTotale(orderTotal);*/
             //Ordine ordine = new Ordine(x.getEmail(), orderTotal);
 
 
@@ -56,12 +57,15 @@ public class OrdineServlet extends HttpServlet {
                 dettaglioOrdineItem.setIdVariante(cartItem.getIdVariante());
                 dettaglioOrdineItem.setIdProdotto(cartItem.getIdProdotto());
                 dettaglioOrdineItem.setQuantita(cartItem.getQuantita());
-                dettaglioOrdineItem.setPrezzo(cartItem.getPrezzo());
-                dettaglioOrdineItem.setGusto(cartItem.getGusto());
-                dettaglioOrdineItem.setPesoConfezione(cartItem.getPesoConfezione());
+                //dettaglioOrdineItem.setPrezzo(0);
+                //dettaglioOrdineItem.setPrezzo(cartItem.getPrezzo());
+                //dettaglioOrdineItem.setGusto(cartItem.getGusto());
+                //dettaglioOrdineItem.setPesoConfezione(cartItem.getPesoConfezione());
 
                 dettaglioOrdine.add(dettaglioOrdineItem);
             }
+
+            System.out.println(dettaglioOrdine.size());
 
             session.removeAttribute("cart");
             CarrelloDAO carrelloDAO = new CarrelloDAO();
@@ -71,8 +75,16 @@ public class OrdineServlet extends HttpServlet {
             for (DettaglioOrdine dettaglioOrdineItem : dettaglioOrdine)
                 dettaglioOrdineDAO.doSave(dettaglioOrdineItem);
 
-            req.setAttribute("order", ordine);
-            req.setAttribute("orderDetails", dettaglioOrdine);
+
+
+            Ordine ordine1 = ordineDao.doRetrieveById(ordineDao.getLastInsertedId());
+
+
+            List<DettaglioOrdine> dettaglioOrdini1 = new ArrayList<>();
+            dettaglioOrdini1 = dettaglioOrdineDAO.doRetrieveById(ordine1.getIdOrdine());
+            System.out.println(dettaglioOrdini1.size());
+            req.setAttribute("order", ordine1);
+            req.setAttribute("orderDetails", dettaglioOrdini1);
 
             req.getRequestDispatcher("WEB-INF/Ordine.jsp").forward(req, resp);
         }

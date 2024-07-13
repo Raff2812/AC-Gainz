@@ -19,6 +19,7 @@ public class OrdineDao {
                 ordine.setDataOrdine(resultSet.getDate("data"));
                 ordine.setStato(resultSet.getString("stato"));
                 ordine.setTotale(resultSet.getFloat("totale"));
+                ordine.setDescrizione(resultSet.getString("descrizione"));
             }
 
         }
@@ -45,6 +46,7 @@ public class OrdineDao {
                 ordine.setDataOrdine(resultSet.getDate("data"));
                 ordine.setStato(resultSet.getString("stato"));
                 ordine.setTotale(resultSet.getFloat("totale"));
+                ordine.setDescrizione(resultSet.getString("descrizione"));
                 ordini.add(ordine);
             }
 
@@ -72,27 +74,60 @@ public class OrdineDao {
     }
 
     public void doSave(Ordine ordine) {
-        try (Connection con = ConPool.getConnection()) {
-            PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO ordine (id_ordine,data,stato,totale,email_utente) VALUES(?,?,?,?,?)",
-                    Statement.RETURN_GENERATED_KEYS);
-            ps.setInt(1, ordine.getIdOrdine());
+        StringBuilder query = new StringBuilder("INSERT INTO ordine (id_ordine");
+        List<Object> parameters = new ArrayList<>();
 
+        parameters.add(ordine.getIdOrdine());
+
+        if (ordine.getEmailUtente() != null) {
+            query.append(", email_utente");
+            parameters.add(ordine.getEmailUtente());
+        }
+
+        if (ordine.getDataOrdine() != null) {
+            query.append(", data");
             Date utilDate = ordine.getDataOrdine();
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+            parameters.add(sqlDate);
+        }
 
-            ps.setDate(2, sqlDate);
+        if (ordine.getStato() != null) {
+            query.append(", stato");
+            parameters.add(ordine.getStato());
+        }
 
-            ps.setString(3, ordine.getStato());
-            ps.setFloat(4, ordine.getTotale());
-            ps.setString(5, ordine.getEmailUtente());
+        if (ordine.getTotale() > 0) {
+            query.append(", totale");
+            parameters.add(ordine.getTotale());
+        }
+
+        if (ordine.getDescrizione() != null) {
+            query.append(", descrizione");
+            parameters.add(ordine.getDescrizione());
+        }
+
+        query.append(") VALUES (?");
+        for (int i = 1; i < parameters.size(); i++) {
+            query.append(", ?");
+        }
+        query.append(")");
+
+        try (Connection con = ConPool.getConnection();
+             PreparedStatement ps = con.prepareStatement(query.toString(), Statement.RETURN_GENERATED_KEYS)) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                ps.setObject(i + 1, parameters.get(i));
+            }
+
             if (ps.executeUpdate() != 1) {
                 throw new RuntimeException("INSERT error.");
             }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public List<Ordine> doRetrieveAll(){
 
@@ -113,15 +148,12 @@ public class OrdineDao {
             while(rs.next()) {
 
                 o = new Ordine();
-                o.setIdOrdine(rs.getInt(1));
-
-
-                o.setDataOrdine(rs.getDate(2));
-
-                o.setStato(rs.getString(3));
-                o.setTotale(rs.getFloat(4));
-                o.setEmailUtente(rs.getString(5));
-
+                o.setIdOrdine(rs.getInt("id_ordine"));
+                o.setEmailUtente(rs.getString("email_utente"));
+                o.setDataOrdine(rs.getDate("data"));
+                o.setStato(rs.getString("stato"));
+                o.setTotale(rs.getFloat("totale"));
+                o.setDescrizione(rs.getString("descrizione"));
                 ordini.add(o);
             }
 
@@ -136,19 +168,35 @@ public class OrdineDao {
         }
     }
 
-    public void doUpdateOrder(Ordine o){
+    public void doUpdateOrder(Ordine o, int idOrdine){
 
         try (Connection con = ConPool.getConnection()) {
-            Statement st = con.createStatement();
-            String query = "update ordine set id_ordine='" + o.getIdOrdine() +
-                    "', data='" + o.getDataOrdine() +
-                    "', stato='" + o.getStato() +
-                    "', totale='"+ o.getTotale() +
-                    "', email_utente="+ o.getEmailUtente()
-                    + " where id_ordine=" + o.getIdOrdine() + ";";
-            st.executeUpdate(query);
+            PreparedStatement preparedStatement = con.prepareStatement("update ordine set id_ordine = ?, email_utente = ?, stato = ?, data = ?, totale = ?, descrizione = ? where id_ordine = ?");
+            preparedStatement.setInt(1, o.getIdOrdine());
+            preparedStatement.setString(2, o.getEmailUtente());
+            preparedStatement.setString(3, o.getStato());
+            preparedStatement.setDate(4, new java.sql.Date(o.getDataOrdine().getTime()));
+            preparedStatement.setFloat(5, o.getTotale());
+            preparedStatement.setString(6, o.getDescrizione());
+            preparedStatement.setInt(7, idOrdine);
+
+            int rows = preparedStatement.executeUpdate();
         }
         catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void doDeleteOrder(int idOrdine){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from ordine where id_ordine = ?");
+            preparedStatement.setInt(1, idOrdine);
+
+            int rows = preparedStatement.executeUpdate();
+
+
+
+        }catch (SQLException e){
             throw new RuntimeException(e);
         }
     }

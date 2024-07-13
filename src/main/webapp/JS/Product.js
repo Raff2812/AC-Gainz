@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     selectTastes.onchange = function (){
         updateOptionsProduct(idProdotto, this.value)
             .then(() =>{
-                let weightValue = selectWeights.value;
                 updatePriceProduct(idProdotto, selectTastes.value, selectWeights.value);
             })
             .catch(error => {
@@ -68,51 +67,123 @@ function updatePriceProduct(idProdotto, flavour, weight){
         })
 }
 
-
-function updatePriceProductView(response){
+function updatePriceProductView(response) {
     let price = JSON.parse(response);
 
-    /*
-    const divCent = document.querySelector(".centered-div");
-
-    const prezzoSpan = divCent.querySelector(".price-span");
-    prezzoSpan.innerHTML = '';
-    const prezzo = document.createElement("h3");
-    prezzo.className = "current-price";
-    prezzo.innerText = `${(price.prezzo * (1-price.sconto/100)).toFixed(2)}`;
-    prezzoSpan.appendChild(prezzo);
-
-    if(price.sconto > 0){
-        const prezzoOriginale = document.createElement("span");
-        prezzoOriginale.className = "original-price";
-        prezzoOriginale.innerText = `${price.prezzo}`;
-        prezzoSpan.appendChild(prezzoOriginale);
-    }
-*/
-
-
     let productInfo = document.querySelector(".product-info");
-    const productRisparmio = productInfo.querySelector(".product-info-risparmio");
+    if (!productInfo) return;
+
+    if (price.sconto > 0) {
+        let productRisparmio = productInfo.querySelector(".product-info-risparmio");
+        if (!productRisparmio) {
+            productRisparmio = document.createElement("div");
+            productRisparmio.className = "product-info-risparmio";
+        }
+
+        productRisparmio.innerText = `Risparmia ${(price.prezzo * price.sconto / 100).toFixed(2)} €`
+
+        let productCostoAttuale = productInfo.querySelector(".product-info-costoattuale");
+        if (!productCostoAttuale) {
+            productCostoAttuale = document.createElement("span");
+            productCostoAttuale.className = "product-info-costoattuale";
+        }
+
+        productCostoAttuale.innerText = `${(price.prezzo * (1 - price.sconto / 100)).toFixed(2)}€`;
+
+        let productCostoOriginale = productInfo.querySelector(".product-info-costooriginale");
+        if (!productCostoOriginale) {
+            productCostoOriginale = document.createElement("span");
+            productCostoOriginale.className = "product-info-costooriginale";
+
+            productInfo.prepend(productRisparmio, productCostoAttuale, productCostoOriginale)
+        }
+
+        productCostoOriginale.innerText = ` Era ${price.prezzo} €`;
+    } else {
+        let productCostoAttuale = productInfo.querySelector(".product-info-costoattuale");
+        if (!productCostoAttuale) {
+            productCostoAttuale = document.createElement("span");
+            productCostoAttuale.className = "product-info-costoattuale";
+            productInfo.prepend(productCostoAttuale);
+        }
+
+        productCostoAttuale.innerText = `${(price.prezzo * (1 - price.sconto / 100)).toFixed(2)} €`;
+
+        let productRisparmio = productInfo.querySelector(".product-info-risparmio");
+        let productCostoOriginale = productInfo.querySelector(".product-info-costooriginale");
+        if (productRisparmio) productRisparmio.remove();
+        if (productCostoOriginale) productCostoOriginale.remove();
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    /*
+    // Gestisci il risparmio
+    let productRisparmio = productInfo.querySelector(".product-info-risparmio");
+    if (!productRisparmio) {
+        productRisparmio = document.createElement("div");
+        productRisparmio.className = "product-info-risparmio";
+        productInfo.prepend(productRisparmio);  // Aggiungi all'inizio di productInfo
+    }
     productRisparmio.innerText = "";
 
-    const costoAttuale = productInfo.querySelector(".product-info-costoattuale");
+    // Gestisci il costo attuale
+    let costoAttuale = productInfo.querySelector(".product-info-costoattuale");
+    if (!costoAttuale) {
+        costoAttuale = document.createElement("span");
+        costoAttuale.className = "product-info-costoattuale";
+        productInfo.appendChild(costoAttuale);
+    }
     costoAttuale.innerText = "";
 
-    const costoOriginale = productInfo.querySelector(".product-info-costooriginale");
+    // Gestisci il costo originale
+    let costoOriginale = productInfo.querySelector(".product-info-costooriginale");
+    if (!costoOriginale) {
+        costoOriginale = document.createElement("span");
+        costoOriginale.className = "product-info-costooriginale";
+    }
     costoOriginale.innerText = "";
+
     if (price.sconto > 0) {
         productRisparmio.innerText = `Risparmia ${(price.prezzo * price.sconto / 100).toFixed(2)} €`;
 
         costoAttuale.innerText = `${(price.prezzo * (1 - price.sconto / 100)).toFixed(2)} €`;
 
-        costoOriginale.innerText = `Era ${price.prezzo} €`;
-    }else{
-        const costoAttualeNow = productInfo.querySelector(".product-info-costoattuale");
-        costoAttualeNow.innerText = "";
-        costoAttualeNow.innerText = `${price.prezzo} €`;
-    }
-}
-
+        costoOriginale.innerText = `Era ${(price.prezzo).toFixed(2)} €`;
+    } else {
+        costoAttuale.innerText = `${price.prezzo.toFixed(2)} €`;
+        costoOriginale.innerText = "";  // Rimuovi il testo se non c'è sconto
+        if (productRisparmio) {
+            productRisparmio.remove();  // Rimuovi l'elemento risparmio se non c'è sconto
+        }
+    }*/
 
 function updateOptionsProduct(idProdotto, value) {
     let urlSearch = new URLSearchParams();

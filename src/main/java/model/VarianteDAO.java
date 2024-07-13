@@ -44,6 +44,36 @@ public class VarianteDAO {
     }
 
 
+    public List<Variante> doRetrieveAll(){
+        List<Variante> varianti = new ArrayList<>();
+
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from variante");
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Variante variante = new Variante();
+                variante.setIdVariante(resultSet.getInt("id_variante"));
+                variante.setIdProdotto(resultSet.getString("id_prodotto_variante"));
+                variante.setIdGusto(resultSet.getInt("id_gusto"));
+                variante.setIdConfezione(resultSet.getInt("id_confezione"));
+                variante.setQuantita(resultSet.getInt("quantità"));
+                variante.setPrezzo(resultSet.getFloat("prezzo"));
+                variante.setSconto(resultSet.getInt("sconto"));
+                variante.setEvidenza(resultSet.getBoolean("evidenza"));
+
+                varianti.add(variante);
+            }
+        }catch (SQLException e){
+            throw new RuntimeException();
+        }
+
+
+
+        return varianti;
+    }
+
+
     public List<Variante> doRetrieveVariantByCriteria(String idProdotto, String attribute, String value) {
         List<Variante> varianti = new ArrayList<>();
 
@@ -351,6 +381,58 @@ public class VarianteDAO {
         }
 
         return cheapestVariante;
+    }
+
+
+    public void updateVariante(Variante v, int idVariante){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("update variante set id_variante = ?, id_prodotto_variante = ?, id_gusto = ?, id_confezione = ?, prezzo = ?, quantità = ?, sconto = ?, evidenza = ? where id_variante = ?");
+            preparedStatement.setInt(1, v.getIdVariante());
+            preparedStatement.setString(2, v.getIdProdotto());
+            preparedStatement.setInt(3, v.getIdGusto());
+            preparedStatement.setInt(4, v.getIdConfezione());
+            preparedStatement.setFloat(5, v.getPrezzo());
+            preparedStatement.setInt(6, v.getQuantita());
+            preparedStatement.setInt(7, v.getSconto());
+            preparedStatement.setBoolean(8, v.isEvidenza());
+            preparedStatement.setInt(9, idVariante);
+
+
+            int rows = preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void doRemoveVariante(int idVariante){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from variante where id_variante = ?");
+            preparedStatement.setInt(1, idVariante);
+
+            int rows = preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void doSaveVariante(Variante v){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("insert into variante (id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) values (?, ?, ?, ?, ?, ?, ?)");
+            preparedStatement.setString(1, v.getIdProdotto());
+            preparedStatement.setInt(2, v.getIdGusto());
+            preparedStatement.setInt(3, v.getIdConfezione());
+            preparedStatement.setFloat(4, v.getPrezzo());
+            preparedStatement.setInt(5, v.getQuantita());
+            preparedStatement.setInt(6, v.getSconto());
+            preparedStatement.setBoolean(7, v.isEvidenza());
+
+            preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
     }
 
 

@@ -519,8 +519,38 @@ public class ProdottoDAO {
         }
     }
 
+    public void updateProduct(Prodotto p, String idProdotto){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("update prodotto set id_prodotto = ?, nome = ?, descrizione = ?, categoria = ?, immagine = ?, calorie = ?, carboidrati = ?, proteine = ?, grassi = ? where id_prodotto = ?");
+            preparedStatement.setString(1, p.getIdProdotto());
+            preparedStatement.setString(2, p.getNome());
+            preparedStatement.setString(3, p.getDescrizione());
+            preparedStatement.setString(4, p.getCategoria());
+            preparedStatement.setString(5, p.getImmagine());
+            preparedStatement.setInt(6, p.getCalorie());
+            preparedStatement.setInt(7, p.getCarboidrati());
+            preparedStatement.setInt(8, p.getProteine());
+            preparedStatement.setInt(9, p.getGrassi());
+            preparedStatement.setString(10, idProdotto);
 
 
+            int rowsUpdated = preparedStatement.executeUpdate();
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    public void removeProductFromIdProdotto(String idProdotto){
+        try (Connection connection = ConPool.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement("delete from prodotto where id_prodotto = ?");
+            preparedStatement.setString(1, idProdotto);
+            int rowsUpdated = preparedStatement.executeUpdate();
+
+        }catch (SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
 
     public static void main (String[] args){
         ProdottoDAO prodottoDAO = new ProdottoDAO();

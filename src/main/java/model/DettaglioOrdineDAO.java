@@ -1,18 +1,21 @@
 package model;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DettaglioOrdineDAO {
-    public DettaglioOrdine doRetrieveById(int id) {
-        DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
+    public List<DettaglioOrdine> doRetrieveById(int id) {
+        List<DettaglioOrdine> dettaglioOrdini = new ArrayList<>();
         try(Connection con= ConPool.getConnection())
         {
-            PreparedStatement preparedStatement=con.prepareStatement("SELECT dettaglio_ordine.*, g.nomeGusto, c.peso FROM dettaglio_ordine join variante v on dettaglio_ordine.id_variante = v.id_variante join confezione c on v.id_confezione join gusto g on v.id_gusto = g.id_gusto " +
+            PreparedStatement preparedStatement=con.prepareStatement("SELECT dettaglio_ordine.*, p.nome, p.immagine, g.nomeGusto, c.peso FROM dettaglio_ordine join prodotto p on dettaglio_ordine.id_prodotto = p.id_prodotto join variante v on dettaglio_ordine.id_variante = v.id_variante join confezione c on v.id_confezione = c.id_confezione join gusto g on v.id_gusto = g.id_gusto " +
                     "WHERE id_ordine = ?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
            while (resultSet.next()){
+               DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
              dettaglioOrdine.setIdOrdine(resultSet.getInt("id_ordine"));
              dettaglioOrdine.setIdProdotto(resultSet.getString("id_prodotto"));
              dettaglioOrdine.setIdVariante(resultSet.getInt("id_variante"));
@@ -20,6 +23,10 @@ public class DettaglioOrdineDAO {
              dettaglioOrdine.setPrezzo(resultSet.getFloat("prezzo"));
              dettaglioOrdine.setGusto(resultSet.getString("nomeGusto"));
              dettaglioOrdine.setPesoConfezione(resultSet.getInt("peso"));
+             dettaglioOrdine.setNomeProdotto(resultSet.getString("nome"));
+             dettaglioOrdine.setImmagineProdotto(resultSet.getString("immagine"));
+
+             dettaglioOrdini.add(dettaglioOrdine);
            }
         }
         catch (SQLException sqlException)
@@ -27,7 +34,7 @@ public class DettaglioOrdineDAO {
             throw new RuntimeException(sqlException);
         }
 
-        return dettaglioOrdine;
+        return dettaglioOrdini;
     }
 
     public void doSave(DettaglioOrdine dettaglioOrdine) {
