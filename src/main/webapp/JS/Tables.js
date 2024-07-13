@@ -4,7 +4,6 @@ function editTableRow(nameTable, primaryKey) {
     let urlSearch = new URLSearchParams();
     urlSearch.append("tableName", nameTable);
     urlSearch.append("primaryKey", primaryKey);
-    urlSearch.append("action", "edit");
 
     fetch("showRowForm?" + urlSearch.toString())
         .then(response => {
@@ -56,30 +55,20 @@ function showUpdateForm(dataTable, nameTable, primaryKey) {
 
     // Aggiungi campi al form
     fields.forEach(field => {
-        let input;
-        if (field.type === "textarea") {
-            // Crea un elemento textarea
-            input = document.createElement("textarea");
-            input.rows = 4;
-            input.cols = 50;
-            input.name = field.id;
-            input.placeholder = field.label;
-            input.value = '';
-            input.onfocus = function () {
-                input.value = dataTable[field.id];
-            };
-        } else {
+        if (field.type !== "textarea" ) {
             // Crea un elemento input per altri tipi
-            input = document.createElement("input");
-            input.type = field.type === "file" ? "text" : field.type;
+            let input = document.createElement("input"); // Dichiarazione con let
+            input.type = field.type === "file" ? "file" : field.type;
             input.name = field.id;
             input.placeholder = field.label;
-            input.value = '';
-            input.onfocus = function () {
-                input.value = dataTable[field.id];
-            };
+
+                input.onfocus = function () {
+                        input.value = dataTable[field.id];
+                };
+
+
+            form.appendChild(input);
         }
-        form.appendChild(input);
     });
 
     // Crea il pulsante di submit
@@ -91,6 +80,7 @@ function showUpdateForm(dataTable, nameTable, primaryKey) {
     divForm.append(form);
     document.body.append(divForm);
 }
+
 
 function deleteTableRow(nameTable, primaryKey) {
     let urlSearch = new URLSearchParams();
@@ -130,8 +120,103 @@ function updateTableView(tableName, data) {
         updateVarianteView(table, data);
     } else if (tableName === "ordine"){
         updateOrdiniView(table, data);
+    } else if (tableName === "dettaglioOrdine"){
+        updateDettaglioOrdiniView(table, data);
+    } else if (tableName === "gusto"){
+        updateGustoView(table, data);
+    } else if (tableName === "confezione"){
+        updateConfezioneView(table, data);
     }
 }
+
+
+function updateConfezioneView(table, data){
+    data.forEach(confezione =>{
+        let row = table.insertRow();
+        let idConfezioneCell = row.insertCell();
+        idConfezioneCell.innerText = confezione.idConfezione ?? 'undefined';
+        let pesoConfezioneCell = row.insertCell();
+        pesoConfezioneCell.innerText = confezione.pesoConfezione ?? 'undefined';
+
+        let actionCell = row.insertCell();
+        actionCell.innerHTML = `<button class="button" onclick="editTableRow('confezione', '${confezione.idConfezione}')">Modifica</button>
+                                <button class="button" onclick="deleteTableRow('confezione', '${confezione.idConfezione}')">Elimina</button>`;
+    });
+    // Aggiungi la riga del pulsante "add"
+    let addRow1 = table.insertRow();
+    let addCell = addRow1.insertCell();
+    addCell.colSpan = 8;
+    addCell.className = "center";
+    let addButton = document.createElement("button");
+    addButton.className = "add-button";
+    addButton.innerText = "+";
+    addButton.addEventListener("click", function () {
+        addRow('confezione');
+    });
+    addCell.appendChild(addButton);
+}
+
+function updateGustoView(table, data){
+    data.forEach(gusto =>{
+        let row = table.insertRow();
+        let idGustoCell = row.insertCell();
+        idGustoCell.innerText = gusto.idGusto ?? 'undefined';
+        let nomeGustoCell = row.insertCell();
+        nomeGustoCell.innerText = gusto.nomeGusto  ?? 'undefined';
+
+        let actionCell = row.insertCell();
+        actionCell.innerHTML = `<button class="button" onclick="editTableRow('gusto', '${gusto.idGusto}')">Modifica</button>
+                                <button class="button" onclick="deleteTableRow('gusto', '${gusto.idGusto}')">Elimina</button>`;
+    });
+
+    // Aggiungi la riga del pulsante "add"
+    let addRow1 = table.insertRow();
+    let addCell = addRow1.insertCell();
+    addCell.colSpan = 8;
+    addCell.className = "center";
+    let addButton = document.createElement("button");
+    addButton.className = "add-button";
+    addButton.innerText = "+";
+    addButton.addEventListener("click", function () {
+        addRow('gusto');
+    });
+    addCell.appendChild(addButton);
+}
+
+function updateDettaglioOrdiniView(table, data){
+    data.forEach(dettaglioOrdine =>{
+        let row = table.insertRow();
+        let idOrdineCell = row.insertCell();
+        idOrdineCell.innerText = dettaglioOrdine.idOrdine ?? 'undefined';
+        let idProdottoCell = row.insertCell();
+        idProdottoCell.innerText = dettaglioOrdine.idProdotto ?? 'undefined';
+        let idVarianteCell = row.insertCell();
+        idVarianteCell.innerText = dettaglioOrdine.idVariante ?? 'undefined';
+        let quantityCell = row.insertCell();
+        quantityCell.innerText = dettaglioOrdine.quantity ?? 'undefined';
+        let prezzoCell = row.insertCell();
+        prezzoCell.innerText = dettaglioOrdine.prezzo ?? 'undefined';
+
+        let actionCell = row.insertCell();
+        actionCell.innerHTML = `<button class="button" onclick="editTableRow('dettaglioOrdine', '${dettaglioOrdine.idOrdine}, ${dettaglioOrdine.idProdotto}, ${dettaglioOrdine.idVariante}')">Modifica</button>
+                                <button class="button" onclick="deleteTableRow('dettaglioOrdine', '${dettaglioOrdine.idOrdine}, ${dettaglioOrdine.idProdotto}, ${dettaglioOrdine.idVariante}')">Elimina</button>`;
+    });
+
+    // Aggiungi la riga del pulsante "add"
+    let addRow1 = table.insertRow();
+    let addCell = addRow1.insertCell();
+    addCell.colSpan = 8;
+    addCell.className = "center";
+    let addButton = document.createElement("button");
+    addButton.className = "add-button";
+    addButton.innerText = "+";
+    addButton.addEventListener("click", function () {
+        addRow('dettaglioOrdine');
+    });
+    addCell.appendChild(addButton);
+}
+
+
 
 function updateOrdiniView(table, data) {
     data.forEach(ordine => {
@@ -147,7 +232,11 @@ function updateOrdiniView(table, data) {
         let totaleCell = row.insertCell();
         totaleCell.innerText = ordine.totale ?? 'undefined';
         let descrizioneCell = row.insertCell();
-        descrizioneCell.innerText = ordine.descrizione ?? 'undefined';
+        if (ordine.descrizione) {
+            descrizioneCell.innerText= `${ordine.descrizione}`;
+        } else {
+            descrizioneCell.innerHTML = `<a href="showTable?tableName=dettaglioOrdine">Dettaglio ordine</a>`;
+        }
 
         let actionCell = row.insertCell();
         actionCell.innerHTML = `<button class="button" onclick="editTableRow('ordine', '${ordine.idOrdine}')">Modifica</button>
@@ -316,24 +405,19 @@ function addRow(tableName) {
             label.innerText = field.label;
 
             let input;
-            if (field.type === "textarea") {
-                input = document.createElement("textarea");
-                input.rows = 4;
-                input.cols = 50;
-                input.id = field.id;
-                input.name = field.id;
-            } else {
+            if (field.type !== "textarea"){
                 input = document.createElement("input");
                 input.type = field.type;
                 input.id = field.id;
                 input.name = field.id;
                 if(tableName === "ordine" && field.id === "emailUtente") input.required = true;
+
+                form.appendChild(label);
+                form.appendChild(input);
             }
 
-            form.appendChild(label);
-            form.appendChild(input);
-        }
-    });
+
+        }});
 
     let button = document.createElement("button");
     button.type = "submit";
@@ -383,7 +467,21 @@ function getFields(tableName) {
             { label: "Stato - (varchar 255)", type: "text", id: "stato" },
             { label: "Data - (date)", type: "date", id: "data" },
             { label: "Totale - (float)", type: "text", id: "totale" },
-            { label: "Descrizione", type: "textarea", id: "descrizione" }
+            { label: "Descrizione - (text)", type: "textarea", id: "descrizione"}
+        ],
+        dettaglioOrdine: [
+            { label: "Id Ordine (PK, FK), int", type: "number", id: "idOrdine"},
+            { label: "Id prodotto (PK, FK), int", type: "text", id: "idProdotto"},
+            { label: "Id Variante (PK, FK), int", type: "number", id: "idVariante"},
+            { label: "Quantità, int", type: "number", id:"quantity"},
+        ],
+        gusto:[
+            { label: "Id Gusto (PK) int auto-increment", type: "number", id: "idGusto"},
+            { label: "Nome gusto, varchar (50)", type: "text", id: "nomeGusto"}
+        ],
+        confezione:[
+            { label: "Id Confezione (PK) int auto-increment", type: "number", id: "idConfezione"},
+            { label: "Peso confezione, int", type: "number", id: "pesoConfezione"}
         ]
     };
 

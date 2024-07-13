@@ -1,25 +1,24 @@
-<%@ page import="model.Prodotto" %>
+<%@ page import="model.DettaglioOrdine" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
-  Date: 11/07/2024
-  Time: 16:32
+  Date: 13/07/2024
+  Time: 13:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 80%;
             margin: auto;
         }
 
         th, td {
-            text-align: center;
+            text-align: left;
             padding: 8px;
         }
 
@@ -116,53 +115,60 @@
             margin: auto;
             padding-top: 50px;
         }
+
+        /* Scrollable description if the content is too long */
+        .description-scroll {
+            max-width: 300px; /* Adjust as necessary */
+            max-height: 100px; /* Adjust as necessary */
+            overflow: auto;
+        <%--white-space: pre-wrap;--%> /* Preserve line breaks */
+        }
+        .description-scroll a{
+            text-decoration: none;
+
+        }
+
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
 <a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
-    if (prodotti != null){
+<% List<DettaglioOrdine> dettaglioOrdini = (List<DettaglioOrdine>) request.getAttribute("tableDettaglioOrdini");
+    if (dettaglioOrdini != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
+            <th>Id Ordine</th>
             <th>Id Prodotto</th>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Categoria</th>
-            <th>Immagine</th>
-            <th>Calorie</th>
-            <th>Carboidrati</th>
-            <th>Proteine</th>
-            <th>Grassi</th>
+            <th>Id Variante</th>
+            <th>Quantità</th>
+            <th>Prezzo</th>
             <th>Azione</th>
         </tr>
-        <% for (Prodotto p : prodotti) { %>
+        <% for (DettaglioOrdine d : dettaglioOrdini) {
+        %>
         <tr>
-            <td><%= p.getIdProdotto() %></td>
-            <td><%= p.getNome() %></td>
-            <td><%= p.getDescrizione() %></td>
-            <td><%= p.getCategoria() %></td>
-            <td><%= p.getImmagine() %></td>
-            <td><%= p.getCalorie() %></td>
-            <td><%= p.getCarboidrati() %></td>
-            <td><%= p.getProteine() %></td>
-            <td><%= p.getGrassi() %></td>
+            <td><%= d.getIdOrdine() %></td>
+            <td><%= d.getIdProdotto() %></td>
+            <td><%= d.getIdVariante() %></td>
+            <td><%= d.getQuantita() %></td>
+            <td><%= d.getPrezzo() %></td>
             <td class="center">
-                <button class="button" onclick="editTableRow('prodotto', '<%=p.getIdProdotto()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('prodotto', '<%=p.getIdProdotto()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="10" class="center">
-                <button class="add-button" onclick="addRow('prodotto')">+</button>
+            <td colspan="7" class="center">
+                <button class="add-button" onclick="addRow('dettaglioOrdine')">+</button>
             </td>
         </tr>
     </table>
 </div>
 <% } %>
+
 </body>
 </html>

@@ -17,9 +17,7 @@ public class ProdottoDAO {
 
             ResultSet resultSet=preparedStatement.executeQuery();
             List<Variante> varianti = new ArrayList<>();
-            if(resultSet.next())
-            {
-
+            if(resultSet.next()) {
                 Prodotto p = new Prodotto();
 
                 p.setIdProdotto(resultSet.getString("id_prodotto"));
@@ -39,7 +37,6 @@ public class ProdottoDAO {
 
                 return p;
             }
-
             return null;
 
         }

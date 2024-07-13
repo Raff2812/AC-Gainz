@@ -47,9 +47,9 @@ create table if not exists variante(
   sconto int check (sconto >= 0),
   evidenza tinyint(1) default 0,
   
-  foreign key (id_prodotto_variante) references prodotto(id_prodotto),
-  foreign key (id_gusto) references gusto(id_gusto),
-  foreign key (id_confezione) references confezione(id_confezione)
+  foreign key (id_prodotto_variante) references prodotto(id_prodotto) on update cascade on delete cascade,
+  foreign key (id_gusto) references gusto(id_gusto) on update cascade on delete cascade,
+  foreign key (id_confezione) references confezione(id_confezione) on update cascade on delete cascade
 );
 
 
@@ -61,9 +61,9 @@ create table if not exists carrello(
   prezzo float not null check (prezzo >= 0),
   
   primary key(email_utente, id_prodotto, id_variante),
-  foreign key(email_utente) references utente(email),
-  foreign key(id_prodotto) references prodotto(id_prodotto),
-  foreign key(id_variante) references variante(id_variante)
+  foreign key(email_utente) references utente(email) on update cascade on delete cascade,
+  foreign key(id_prodotto) references prodotto(id_prodotto) on update cascade on delete cascade,
+  foreign key(id_variante) references variante(id_variante) on update cascade on delete cascade
 );
 
 CREATE TABLE IF NOT EXISTS ordine(
@@ -84,9 +84,9 @@ CREATE TABLE IF NOT EXISTS dettaglio_ordine(
   prezzo float not null default 0.0 check (prezzo >= 0.0),
 
   primary key(id_ordine, id_prodotto, id_variante),
-  foreign key(id_ordine) references ordine (id_ordine),
-  foreign key(id_prodotto) references prodotto (id_prodotto),
-  foreign key(id_variante) references variante (id_variante)
+  foreign key(id_ordine) references ordine (id_ordine) on update cascade on delete cascade,
+  foreign key(id_prodotto) references prodotto (id_prodotto) on update cascade on delete cascade,
+  foreign key(id_variante) references variante (id_variante) on update cascade on delete cascade
 )
 ;
 

@@ -1,20 +1,19 @@
-<%@ page import="model.Prodotto" %>
+<%@ page import="model.Gusto" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
-  Date: 11/07/2024
-  Time: 16:32
+  Date: 13/07/2024
+  Time: 21:47
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 80%;
             margin: auto;
         }
 
@@ -116,53 +115,43 @@
             margin: auto;
             padding-top: 50px;
         }
+
+
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
 <a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
-    if (prodotti != null){
+<% List<Gusto> gusti = (List<Gusto>) request.getAttribute("tableGusto");
+    if (gusti != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th>Id Prodotto</th>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Categoria</th>
-            <th>Immagine</th>
-            <th>Calorie</th>
-            <th>Carboidrati</th>
-            <th>Proteine</th>
-            <th>Grassi</th>
+            <th>Id Gusto</th>
+            <th>Nome Gusto</th>
             <th>Azione</th>
         </tr>
-        <% for (Prodotto p : prodotti) { %>
+        <% for (Gusto g : gusti) {
+        %>
         <tr>
-            <td><%= p.getIdProdotto() %></td>
-            <td><%= p.getNome() %></td>
-            <td><%= p.getDescrizione() %></td>
-            <td><%= p.getCategoria() %></td>
-            <td><%= p.getImmagine() %></td>
-            <td><%= p.getCalorie() %></td>
-            <td><%= p.getCarboidrati() %></td>
-            <td><%= p.getProteine() %></td>
-            <td><%= p.getGrassi() %></td>
+            <td><%= g.getIdGusto() %></td>
+            <td><%= g.getNomeGusto() %></td>
             <td class="center">
-                <button class="button" onclick="editTableRow('prodotto', '<%=p.getIdProdotto()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('prodotto', '<%=p.getIdProdotto()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('gusto', '<%=g.getIdGusto()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('gusto', '<%=g.getIdGusto()%>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="10" class="center">
-                <button class="add-button" onclick="addRow('prodotto')">+</button>
+            <td colspan="3" class="center">
+                <button class="add-button" onclick="addRow('gusto')">+</button>
             </td>
         </tr>
     </table>
 </div>
 <% } %>
+
 </body>
 </html>

@@ -47,6 +47,21 @@
         <input type="hidden" name="tableName" value="ordine">
         <button type="submit" id="ordineTableButton">Ordini</button>
     </form>
+
+    <form action="showTable" method="get">
+        <input type="hidden" name="tableName" value="dettaglioOrdine">
+        <button type="submit" id="dettaglioOrdineTableButton">Dettaglio Ordine</button>
+    </form>
+
+    <form action="showTable" method="get">
+        <input type="hidden" name="tableName" value="gusto">
+        <button type="submit" id="gustoTableButton">Gusto</button>
+    </form>
+
+    <form action="showTable" method="get">
+        <input type="hidden" name="tableName" value="confezione">
+        <button type="submit" id="confezioneTableButton">Confezione</button>
+    </form>
 </div>
 
 

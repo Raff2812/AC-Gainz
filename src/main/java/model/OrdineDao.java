@@ -13,13 +13,15 @@ public class OrdineDao {
             PreparedStatement preparedStatement=con.prepareStatement("SELECT * FROM ordine WHERE id_ordine=?");
             preparedStatement.setInt(1,id);
             ResultSet resultSet=preparedStatement.executeQuery();
-            while (resultSet.next()){
+            if(resultSet.next()){
                 ordine.setIdOrdine(resultSet.getInt("id_ordine"));
                 ordine.setEmailUtente(resultSet.getString("email_utente"));
                 ordine.setDataOrdine(resultSet.getDate("data"));
                 ordine.setStato(resultSet.getString("stato"));
                 ordine.setTotale(resultSet.getFloat("totale"));
                 ordine.setDescrizione(resultSet.getString("descrizione"));
+            }else {
+                return null;
             }
 
         }
@@ -91,7 +93,7 @@ public class OrdineDao {
             parameters.add(sqlDate);
         }
 
-        if (ordine.getStato() != null) {
+        if (ordine.getStato() != null && !ordine.getStato().isBlank()) {
             query.append(", stato");
             parameters.add(ordine.getStato());
         }

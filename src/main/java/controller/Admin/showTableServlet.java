@@ -55,6 +55,27 @@ public class showTableServlet extends HttpServlet {
                 request.setAttribute("tableOrdine", ordini);
 
                 request.getRequestDispatcher("tableOrdine.jsp").forward(request, response);
+            }case "dettaglioOrdine" ->{
+                List<DettaglioOrdine> dettaglioOrdini = new ArrayList<>();
+                DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+                dettaglioOrdini = dettaglioOrdineDAO.doRetrieveAll();
+
+                request.setAttribute("tableDettaglioOrdini", dettaglioOrdini);
+
+                request.getRequestDispatcher("tableDettaglioOrdini.jsp").forward(request, response);
+            }case "gusto" ->{
+                GustoDAO gustoDAO = new GustoDAO();
+                List<Gusto> gusti = gustoDAO.doRetrieveAll();
+
+                request.setAttribute("tableGusto", gusti);
+
+                request.getRequestDispatcher("tableGusto.jsp").forward(request, response);
+            }case "confezione" ->{
+                ConfezioneDAO confezioneDAO = new ConfezioneDAO();
+                List<Confezione> confezioni = confezioneDAO.doRetrieveAll();
+
+                request.setAttribute("tableConfezione", confezioni);
+                request.getRequestDispatcher("tableConfezione.jsp").forward(request, response);
             }
         }
 

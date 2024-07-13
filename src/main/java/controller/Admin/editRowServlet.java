@@ -175,6 +175,73 @@ public class editRowServlet extends HttpServlet {
             }
             req.getRequestDispatcher("showTable?tableName="+tableName).forward(req, resp);
 
+        }else if ("dettaglioOrdine".equals(tableName)){
+            String idOrdine = req.getParameter("idOrdine");
+            System.out.println(idOrdine + "edit");
+            String idVariante = req.getParameter("idVariante");
+            System.out.println(idVariante + "edit");
+            String idProdotto = req.getParameter("idProdotto");
+            System.out.println(idProdotto + "edit");
+
+            String quantity = req.getParameter("quantity");
+            System.out.println(quantity + "edit");
+
+
+
+
+            if (idOrdine != null && !idOrdine.isBlank() && idVariante != null && !idVariante.isBlank() && idProdotto != null && !idProdotto.isBlank()){
+                if (Integer.parseInt(quantity) >= 0 ){
+                    int q = Integer.parseInt(quantity);
+                    int idOrder = Integer.parseInt(idOrdine);
+                    int idVariant = Integer.parseInt(idVariante);
+                    DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
+                    dettaglioOrdine.setIdOrdine(idOrder);
+                    dettaglioOrdine.setIdProdotto(idProdotto);
+                    dettaglioOrdine.setIdVariante(idVariant);
+                    dettaglioOrdine.setQuantita(q);
+
+                    String[] primaryKeys = primaryKey.split(", ");
+                    for (String x: primaryKeys) System.out.println(x);
+                    int firstPK = Integer.parseInt(primaryKeys[0]);
+                    String secondPK = primaryKeys[1];
+                    int thirdPK = Integer.parseInt(primaryKeys[2]);
+
+                    DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+                    dettaglioOrdineDAO.doUpdateDettaglioOrdine(dettaglioOrdine, firstPK, secondPK, thirdPK);
+                }
+            }
+
+            req.getRequestDispatcher("showTable?tableName="+tableName).forward(req, resp);
+        }else if ("gusto".equals(tableName)){
+            String idGusto = req.getParameter("idGusto");
+            String nomeGusto = req.getParameter("nomeGusto");
+
+            if (idGusto != null && !idGusto.isBlank() && nomeGusto != null && !nomeGusto.isBlank()){
+                int id = Integer.parseInt(idGusto);
+                Gusto gusto = new Gusto();
+                gusto.setIdGusto(id);
+                gusto.setNome(nomeGusto);
+                GustoDAO gustoDAO = new GustoDAO();
+                gustoDAO.updateGusto(gusto, Integer.parseInt(primaryKey));
+            }
+
+            req.getRequestDispatcher("showTable?tableName="+tableName).forward(req, resp);
+        }else if ("confezione".equals(tableName)){
+            String idConfezione = req.getParameter("idConfezione");
+            String pesoConfezione = req.getParameter("pesoConfezione");
+
+            if (idConfezione != null && !idConfezione.isBlank() && pesoConfezione != null && !pesoConfezione.isBlank() && Integer.parseInt(pesoConfezione) > 0){
+                int id = Integer.parseInt(idConfezione);
+                Confezione confezione = new Confezione();
+                confezione.setIdConfezione(id);
+                confezione.setPeso(Integer.parseInt(pesoConfezione));
+
+                ConfezioneDAO confezioneDAO = new ConfezioneDAO();
+                confezioneDAO.doUpdateConfezione(confezione, Integer.parseInt(primaryKey));
+            }
+
+            req.getRequestDispatcher("showTable?tableName="+tableName).forward(req, resp);
+
         }
     }
 

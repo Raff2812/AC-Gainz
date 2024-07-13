@@ -1,20 +1,19 @@
-<%@ page import="model.Prodotto" %>
+<%@ page import="model.Confezione" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
-  Date: 11/07/2024
-  Time: 16:32
+  Date: 13/07/2024
+  Time: 22:29
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
-
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 80%;
             margin: auto;
         }
 
@@ -116,53 +115,43 @@
             margin: auto;
             padding-top: 50px;
         }
+
+
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
 <a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
-    if (prodotti != null){
+<% List<Confezione> confezioni = (List<Confezione>) request.getAttribute("tableConfezione");
+    if (confezioni != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th>Id Prodotto</th>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Categoria</th>
-            <th>Immagine</th>
-            <th>Calorie</th>
-            <th>Carboidrati</th>
-            <th>Proteine</th>
-            <th>Grassi</th>
+            <th>Id Confezione</th>
+            <th>Peso Confezione</th>
             <th>Azione</th>
         </tr>
-        <% for (Prodotto p : prodotti) { %>
+        <% for (Confezione c : confezioni) {
+        %>
         <tr>
-            <td><%= p.getIdProdotto() %></td>
-            <td><%= p.getNome() %></td>
-            <td><%= p.getDescrizione() %></td>
-            <td><%= p.getCategoria() %></td>
-            <td><%= p.getImmagine() %></td>
-            <td><%= p.getCalorie() %></td>
-            <td><%= p.getCarboidrati() %></td>
-            <td><%= p.getProteine() %></td>
-            <td><%= p.getGrassi() %></td>
+            <td><%= c.getIdConfezione() %></td>
+            <td><%= c.getPeso() %></td>
             <td class="center">
-                <button class="button" onclick="editTableRow('prodotto', '<%=p.getIdProdotto()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('prodotto', '<%=p.getIdProdotto()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('confezione', '<%=c.getIdConfezione()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('confezione', '<%=c.getIdConfezione()%>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="10" class="center">
-                <button class="add-button" onclick="addRow('prodotto')">+</button>
+            <td colspan="3" class="center">
+                <button class="add-button" onclick="addRow('confezione')">+</button>
             </td>
         </tr>
     </table>
 </div>
 <% } %>
+
 </body>
 </html>

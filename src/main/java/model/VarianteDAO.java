@@ -170,7 +170,7 @@ public class VarianteDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+            if (resultSet.next()){
                 variante.setIdVariante(resultSet.getInt("id_variante"));
                 variante.setIdProdotto(resultSet.getString("id_prodotto_variante"));
                 variante.setIdGusto(resultSet.getInt("id_gusto"));
@@ -183,6 +183,8 @@ public class VarianteDAO {
 
                 variante.setGusto(resultSet.getString("nomeGusto"));
                 variante.setPesoConfezione(resultSet.getInt("peso"));
+            }else {
+                return null;
             }
 
         }catch (SQLException e){

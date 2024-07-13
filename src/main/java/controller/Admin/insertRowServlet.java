@@ -164,7 +164,7 @@ public class insertRowServlet extends HttpServlet {
             String emailUtente = req.getParameter("emailUtente");
             String stato = req.getParameter("stato");
             String totale = req.getParameter("totale");
-            String descrizione = req.getParameter("descrizione");
+            //String descrizione = req.getParameter("descrizione");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date data = null;
             try {
@@ -184,16 +184,75 @@ public class insertRowServlet extends HttpServlet {
                     ordine.setEmailUtente(emailUtente);
                     ordine.setStato(stato);
                     ordine.setDataOrdine(data);
-                    ordine.setDescrizione(descrizione);
+                    //ordine.setDescrizione(descrizione);
 
                     OrdineDao ordineDao = new OrdineDao();
                     ordineDao.doSave(ordine);
                 }
 
             req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
+            }else if ("dettaglioOrdine".equals(nameTable)){
+            String idOrdine = req.getParameter("idOrdine");
+            System.out.println(idOrdine);
+            String idProdotto = req.getParameter("idProdotto");
+            System.out.println(idProdotto);
+            String idVariante = req.getParameter("idVariante");
+            System.out.println(idVariante);
+            String quantity = req.getParameter("quantity");
+            System.out.println(quantity);
+
+
+            if (idOrdine != null && !idOrdine.isBlank() && idProdotto != null && idVariante != null && !idVariante.isBlank()){
+                if (quantity != null && Integer.parseInt(quantity) > 0){
+                    DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
+                    System.out.println(dettaglioOrdine.getPrezzo());
+                    int idOrder = Integer.parseInt(idOrdine);
+                    int idVariant = Integer.parseInt(idVariante);
+                    int q = Integer.parseInt(quantity);
+
+
+                    OrdineDao ordineDao = new OrdineDao();
+                    VarianteDAO varianteDAO = new VarianteDAO();
+                    ProdottoDAO prodottoDAO = new ProdottoDAO();
+                    if (ordineDao.doRetrieveById(idOrder) != null && varianteDAO.doRetrieveVarianteByIdVariante(idVariant) != null && prodottoDAO.doRetrieveById(idProdotto) != null) {
+                        dettaglioOrdine.setIdOrdine(idOrder);
+                        dettaglioOrdine.setIdProdotto(idProdotto);
+                        dettaglioOrdine.setIdVariante(idVariant);
+                        dettaglioOrdine.setQuantita(q);
+
+                        DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+                        dettaglioOrdineDAO.doSave(dettaglioOrdine);
+
+                    }
+
+
+                }
             }
+            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
 
+        }else if ("gusto".equals(nameTable)){
+            String nomeGusto = req.getParameter("nomeGusto");
 
+            if (nomeGusto != null && !nomeGusto.isBlank()){
+
+                GustoDAO gustoDAO = new GustoDAO();
+                Gusto gusto = new Gusto();
+                gusto.setNome(nomeGusto);
+                gustoDAO.doSaveGusto(gusto);
+
+            }
+            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
+        }else if ("confezione".equals(nameTable)){
+            String peso = req.getParameter("pesoConfezione");
+
+            if (peso != null && Integer.parseInt(peso) > 0){
+                Confezione confezione = new Confezione();
+                confezione.setPeso(Integer.parseInt(peso));
+                ConfezioneDAO confezioneDAO = new ConfezioneDAO();
+                confezioneDAO.doSaveConfezione(confezione);
+            }
+            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
         }
+    }
 }
 

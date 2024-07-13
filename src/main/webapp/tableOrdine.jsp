@@ -18,7 +18,7 @@
         }
 
         th, td {
-            text-align: left;
+            text-align: center;
             padding: 8px;
         }
 
@@ -121,7 +121,11 @@
             max-width: 300px; /* Adjust as necessary */
             max-height: 100px; /* Adjust as necessary */
             overflow: auto;
-            white-space: pre-wrap; /* Preserve line breaks */
+            <%--white-space: pre-wrap;--%> /* Preserve line breaks */
+        }
+        .description-scroll a{
+            text-decoration: none;
+
         }
 
     </style>
@@ -144,14 +148,28 @@
             <th>Descrizione</th>
             <th>Azione</th>
         </tr>
-        <% for (Ordine o : ordini) { %>
+        <% for (Ordine o : ordini) {
+            String descrizione = o.getDescrizione();
+        %>
         <tr>
             <td><%= o.getIdOrdine() %></td>
             <td><%= o.getEmailUtente() %></td>
             <td><%= o.getDataOrdine() %></td>
             <td><%= o.getStato() %></td>
             <td><%= o.getTotale() %></td>
-            <td class="description-scroll"><%= o.getDescrizione() %></td>
+            <td class="description-scroll">
+                <%
+                    if ( descrizione == null || descrizione.isBlank()){
+                %>
+                <a href="showTable?tableName=dettaglioOrdine">Dettaglio ordine</a>
+                <%
+                    }else{
+                %>
+                <%=descrizione%>
+                <%
+                    }
+                %>
+            </td>
             <td class="center">
                 <button class="button" onclick="editTableRow('ordine', '<%= o.getIdOrdine() %>')">Modifica</button>
                 <button class="button" onclick="deleteTableRow('ordine', '<%= o.getIdOrdine() %>')">Elimina</button>

@@ -19,163 +19,172 @@ public class showRowForm extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // Recupera il nome della tabella e la chiave primaria dai parametri della richiesta
         String tableName = req.getParameter("tableName");
+        String primaryKey = req.getParameter("primaryKey");
 
-
+        // Crea un JSONArray per raccogliere le righe della tabella in formato JSON
         JSONArray jsonArray = new JSONArray();
         resp.setContentType("application/json");
-        PrintWriter o = resp.getWriter();
 
-        if (tableName != null) {
+        // Controlla se i parametri tableName e primaryKey sono validi
+        if (tableName != null && !tableName.isBlank() && primaryKey != null && !primaryKey.isBlank()) {
+            // Determina quale tabella mostrare
             switch (tableName) {
-                case "utente" -> showUtenteRowTable(req, jsonArray);
-                case "prodotto" -> showProdottoRowTable(req, jsonArray);
-                case "variante" -> showVarianteRowTable(req, jsonArray);
-                case "ordine" -> showOrdineRowTable(req, jsonArray);
+                case "utente" -> showUtenteRowTable(primaryKey, jsonArray);
+                case "prodotto" -> showProdottoRowTable(primaryKey, jsonArray);
+                case "variante" -> showVarianteRowTable(primaryKey, jsonArray);
+                case "ordine" -> showOrdineRowTable(primaryKey, jsonArray);
+                case "dettaglioOrdine" -> showDettaglioOrdineRowTable(primaryKey, jsonArray);
+                case "gusto" -> showGustoRowTable(primaryKey, jsonArray);
+                case "confezione" -> showConfezioneRowTable(primaryKey, jsonArray);
+                default -> throw new ServletException("Tabella non valida.");
             }
         }
 
-        o.println(jsonArray.toJSONString());
-        o.flush();
+        // Invia il JSON di risposta
+        try (PrintWriter out = resp.getWriter()) {
+            out.println(jsonArray.toJSONString());
+            out.flush();
+        }
     }
 
-    private void showOrdineRowTable(HttpServletRequest request, JSONArray jsonArray){
-        String action = request.getParameter("action");
-        if (action != null && !action.isBlank() && action.equals("edit")){
-            OrdineDao ordineDao = new OrdineDao();
-            Ordine o = new Ordine();
-            String primaryKey = request.getParameter("primaryKey");
-            o = ordineDao.doRetrieveById(Integer.parseInt(primaryKey));
+    private void showConfezioneRowTable(String primaryKey, JSONArray jsonArray) {
+        ConfezioneDAO confezioneDAO = new ConfezioneDAO();
+        int idConfezione = Integer.parseInt(primaryKey);
+        Confezione confezione = confezioneDAO.doRetrieveById(idConfezione);
+        if (confezione != null) {
+            jsonArray.add(confezioneHelper(confezione));
+        }
+    }
 
-            if (o != null){
-                System.out.println("Ok order");
-                JSONObject jsonObject = jsonOrdineHelper(o);
-                jsonArray.add(jsonObject);
-                System.out.println(jsonArray.toJSONString());
+    private void showGustoRowTable(String primaryKey, JSONArray jsonArray) {
+        GustoDAO gustoDAO = new GustoDAO();
+        int idGusto = Integer.parseInt(primaryKey);
+        Gusto gusto = gustoDAO.doRetrieveById(idGusto);
+        if (gusto != null) {
+            jsonArray.add(gustoHelper(gusto));
+        }
+    }
+
+    private void showDettaglioOrdineRowTable(String primaryKey, JSONArray jsonArray) {
+        DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+        String[] keys = primaryKey.split(", ");
+        if (keys.length == 2) {
+            int idOrdine = Integer.parseInt(keys[0]);
+            int idVariante = Integer.parseInt(keys[1]);
+            DettaglioOrdine dettaglioOrdine = dettaglioOrdineDAO.doRetrieveByIdOrderAndIdVariant(idOrdine, idVariante);
+            if (dettaglioOrdine != null) {
+                jsonArray.add(dettaglioOrdineHelper(dettaglioOrdine));
             }
         }
     }
 
-    protected static JSONObject jsonOrdineHelper(Ordine o){
+    private void showOrdineRowTable(String primaryKey, JSONArray jsonArray) {
+        OrdineDao ordineDao = new OrdineDao();
+        Ordine ordine = ordineDao.doRetrieveById(Integer.parseInt(primaryKey));
+        if (ordine != null) {
+            jsonArray.add(jsonOrdineHelper(ordine));
+        }
+    }
+
+    private void showVarianteRowTable(String primaryKey, JSONArray jsonArray) {
+        VarianteDAO varianteDAO = new VarianteDAO();
+        Variante variante = varianteDAO.doRetrieveVarianteByIdVariante(Integer.parseInt(primaryKey));
+        if (variante != null) {
+            jsonArray.add(jsonVarianteHelper(variante));
+        }
+    }
+
+    private void showProdottoRowTable(String primaryKey, JSONArray jsonArray) {
+        ProdottoDAO prodottoDAO = new ProdottoDAO();
+        Prodotto prodotto = prodottoDAO.doRetrieveById(primaryKey);
+        if (prodotto != null) {
+            jsonArray.add(jsonProductHelper(prodotto));
+        }
+    }
+
+    private void showUtenteRowTable(String primaryKey, JSONArray jsonArray) {
+        UtenteDAO utenteDAO = new UtenteDAO();
+        Utente utente = utenteDAO.doRetrieveByEmail(primaryKey);
+        if (utente != null) {
+            jsonArray.add(jsonUtenteHelper(utente));
+        }
+    }
+
+    protected static JSONObject confezioneHelper(Confezione confezione) {
+        JSONObject confezioneObject = new JSONObject();
+        confezioneObject.put("idConfezione", confezione.getIdConfezione());
+        confezioneObject.put("pesoConfezione", confezione.getPeso());
+        return confezioneObject;
+    }
+
+    protected static JSONObject gustoHelper(Gusto gusto) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idGusto", gusto.getIdGusto());
+        jsonObject.put("nomeGusto", gusto.getNomeGusto());
+        return jsonObject;
+    }
+
+    protected static JSONObject dettaglioOrdineHelper(DettaglioOrdine dettaglioOrdine) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("idOrdine", dettaglioOrdine.getIdOrdine());
+        jsonObject.put("idProdotto", dettaglioOrdine.getIdProdotto());
+        jsonObject.put("idVariante", dettaglioOrdine.getIdVariante());
+        jsonObject.put("quantity", dettaglioOrdine.getQuantita());
+        jsonObject.put("prezzo", dettaglioOrdine.getPrezzo());
+        return jsonObject;
+    }
+
+    protected static JSONObject jsonOrdineHelper(Ordine ordine) {
         JSONObject ordineObject = new JSONObject();
-        ordineObject.put("idOrdine", o.getIdOrdine());
-        ordineObject.put("emailUtente", o.getEmailUtente());
-        ordineObject.put("stato", o.getStato());
-
-        if (o.getDataOrdine()!= null) {
-            ordineObject.put("data", new SimpleDateFormat("yyyy-MM-dd").format(o.getDataOrdine()));
-        } else {
-            ordineObject.put("data", "");
-        }
-        ordineObject.put("totale", o.getTotale());
-        ordineObject.put("descrizione", o.getDescrizione());
-
+        ordineObject.put("idOrdine", ordine.getIdOrdine());
+        ordineObject.put("emailUtente", ordine.getEmailUtente());
+        ordineObject.put("stato", ordine.getStato());
+        ordineObject.put("data", ordine.getDataOrdine() != null ? new SimpleDateFormat("yyyy-MM-dd").format(ordine.getDataOrdine()) : "");
+        ordineObject.put("totale", ordine.getTotale());
+        ordineObject.put("descrizione", ordine.getDescrizione());
         return ordineObject;
     }
 
-    private void showVarianteRowTable(HttpServletRequest request, JSONArray jsonArray){
-        String action = request.getParameter("action");
-        if (action != null && !action.isBlank() && action.equals("edit")){
-            VarianteDAO varianteDAO = new VarianteDAO();
-            Variante v = new Variante();
-            String primaryKey = request.getParameter("primaryKey");
-            v = varianteDAO.doRetrieveVarianteByIdVariante(Integer.parseInt(primaryKey));
-
-            if (v != null){
-                JSONObject varianteObject = jsonVarianteHelper(v);
-                jsonArray.add(varianteObject);
-            }
-
-        }
-    }
-
-    protected static JSONObject jsonVarianteHelper(Variante v){
+    protected static JSONObject jsonVarianteHelper(Variante variante) {
         JSONObject varianteObject = new JSONObject();
-        varianteObject.put("idVariante", v.getIdVariante());
-        varianteObject.put("idProdottoVariante", v.getIdProdotto());
-        varianteObject.put("idGusto", v.getIdGusto());
-        varianteObject.put("idConfezione", v.getIdConfezione());
-        varianteObject.put("prezzo", v.getPrezzo());
-        varianteObject.put("quantity", v.getQuantita());
-        varianteObject.put("sconto", v.getSconto());
-
-
-        int evidenzaNumber = 0;
-        if (v.isEvidenza()) evidenzaNumber = 1;
-        varianteObject.put("evidenza", evidenzaNumber);
-
+        varianteObject.put("idVariante", variante.getIdVariante());
+        varianteObject.put("idProdottoVariante", variante.getIdProdotto());
+        varianteObject.put("idGusto", variante.getIdGusto());
+        varianteObject.put("idConfezione", variante.getIdConfezione());
+        varianteObject.put("prezzo", variante.getPrezzo());
+        varianteObject.put("quantity", variante.getQuantita());
+        varianteObject.put("sconto", variante.getSconto());
+        varianteObject.put("evidenza", variante.isEvidenza() ? 1 : 0);
         return varianteObject;
     }
 
-    private void showProdottoRowTable(HttpServletRequest req, JSONArray jsonArray) {
-        String action = req.getParameter("action");
-        if (action != null && !action.isBlank() && action.equals("edit")){
-            ProdottoDAO prodottoDAO = new ProdottoDAO();
-            String primaryKey = req.getParameter("primaryKey");
-
-            if (primaryKey != null && !primaryKey.isBlank()){
-                Prodotto p = prodottoDAO.doRetrieveById(primaryKey);
-
-                if (p != null){
-                    JSONObject productObject = jsonProductHelper(p);
-                    jsonArray.add(productObject);
-                }
-            }
-        }
-    }
-
-    protected static JSONObject jsonProductHelper(Prodotto p){
+    protected static JSONObject jsonProductHelper(Prodotto prodotto) {
         JSONObject productObject = new JSONObject();
-        productObject.put("idProdotto", p.getIdProdotto());
-        productObject.put("nome", p.getNome());
-        productObject.put("descrizione", p.getDescrizione());
-        productObject.put("categoria", p.getCategoria());
-        productObject.put("immagine", p.getImmagine());
-        productObject.put("calorie", p.getCalorie());
-        productObject.put("carboidrati", p.getCarboidrati());
-        productObject.put("proteine", p.getProteine());
-        productObject.put("grassi", p.getGrassi());
-
+        productObject.put("idProdotto", prodotto.getIdProdotto());
+        productObject.put("nome", prodotto.getNome());
+        productObject.put("descrizione", prodotto.getDescrizione());
+        productObject.put("categoria", prodotto.getCategoria());
+        productObject.put("immagine", prodotto.getImmagine());
+        productObject.put("calorie", prodotto.getCalorie());
+        productObject.put("carboidrati", prodotto.getCarboidrati());
+        productObject.put("proteine", prodotto.getProteine());
+        productObject.put("grassi", prodotto.getGrassi());
         return productObject;
     }
 
-    protected static JSONObject jsonHelper(Utente x) {
+    protected static JSONObject jsonUtenteHelper(Utente utente) {
         JSONObject userObject = new JSONObject();
-        userObject.put("email", x.getEmail());
-        userObject.put("nome", x.getNome());
-        userObject.put("cognome", x.getCognome());
-        userObject.put("codiceFiscale", x.getCodiceFiscale());
-        if (x.getDataNascita() != null) {
-            userObject.put("dataDiNascita", new SimpleDateFormat("yyyy-MM-dd").format(x.getDataNascita()));
-        } else {
-            userObject.put("dataDiNascita", "");
-        }
-        userObject.put("indirizzo", x.getIndirizzo());
-        userObject.put("telefono", x.getTelefono());
+        userObject.put("email", utente.getEmail());
+        userObject.put("nome", utente.getNome());
+        userObject.put("cognome", utente.getCognome());
+        userObject.put("codiceFiscale", utente.getCodiceFiscale());
+        userObject.put("dataDiNascita", utente.getDataNascita() != null ? new SimpleDateFormat("yyyy-MM-dd").format(utente.getDataNascita()) : "");
+        userObject.put("indirizzo", utente.getIndirizzo());
+        userObject.put("telefono", utente.getTelefono());
         return userObject;
     }
-    private void showUtenteRowTable(HttpServletRequest request, JSONArray jsonArray) {
-
-        String action = request.getParameter("action");
-        if (action != null && !action.isBlank()){
-            if (action.equals("edit")) {
-                UtenteDAO utenteDAO = new UtenteDAO();
-                String primaryKey = request.getParameter("primaryKey");
-
-                if (primaryKey != null && !primaryKey.isBlank()) {
-                    Utente x = utenteDAO.doRetrieveByEmail(primaryKey);
-
-                    if (x != null) {
-                        JSONObject userObject = jsonHelper(x);
-                        jsonArray.add(userObject);
-                    }
-                }
-            }
-        }
-
-    }
-
-
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
