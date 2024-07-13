@@ -94,14 +94,6 @@
                 List<DettaglioOrdine> dettaglioOrdine = (List<DettaglioOrdine>) request.getAttribute("orderDetails");
                 if (dettaglioOrdine != null && !dettaglioOrdine.isEmpty()){
                     for (DettaglioOrdine item: dettaglioOrdine){
-                        /*ProdottoDAO prodottoDAO=new ProdottoDAO();
-                        Prodotto prodotto=prodottoDAO.doRetrieveById(item.getIdProdotto());
-                        VarianteDAO varianteDAO=new VarianteDAO();
-                        Variante variante=varianteDAO.doRetrieveVarianteByIdVariante(item.getIdVariante());
-                        GustoDAO gustoDAO=new GustoDAO();
-                        Gusto gusto=gustoDAO.doRetrieveById(variante.getIdGusto());
-                        ConfezioneDAO confezioneDAO=new ConfezioneDAO();
-                        Confezione confezione=confezioneDAO.doRetrieveById(variante.getIdConfezione());*/
             %>
             <div class="order-item">
                 <img src="<%=item.getImmagineProdotto()%>" class="product-image" alt="<%=item.getNomeProdotto()%>">
