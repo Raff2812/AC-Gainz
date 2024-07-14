@@ -1,9 +1,9 @@
-<%@ page import="model.Confezione" %>
+<%@ page import="model.DettaglioOrdine" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
   Date: 13/07/2024
-  Time: 22:29
+  Time: 13:42
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -18,7 +18,7 @@
         }
 
         th, td {
-            text-align: center;
+            text-align: left;
             padding: 8px;
         }
 
@@ -29,6 +29,9 @@
         th {
             background-color: #04AA6D;
             color: white;
+        }
+        th a{
+            text-decoration: none;
         }
 
         .center {
@@ -116,37 +119,54 @@
             padding-top: 50px;
         }
 
+        /* Scrollable description if the content is too long */
+        .description-scroll {
+            max-width: 300px; /* Adjust as necessary */
+            max-height: 100px; /* Adjust as necessary */
+            overflow: auto;
+        <%--white-space: pre-wrap;--%> /* Preserve line breaks */
+        }
+        .description-scroll a{
+            text-decoration: none;
+
+        }
 
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Confezione> confezioni = (List<Confezione>) request.getAttribute("tableConfezione");
-    if (confezioni != null){
+<a href="admin">Torna indietro</a>
+<% List<DettaglioOrdine> dettaglioOrdini = (List<DettaglioOrdine>) request.getAttribute("tableDettaglioOrdini");
+    if (dettaglioOrdini != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th>Id Confezione</th>
-            <th>Peso Confezione</th>
+            <th><a href="showTable/tableName=ordine">Id Ordine</a></th>
+            <th><a href="showTable/tableName=prodotto">Id Prodotto</a></th>
+            <th><a href="showTable/tableName=variante">Id Variante</a></th>
+            <th>Quantità</th>
+            <th>Prezzo</th>
             <th>Azione</th>
         </tr>
-        <% for (Confezione c : confezioni) {
+        <% for (DettaglioOrdine d : dettaglioOrdini) {
         %>
         <tr>
-            <td><%= c.getIdConfezione() %></td>
-            <td><%= c.getPeso() %></td>
+            <td><%= d.getIdOrdine() %></td>
+            <td><%= d.getIdProdotto() %></td>
+            <td><%= d.getIdVariante() %></td>
+            <td><%= d.getQuantita() %></td>
+            <td><%= d.getPrezzo() %></td>
             <td class="center">
-                <button class="button" onclick="editTableRow('confezione', '<%=c.getIdConfezione()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('confezione', '<%=c.getIdConfezione()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="3" class="center">
-                <button class="add-button" onclick="addRow('confezione')">+</button>
+            <td colspan="7" class="center">
+                <button class="add-button" onclick="addRow('dettaglioOrdine')">+</button>
             </td>
         </tr>
     </table>

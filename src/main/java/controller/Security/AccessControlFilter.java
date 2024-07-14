@@ -5,6 +5,7 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import model.Utente;
 
 import java.io.IOException;
 
@@ -17,7 +18,17 @@ public class AccessControlFilter extends HttpFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) req;
         HttpServletResponse httpServletResponse = (HttpServletResponse) res;
 
-        boolean isLogged = (httpServletRequest.getSession().getAttribute("Utente") != null);
+
+        Utente utente = null;
+        utente = (Utente) httpServletRequest.getSession().getAttribute("Utente");
+
+        boolean isAdmin = false;
+        boolean isLogged = (utente != null);
+        if (isLogged)
+         isAdmin = utente.getPoteri();
+
+        System.out.println(isAdmin);
+
         String path = httpServletRequest.getServletPath();
         System.out.println(path);
 
@@ -35,6 +46,16 @@ public class AccessControlFilter extends HttpFilter implements Filter {
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");
             return; // Interrompe l'esecuzione del filtro
         }
+        if (path.contains("logOut") && !isLogged){
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");
+            return; // Interrompe l'esecuzione del filtro
+        }
+        if ((path.contains("admin") || path.contains("showTable") || path.contains("deleteRow") || path.contains("editRow") || path.contains("insertRow") || path.contains("showRowForm")) && !isAdmin){
+            httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + "/index.jsp");
+            return; // Interrompe l'esecuzione del filtro
+        }
+
+
 
         chain.doFilter(req, res);
     }

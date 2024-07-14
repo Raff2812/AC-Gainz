@@ -1,9 +1,9 @@
-<%@ page import="model.Gusto" %>
+<%@ page import="model.Ordine" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
-  Date: 13/07/2024
-  Time: 21:47
+  Date: 11/07/2024
+  Time: 16:48
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -29,6 +29,9 @@
         th {
             background-color: #04AA6D;
             color: white;
+        }
+        th a{
+            text-decoration: none;
         }
 
         .center {
@@ -116,37 +119,69 @@
             padding-top: 50px;
         }
 
+        /* Scrollable description if the content is too long */
+        .description-scroll {
+            max-width: 300px; /* Adjust as necessary */
+            max-height: 100px; /* Adjust as necessary */
+            overflow: auto;
+            <%--white-space: pre-wrap;--%> /* Preserve line breaks */
+        }
+        .description-scroll a{
+            text-decoration: none;
+
+        }
 
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Gusto> gusti = (List<Gusto>) request.getAttribute("tableGusto");
-    if (gusti != null){
+<a href="admin">Torna indietro</a>
+<% List<Ordine> ordini = (List<Ordine>) request.getAttribute("tableOrdine");
+    if (ordini != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th>Id Gusto</th>
-            <th>Nome Gusto</th>
+            <th>Id Ordine</th>
+            <th><a href="showTable?tableName=utente">Email Utente</a></th>
+            <th>Data Ordine</th>
+            <th>Stato</th>
+            <th>Totale</th>
+            <th>Descrizione</th>
             <th>Azione</th>
         </tr>
-        <% for (Gusto g : gusti) {
+        <% for (Ordine o : ordini) {
+            String descrizione = o.getDescrizione();
         %>
         <tr>
-            <td><%= g.getIdGusto() %></td>
-            <td><%= g.getNomeGusto() %></td>
+            <td><%= o.getIdOrdine() %></td>
+            <td><%= o.getEmailUtente() %></td>
+            <td><%= o.getDataOrdine() %></td>
+            <td><%= o.getStato() %></td>
+            <td><%= o.getTotale() %></td>
+            <td class="description-scroll">
+                <%
+                    if ( descrizione == null || descrizione.isBlank()){
+                %>
+                <a href="showTable?tableName=dettaglioOrdine">Dettaglio ordine</a>
+                <%
+                    }else{
+                %>
+                <%=descrizione%>
+                <%
+                    }
+                %>
+            </td>
             <td class="center">
-                <button class="button" onclick="editTableRow('gusto', '<%=g.getIdGusto()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('gusto', '<%=g.getIdGusto()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('ordine', '<%= o.getIdOrdine() %>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('ordine', '<%= o.getIdOrdine() %>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="3" class="center">
-                <button class="add-button" onclick="addRow('gusto')">+</button>
+            <td colspan="7" class="center">
+                <button class="add-button" onclick="addRow('ordine')">+</button>
             </td>
         </tr>
     </table>

@@ -58,7 +58,8 @@ function showUpdateForm(dataTable, nameTable, primaryKey) {
         if (field.type !== "textarea" ) {
             // Crea un elemento input per altri tipi
             let input = document.createElement("input"); // Dichiarazione con let
-            input.type = field.type === "file" ? "file" : field.type;
+            if (field.type === "file") input.type = "text";
+            //input.type = field.type === "file" ? "file" : field.type;
             input.name = field.id;
             input.placeholder = field.label;
 
@@ -89,6 +90,11 @@ function deleteTableRow(nameTable, primaryKey) {
     if (confirm("Vuoi davvero eliminare questa riga?")) {
         fetch("deleteRow?" + urlSearch.toString())
             .then(response => {
+                if (response.redirected) {
+                    console.log("response redirected");
+                    window.location.href = response.url;
+                    return; // Interrompe l'esecuzione se c'è un redirect
+                }
                 if (!response.ok) throw new Error(`Network error: ${response.status} - ${response.statusText}`);
                 return response.json();
             })

@@ -23,6 +23,7 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = req.getSession();
         Utente x = (Utente) session.getAttribute("Utente");
 
+        if (x != null){
         // Save cart into DB before logging out
         CarrelloDAO carrelloDAO = new CarrelloDAO();
         List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
@@ -44,6 +45,7 @@ public class LogoutServlet extends HttpServlet {
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("index.jsp");
         requestDispatcher.forward(req, resp);
+        }
     }
 
     @Override

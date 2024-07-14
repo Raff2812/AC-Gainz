@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>Area Admin</title>
-    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="../../Immagini/favicon.ico">
     <style>
         #listTables{
             display: flex;
@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>
-<%@include file="WEB-INF/Header.jsp"%>
+<%@include file="../Header.jsp"%>
 
 <div id="listTables">
     <form action="showTable" method="get">
@@ -66,6 +66,6 @@
 
 
 
-<%@include file="WEB-INF/Footer.jsp"%>
+<%@include file="../Footer.jsp"%>
 </body>
 </html>

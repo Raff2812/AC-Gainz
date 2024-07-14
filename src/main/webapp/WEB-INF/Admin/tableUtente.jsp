@@ -116,7 +116,7 @@
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="AreaAdmin.jsp">Torna indietro</a>
+<a href="admin">Torna indietro</a>
 <% List<Utente> utenti = (List<Utente>) request.getAttribute("tableUtente");
   if (utenti != null){
 %>

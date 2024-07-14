@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 import model.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -18,6 +17,7 @@ import java.nio.file.Paths;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @WebServlet("/insertRow")
 @MultipartConfig
@@ -34,225 +34,242 @@ public class insertRowServlet extends HttpServlet {
         String nameTable = req.getParameter("nameTable");
         System.out.println(nameTable);
 
-        if ("utente".equals(nameTable)) {
-            String email = req.getParameter("email");
-            String password = req.getParameter("password");
-            String nome = req.getParameter("nome");
-            String cognome = req.getParameter("cognome");
-            String codiceFiscale = req.getParameter("codiceFiscale");
-            String dataDiNascita = req.getParameter("dataDiNascita");
-            String indirizzo = req.getParameter("indirizzo");
-            String telefono = req.getParameter("telefono");
+        boolean success = false;
 
-            System.out.println(email);
-            System.out.println("Password:" + password);
-            System.out.println(nome);
-            System.out.println(cognome);
-            System.out.println(codiceFiscale);
-            System.out.println(dataDiNascita);
-            System.out.println(indirizzo);
-            System.out.println(telefono);
+        switch (nameTable) {
+            case "utente" ->
+                success = insertUtente(req);
+            case "prodotto" ->
+                success = insertProdotto(req);
+            case "variante" ->
+                success = insertVariante(req);
+            case "ordine" ->
+                success = insertOrdine(req);
+            case "dettagliOrdine" ->
+                success = insertDettaglioOrdine(req);
+            case "gusto" ->
+                success = insertGusto(req);
+            case "confezione" ->
+                success = insertConfezione(req);
 
-            if (email != null && !email.isBlank() && password != null && nome != null && cognome != null && codiceFiscale != null && dataDiNascita != null && indirizzo != null && telefono != null) {
-                System.out.println("OK insert");
-                UtenteDAO utenteDAO = new UtenteDAO();
-                Utente u = new Utente();
-                u.setEmail(email);
-                u.setPassword(password);
-                u.setNome(nome);
-                u.setCognome(cognome);
-                u.setCodiceFiscale(codiceFiscale);
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                try {
-                    Date ddn = dateFormat.parse(dataDiNascita);
-                    u.setDataNascita(ddn);
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-                u.setIndirizzo(indirizzo);
-                u.setTelefono(telefono);
-                utenteDAO.doSave(u);
-
-                req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-            } else {
-                System.out.println("Not ok insert");
+            default ->{
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid table name.");
+                return;
             }
-        } else if ("prodotto".equals(nameTable)) {
-            String idProdotto = req.getParameter("idProdotto");
-            String nome = req.getParameter("nome");
-            String descrizione = req.getParameter("descrizione");
-            String categoria = req.getParameter("categoria");
-            Part filePart = req.getPart("immagine");
-            String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
-            String destinazione = CARTELLA_UPLOAD + "/" + fileName; // Utilizza / come separatore
-            Path pathDestinazione = Paths.get(getServletContext().getRealPath(destinazione));
+        }
 
-            // se un file con quel nome esiste già, gli cambia nome
-            for (int i = 2; Files.exists(pathDestinazione); i++) {
-                destinazione = CARTELLA_UPLOAD + "/" + i + "_" + fileName; // Utilizza / come separatore
-                pathDestinazione = Paths.get(getServletContext().getRealPath(destinazione));
-            }
-
-            InputStream fileInputStream = filePart.getInputStream();
-            Files.createDirectories(pathDestinazione.getParent());
-            Files.copy(fileInputStream, pathDestinazione);
-
-            String calorie = req.getParameter("calorie");
-            String carboidrati = req.getParameter("carboidrati");
-            String proteine = req.getParameter("proteine");
-            String grassi = req.getParameter("grassi");
-
-            if (idProdotto != null && !idProdotto.isBlank() && nome != null && descrizione != null && categoria != null && calorie != null && carboidrati != null && proteine != null && grassi != null) {
-                Prodotto p = new Prodotto();
-                ProdottoDAO prodottoDAO = new ProdottoDAO();
-                p.setIdProdotto(idProdotto);
-                p.setNome(nome);
-                p.setDescrizione(descrizione);
-                p.setCategoria(categoria);
-                p.setImmagine(destinazione);
-                p.setCalorie(Integer.parseInt(calorie));
-                p.setCarboidrati(Integer.parseInt(carboidrati));
-                p.setProteine(Integer.parseInt(proteine));
-                p.setGrassi(Integer.parseInt(grassi));
-
-                prodottoDAO.doSave(p);
-
-                req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-            }
-        }else if ("variante".equals(nameTable)){
-            String idProdottoVariante = req.getParameter("idProdottoVariante");
-            System.out.println(idProdottoVariante);
-            String idGusto = req.getParameter("idGusto");
-            System.out.println(idGusto);
-            String idConfezione = req.getParameter("idConfezione");
-            System.out.println(idConfezione);
-            String prezzo = req.getParameter("prezzo");
-            System.out.println(prezzo);
-            String quantity = req.getParameter("quantity");
-            System.out.println(quantity);
-            String sconto = req.getParameter("sconto");
-            System.out.println(sconto);
-            String evidenza = req.getParameter("evidenza");
-            System.out.println(evidenza);
-
-            if (idProdottoVariante != null && idGusto != null && idConfezione != null && prezzo != null && quantity != null && sconto != null && evidenza != null){
-                float price = Float.parseFloat(prezzo);
-                int q = Integer.parseInt(quantity);
-                int discount = Integer.parseInt(sconto);
-                boolean evidence = Integer.parseInt(evidenza) == 1;
-
-                if (price > 0 && q > 0 && discount > 0 && discount <= 100){
-                    System.out.println("Ok parameters");
-                    VarianteDAO varianteDAO = new VarianteDAO();
-                    Variante v = new Variante();
-                    v.setIdProdotto(idProdottoVariante);
-                    v.setIdGusto(Integer.parseInt(idGusto));
-                    v.setIdConfezione(Integer.parseInt(idConfezione));
-                    v.setPrezzo(price);
-                    v.setQuantita(q);
-                    v.setSconto(discount);
-                    v.setEvidenza(evidence);
-                    varianteDAO.doSaveVariante(v);
-
-
-                }
-            }
-
+        if (success) {
             req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-
-        } else if ("ordine".equals(nameTable)) {
-            String emailUtente = req.getParameter("emailUtente");
-            String stato = req.getParameter("stato");
-            String totale = req.getParameter("totale");
-            //String descrizione = req.getParameter("descrizione");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            Date data = null;
-            try {
-                if (req.getParameter("data") != null && !req.getParameter("data").isBlank())
-                         data = dateFormat.parse(req.getParameter("data"));
-            } catch (ParseException e) {
-                throw new RuntimeException(e);
-            }
-
-            if (emailUtente != null){
-                Ordine ordine = new Ordine();
-                if (totale != null && !totale.isBlank() && Float.parseFloat(totale) >= 0){
-                    float price = Float.parseFloat(totale);
-                    ordine.setTotale(price);
-                }
-
-                    ordine.setEmailUtente(emailUtente);
-                    ordine.setStato(stato);
-                    ordine.setDataOrdine(data);
-                    //ordine.setDescrizione(descrizione);
-
-                    OrdineDao ordineDao = new OrdineDao();
-                    ordineDao.doSave(ordine);
-                }
-
-            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-            }else if ("dettaglioOrdine".equals(nameTable)){
-            String idOrdine = req.getParameter("idOrdine");
-            System.out.println(idOrdine);
-            String idProdotto = req.getParameter("idProdotto");
-            System.out.println(idProdotto);
-            String idVariante = req.getParameter("idVariante");
-            System.out.println(idVariante);
-            String quantity = req.getParameter("quantity");
-            System.out.println(quantity);
-
-
-            if (idOrdine != null && !idOrdine.isBlank() && idProdotto != null && idVariante != null && !idVariante.isBlank()){
-                if (quantity != null && Integer.parseInt(quantity) > 0){
-                    DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
-                    System.out.println(dettaglioOrdine.getPrezzo());
-                    int idOrder = Integer.parseInt(idOrdine);
-                    int idVariant = Integer.parseInt(idVariante);
-                    int q = Integer.parseInt(quantity);
-
-
-                    OrdineDao ordineDao = new OrdineDao();
-                    VarianteDAO varianteDAO = new VarianteDAO();
-                    ProdottoDAO prodottoDAO = new ProdottoDAO();
-                    if (ordineDao.doRetrieveById(idOrder) != null && varianteDAO.doRetrieveVarianteByIdVariante(idVariant) != null && prodottoDAO.doRetrieveById(idProdotto) != null) {
-                        dettaglioOrdine.setIdOrdine(idOrder);
-                        dettaglioOrdine.setIdProdotto(idProdotto);
-                        dettaglioOrdine.setIdVariante(idVariant);
-                        dettaglioOrdine.setQuantita(q);
-
-                        DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
-                        dettaglioOrdineDAO.doSave(dettaglioOrdine);
-
-                    }
-
-
-                }
-            }
-            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-
-        }else if ("gusto".equals(nameTable)){
-            String nomeGusto = req.getParameter("nomeGusto");
-
-            if (nomeGusto != null && !nomeGusto.isBlank()){
-
-                GustoDAO gustoDAO = new GustoDAO();
-                Gusto gusto = new Gusto();
-                gusto.setNome(nomeGusto);
-                gustoDAO.doSaveGusto(gusto);
-
-            }
-            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
-        }else if ("confezione".equals(nameTable)){
-            String peso = req.getParameter("pesoConfezione");
-
-            if (peso != null && Integer.parseInt(peso) > 0){
-                Confezione confezione = new Confezione();
-                confezione.setPeso(Integer.parseInt(peso));
-                ConfezioneDAO confezioneDAO = new ConfezioneDAO();
-                confezioneDAO.doSaveConfezione(confezione);
-            }
-            req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
+        } else {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input data.");
         }
     }
-}
 
+    private boolean isValid(List<String> params) {
+        for (String param : params) {
+            if (param == null || param.isBlank()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean insertUtente(HttpServletRequest req) {
+        String email = req.getParameter("email");
+        String password = req.getParameter("password");
+        String nome = req.getParameter("nome");
+        String cognome = req.getParameter("cognome");
+        String codiceFiscale = req.getParameter("codiceFiscale");
+        String dataDiNascita = req.getParameter("dataDiNascita");
+        String indirizzo = req.getParameter("indirizzo");
+        String telefono = req.getParameter("telefono");
+
+        if (isValid(List.of(email, password, nome, cognome, codiceFiscale, dataDiNascita, indirizzo, telefono))) {
+            Utente u = new Utente();
+            u.setEmail(email);
+            u.setPassword(password);
+            u.setNome(nome);
+            u.setCognome(cognome);
+            u.setCodiceFiscale(codiceFiscale);
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                Date ddn = dateFormat.parse(dataDiNascita);
+                u.setDataNascita(ddn);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            u.setIndirizzo(indirizzo);
+            u.setTelefono(telefono);
+
+            UtenteDAO utenteDAO = new UtenteDAO();
+            utenteDAO.doSave(u);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean insertProdotto(HttpServletRequest req) throws IOException, ServletException {
+        String idProdotto = req.getParameter("idProdotto");
+        String nome = req.getParameter("nome");
+        String descrizione = req.getParameter("descrizione");
+        String categoria = req.getParameter("categoria");
+        Part filePart = req.getPart("immagine");
+
+        String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
+        String destinazione = CARTELLA_UPLOAD + "/" + fileName;
+        Path pathDestinazione = Paths.get(getServletContext().getRealPath(destinazione));
+
+        for (int i = 2; Files.exists(pathDestinazione); i++) {
+            destinazione = CARTELLA_UPLOAD + "/" + i + "_" + fileName;
+            pathDestinazione = Paths.get(getServletContext().getRealPath(destinazione));
+        }
+
+        InputStream fileInputStream = filePart.getInputStream();
+        Files.createDirectories(pathDestinazione.getParent());
+        Files.copy(fileInputStream, pathDestinazione);
+
+        String calorie = req.getParameter("calorie");
+        String carboidrati = req.getParameter("carboidrati");
+        String proteine = req.getParameter("proteine");
+        String grassi = req.getParameter("grassi");
+
+        if (isValid(List.of(idProdotto, nome, descrizione, categoria, calorie, carboidrati, proteine, grassi))) {
+            Prodotto p = new Prodotto();
+            p.setIdProdotto(idProdotto);
+            p.setNome(nome);
+            p.setDescrizione(descrizione);
+            p.setCategoria(categoria);
+            p.setImmagine(destinazione);
+            p.setCalorie(Integer.parseInt(calorie));
+            p.setCarboidrati(Integer.parseInt(carboidrati));
+            p.setProteine(Integer.parseInt(proteine));
+            p.setGrassi(Integer.parseInt(grassi));
+
+            ProdottoDAO prodottoDAO = new ProdottoDAO();
+            prodottoDAO.doSave(p);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean insertVariante(HttpServletRequest req) {
+        String idProdottoVariante = req.getParameter("idProdottoVariante");
+        String idGusto = req.getParameter("idGusto");
+        String idConfezione = req.getParameter("idConfezione");
+        String prezzo = req.getParameter("prezzo");
+        String quantity = req.getParameter("quantity");
+        String sconto = req.getParameter("sconto");
+        String evidenza = req.getParameter("evidenza");
+
+        if (isValid(List.of(idProdottoVariante, idGusto, idConfezione, prezzo, quantity, sconto, evidenza))) {
+            float price = Float.parseFloat(prezzo);
+            int q = Integer.parseInt(quantity);
+            int discount = Integer.parseInt(sconto);
+            boolean evidence = Integer.parseInt(evidenza) == 1;
+
+            if (price > 0 && q > 0 && discount >= 0 && discount <= 100) {
+                Variante v = new Variante();
+                v.setIdProdotto(idProdottoVariante);
+                v.setIdGusto(Integer.parseInt(idGusto));
+                v.setIdConfezione(Integer.parseInt(idConfezione));
+                v.setPrezzo(price);
+                v.setQuantita(q);
+                v.setSconto(discount);
+                v.setEvidenza(evidence);
+
+                VarianteDAO varianteDAO = new VarianteDAO();
+                varianteDAO.doSaveVariante(v);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean insertOrdine(HttpServletRequest req) {
+        String emailUtente = req.getParameter("emailUtente");
+        String stato = req.getParameter("stato");
+        String totale = req.getParameter("totale");
+        String dataStr = req.getParameter("data");
+
+        if (emailUtente != null && !emailUtente.isBlank()) {
+            Ordine ordine = new Ordine();
+            ordine.setEmailUtente(emailUtente);
+            ordine.setStato(stato);
+
+            if (totale != null && !totale.isBlank() && Float.parseFloat(totale) >= 0) {
+                ordine.setTotale(Float.parseFloat(totale));
+            }
+
+            if (dataStr != null && !dataStr.isBlank()) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date data = dateFormat.parse(dataStr);
+                    ordine.setDataOrdine(data);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    return false;
+                }
+            }
+
+            OrdineDao ordineDao = new OrdineDao();
+            ordineDao.doSave(ordine);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean insertDettaglioOrdine(HttpServletRequest req) {
+        String idOrdine = req.getParameter("idOrdine");
+        String idProdotto = req.getParameter("idProdotto");
+        String idVariante = req.getParameter("idVariante");
+        String quantity = req.getParameter("quantity");
+
+        if (isValid(List.of(idOrdine, idProdotto, idVariante, quantity))) {
+            int q = Integer.parseInt(quantity);
+
+            if (q > 0) {
+                DettaglioOrdine dettaglioOrdine = new DettaglioOrdine();
+                dettaglioOrdine.setIdOrdine(Integer.parseInt(idOrdine));
+                dettaglioOrdine.setIdProdotto(idProdotto);
+                dettaglioOrdine.setIdVariante(Integer.parseInt(idVariante));
+                dettaglioOrdine.setQuantita(q);
+
+                DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+                dettaglioOrdineDAO.doSave(dettaglioOrdine);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean insertGusto(HttpServletRequest req) {
+        String nomeGusto = req.getParameter("nomeGusto");
+
+        if (nomeGusto != null && !nomeGusto.isBlank()) {
+            Gusto gusto = new Gusto();
+            gusto.setNome(nomeGusto);
+
+            GustoDAO gustoDAO = new GustoDAO();
+            gustoDAO.doSaveGusto(gusto);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean insertConfezione(HttpServletRequest req) {
+        String peso = req.getParameter("pesoConfezione");
+
+        if (peso != null && Integer.parseInt(peso) > 0) {
+            Confezione confezione = new Confezione();
+            confezione.setPeso(Integer.parseInt(peso));
+
+            ConfezioneDAO confezioneDAO = new ConfezioneDAO();
+            confezioneDAO.doSaveConfezione(confezione);
+            return true;
+        }
+        return false;
+    }
+}

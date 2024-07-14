@@ -12,7 +12,6 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.List;
 
 import static controller.Admin.showRowForm.*;
@@ -24,188 +23,221 @@ public class deleteRowServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String tableName = req.getParameter("tableName");
         String primaryKey = req.getParameter("primaryKey");
+        Utente utente = (Utente) req.getSession().getAttribute("Utente"); // usato per controllare se admin cancella il suo stesso profilo
 
-        switch (tableName) {
-            case "utente" -> handleRemoveRowFromUtente(primaryKey, req, resp);
-            case "prodotto" -> handleRemoveRowFromProdotto(primaryKey, req, resp);
-            case "variante" -> handleRemoveRowFromVariante(primaryKey, req, resp);
-            case "ordine" -> handleRemoveRowFromOrdine(primaryKey, req, resp);
-            case "dettaglioOrdine" -> handleRemoveRowFromDettaglioOrdine(primaryKey, req, resp);
-            case "gusto" -> handleRemoveRowFromGusto(primaryKey, req, resp);
-            case "confezione" -> handleRemoveRowFromConfezione(primaryKey, req, resp);
+        boolean isTheSame = false;
+
+        JSONArray jsonArray = null;
+        boolean success = switch (tableName) {
+            case "utente" -> handleRemoveRowFromUtente(primaryKey, utente);
+            case "prodotto" -> handleRemoveRowFromProdotto(primaryKey);
+            case "variante" -> handleRemoveRowFromVariante(primaryKey);
+            case "ordine" -> handleRemoveRowFromOrdine(primaryKey);
+            case "dettaglioOrdine" -> handleRemoveRowFromDettaglioOrdine(primaryKey);
+            case "gusto" -> handleRemoveRowFromGusto(primaryKey);
+            case "confezione" -> handleRemoveRowFromConfezione(primaryKey);
+            default -> false;
+        };
+
+        if (success && tableName.equals("utente")) {
+            isTheSame = checkIfAdminDeletingSelf(primaryKey, utente);
+        }
+
+
+        if (isTheSame) {
+            req.getSession(false).invalidate();
+            resp.sendRedirect("index.jsp");
+            return; // Interrompe l'esecuzione
+        } else {
+            if (success) {
+                jsonArray = getJsonArrayForTable(tableName);
+            }
+
+            if (jsonArray != null) {
+                sendJsonResponse(jsonArray, resp);
+            } else {
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid table name or primary key.");
+            }
         }
     }
 
-    private void handleRemoveRowFromConfezione(String primaryKey, HttpServletRequest req, HttpServletResponse resp) throws IOException {
+
+    private boolean checkIfAdminDeletingSelf(String primaryKey, Utente utente) {
+        System.out.println("Checking if admin is deleting self");  // Log per debug
+        return primaryKey != null && !primaryKey.isBlank() && utente.getEmail().equals(primaryKey);
+    }
+
+
+
+
+    private boolean handleRemoveRowFromConfezione(String primaryKey) {
         ConfezioneDAO confezioneDAO = new ConfezioneDAO();
-        if (primaryKey != null && !primaryKey.isBlank() && Integer.parseInt(primaryKey) > 0){
+        if (isValidPrimaryKey(primaryKey)) {
             int idConfezione = Integer.parseInt(primaryKey);
             confezioneDAO.doRemoveConfezione(idConfezione);
+            return true;
         }
-
-        sendAllConfezioniResponse(confezioneDAO, resp);
+        return false;
     }
 
-    protected static void sendAllConfezioniResponse(ConfezioneDAO confezioneDAO, HttpServletResponse resp) throws IOException {
-        List<Confezione> confezioni = new ArrayList<>();
-        confezioni = confezioneDAO.doRetrieveAll();
-
-        JSONArray jsonArray = new JSONArray();
-        for (Confezione confezione: confezioni){
-            JSONObject jsonObject = confezioneHelper(confezione);
-            jsonArray.add(jsonObject);
+    private boolean handleRemoveRowFromGusto(String primaryKey) {
+        if (isValidPrimaryKey(primaryKey)) {
+            int idGusto = Integer.parseInt(primaryKey);
+            GustoDAO gustoDAO = new GustoDAO();
+            gustoDAO.doRemoveGusto(idGusto);
+            return true;
         }
-
-        resp.setContentType("application/json");
-        PrintWriter o = resp.getWriter();
-        o.println(jsonArray);
-        o.flush();
+        return false;
     }
 
-
-    private void handleRemoveRowFromGusto(String primaryKey, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        int idGusto = Integer.parseInt(primaryKey);
-        GustoDAO gustoDAO = new GustoDAO();
-        gustoDAO.doRemoveGusto(idGusto);
-
-        sendAllGustiResponse(gustoDAO, response);
-    }
-
-    protected void sendAllGustiResponse(GustoDAO gustoDAO, HttpServletResponse response) throws IOException {
-        List<Gusto> gusti = gustoDAO.doRetrieveAll();
-
-        JSONArray jsonArray = new JSONArray();
-        for (Gusto g: gusti){
-            JSONObject jsonObject = gustoHelper(g);
-            jsonArray.add(jsonObject);
+    private boolean handleRemoveRowFromDettaglioOrdine(String primaryKey) {
+        if (primaryKey != null && !primaryKey.isBlank()) {
+            String[] primaryKeys = primaryKey.split(", ");
+            DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
+            dettaglioOrdineDAO.doRemoveDettaglioOrdine(Integer.parseInt(primaryKeys[0]), Integer.parseInt(primaryKeys[2]));
+            return true;
         }
-
-
-
-        response.setContentType("application/json");
-        PrintWriter o = response.getWriter();
-        o.println(jsonArray);
-        o.flush();
+        return false;
     }
 
-    private void handleRemoveRowFromDettaglioOrdine(String primaryKey, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String[] primaryKeys = primaryKey.split(", ");
-        DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
-        dettaglioOrdineDAO.doRemoveDettaglioOrdine(Integer.parseInt(primaryKeys[0]), Integer.parseInt(primaryKeys[2]));
-
-        sendAllDettaglioOrdiniResponse(dettaglioOrdineDAO, response);
-    }
-
-    protected void sendAllDettaglioOrdiniResponse(DettaglioOrdineDAO dettaglioOrdineDAO, HttpServletResponse response) throws IOException {
-        List<DettaglioOrdine> dettagliOrdini = new ArrayList<>();
-        dettagliOrdini = dettaglioOrdineDAO.doRetrieveAll();
-
-        JSONArray jsonArray = new JSONArray();
-        for (DettaglioOrdine d: dettagliOrdini){
-            JSONObject jsonObject = dettaglioOrdineHelper(d);
-            jsonArray.add(jsonObject);
+    private boolean handleRemoveRowFromOrdine(String primaryKey) {
+        if (isValidPrimaryKey(primaryKey)) {
+            OrdineDao ordineDao = new OrdineDao();
+            ordineDao.doDeleteOrder(Integer.parseInt(primaryKey));
+            return true;
         }
-
-        response.setContentType("application/json");
-        PrintWriter o = response.getWriter();
-        o.println(jsonArray);
-        o.flush();
+        return false;
     }
 
-    private void handleRemoveRowFromOrdine(String primaryKey, HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        OrdineDao ordineDao = new OrdineDao();
-        ordineDao.doDeleteOrder(Integer.parseInt(primaryKey));
-
-        sendAllOrdiniResponse(ordineDao, resp);
-    }
-
-    protected void sendAllOrdiniResponse(OrdineDao ordineDao, HttpServletResponse response) throws IOException {
-        List<Ordine> ordini = new ArrayList<>();
-        ordini = ordineDao.doRetrieveAll();
-        JSONArray jsonArray = new JSONArray();
-        for (Ordine o: ordini){
-            JSONObject ordineObject = jsonOrdineHelper(o);
-            jsonArray.add(ordineObject);
+    private boolean handleRemoveRowFromVariante(String primaryKey) {
+        if (isValidPrimaryKey(primaryKey)) {
+            VarianteDAO varianteDAO = new VarianteDAO();
+            Variante v = varianteDAO.doRetrieveVarianteByIdVariante(Integer.parseInt(primaryKey));
+            if (v != null) {
+                varianteDAO.doRemoveVariante(Integer.parseInt(primaryKey));
+            }
+            return true;
         }
-
-        response.setContentType("application/json");
-        PrintWriter o = response.getWriter();
-        o.println(jsonArray);
-        o.flush();
+        return false;
     }
 
-
-    private void handleRemoveRowFromVariante(String primaryKey, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        VarianteDAO varianteDAO = new VarianteDAO();
-        Variante v = varianteDAO.doRetrieveVarianteByIdVariante(Integer.parseInt(primaryKey));
-        if (v != null) varianteDAO.doRemoveVariante(Integer.parseInt(primaryKey));
-
-        sendAllVariantiResponse(varianteDAO, response);
-    }
-
-    protected static void sendAllVariantiResponse(VarianteDAO varianteDAO, HttpServletResponse response) throws IOException {
-        List<Variante> varianti = varianteDAO.doRetrieveAll();
-        JSONArray jsonArray = new JSONArray();
-        for (Variante v: varianti){
-            JSONObject varianteObject = jsonVarianteHelper(v);
-            jsonArray.add(varianteObject);
+    private boolean handleRemoveRowFromProdotto(String primaryKey) {
+        if (primaryKey != null && !primaryKey.isBlank()) {
+            ProdottoDAO prodottoDAO = new ProdottoDAO();
+            Prodotto p = prodottoDAO.doRetrieveById(primaryKey);
+            if (p != null) {
+                prodottoDAO.removeProductFromIdProdotto(primaryKey);
+            }
+            return true;
         }
-
-        response.setContentType("application/json");
-        PrintWriter o = response.getWriter();
-        o.println(jsonArray);
-        o.flush();
+        return false;
     }
 
-
-    private void handleRemoveRowFromProdotto(String primaryKey, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        ProdottoDAO prodottoDAO = new ProdottoDAO();
-        Prodotto p = prodottoDAO.doRetrieveById(primaryKey);
-        if (p != null){
-            prodottoDAO.removeProductFromIdProdotto(primaryKey);
+    private boolean handleRemoveRowFromUtente(String primaryKey, Utente utente) throws IOException {
+        if (primaryKey != null && !primaryKey.isBlank()) {
+            UtenteDAO utenteDAO = new UtenteDAO();
+            Utente u = utenteDAO.doRetrieveByEmail(primaryKey);
+            if (u != null) {
+                utenteDAO.doRemoveUserByEmail(u.getEmail());
+                return true;
+            }
         }
-
-        sendAllProductsResponse(prodottoDAO, response);
+        return false;
     }
 
-
-    protected void sendAllProductsResponse(ProdottoDAO prodottoDAO, HttpServletResponse response) throws IOException {
-        List<Prodotto> prodotti = prodottoDAO.doRetrieveAll();
-        JSONArray jsonArray = new JSONArray();
-        for (Prodotto p: prodotti){
-            jsonArray.add(jsonProductHelper(p));
+    private JSONArray getJsonArrayForTable(String tableName) {
+        switch (tableName) {
+            case "utente":
+                return getAllUtentiJsonArray(new UtenteDAO());
+            case "prodotto":
+                return getAllProdottiJsonArray(new ProdottoDAO());
+            case "variante":
+                return getAllVariantiJsonArray(new VarianteDAO());
+            case "ordine":
+                return getAllOrdiniJsonArray(new OrdineDao());
+            case "dettaglioOrdine":
+                return getAllDettagliOrdiniJsonArray(new DettaglioOrdineDAO());
+            case "gusto":
+                return getAllGustiJsonArray(new GustoDAO());
+            case "confezione":
+                return getAllConfezioniJsonArray(new ConfezioneDAO());
+            default:
+                return null;
         }
-
-        response.setContentType("application/json");
-        PrintWriter o = response.getWriter();
-        o.println(jsonArray);
-        o.flush();
     }
 
-
-
-    private void handleRemoveRowFromUtente(String primaryKey, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        UtenteDAO utenteDAO = new UtenteDAO();
-        Utente u = utenteDAO.doRetrieveByEmail(primaryKey);
-        if (u != null) {
-            utenteDAO.doRemoveUserByEmail(primaryKey);
-        }
-
-        sendAllUtentiResponse(utenteDAO, response);
-    }
-
-    protected static void sendAllUtentiResponse(UtenteDAO utenteDAO, HttpServletResponse response) throws IOException {
+    private static JSONArray getAllUtentiJsonArray(UtenteDAO utenteDAO) {
         List<Utente> utenti = utenteDAO.doRetrieveAll();
-
         JSONArray jsonArray = new JSONArray();
         for (Utente utente : utenti) {
             jsonArray.add(jsonHelperHere(utente));
         }
+        return jsonArray;
+    }
 
+    private static JSONArray getAllProdottiJsonArray(ProdottoDAO prodottoDAO) {
+        List<Prodotto> prodotti = prodottoDAO.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (Prodotto prodotto : prodotti) {
+            jsonArray.add(jsonProductHelper(prodotto));
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray getAllVariantiJsonArray(VarianteDAO varianteDAO) {
+        List<Variante> varianti = varianteDAO.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (Variante variante : varianti) {
+            jsonArray.add(jsonVarianteHelper(variante));
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray getAllOrdiniJsonArray(OrdineDao ordineDao) {
+        List<Ordine> ordini = ordineDao.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (Ordine ordine : ordini) {
+            jsonArray.add(jsonOrdineHelper(ordine));
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray getAllDettagliOrdiniJsonArray(DettaglioOrdineDAO dettaglioOrdineDAO) {
+        List<DettaglioOrdine> dettagliOrdini = dettaglioOrdineDAO.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (DettaglioOrdine dettaglioOrdine : dettagliOrdini) {
+            jsonArray.add(dettaglioOrdineHelper(dettaglioOrdine));
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray getAllGustiJsonArray(GustoDAO gustoDAO) {
+        List<Gusto> gusti = gustoDAO.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (Gusto gusto : gusti) {
+            jsonArray.add(gustoHelper(gusto));
+        }
+        return jsonArray;
+    }
+
+    private static JSONArray getAllConfezioniJsonArray(ConfezioneDAO confezioneDAO) {
+        List<Confezione> confezioni = confezioneDAO.doRetrieveAll();
+        JSONArray jsonArray = new JSONArray();
+        for (Confezione confezione : confezioni) {
+            jsonArray.add(confezioneHelper(confezione));
+        }
+        return jsonArray;
+    }
+
+    private static void sendJsonResponse(JSONArray jsonArray, HttpServletResponse response) throws IOException {
         response.setContentType("application/json");
         PrintWriter o = response.getWriter();
         o.println(jsonArray);
         o.flush();
+    }
+
+    private boolean isValidPrimaryKey(String primaryKey) {
+        return primaryKey != null && !primaryKey.isBlank() && Integer.parseInt(primaryKey) > 0;
     }
 
     protected static JSONObject jsonHelperHere(Utente x) {

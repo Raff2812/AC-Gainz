@@ -28,7 +28,7 @@ public class showTableServlet extends HttpServlet {
 
                 utenti = utenteDAO.doRetrieveAll();
                 request.setAttribute("tableUtente", utenti);
-                request.getRequestDispatcher("tableUtente.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableUtente.jsp").forward(request, response);
             }
             case "prodotto" ->{
                 List<Prodotto> prodotti = new ArrayList<>();
@@ -36,7 +36,7 @@ public class showTableServlet extends HttpServlet {
 
                 prodotti = prodottoDAO.doRetrieveAll();
                 request.setAttribute("tableProdotto", prodotti);;
-                request.getRequestDispatcher("tableProdotto.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableProdotto.jsp").forward(request, response);
             }
             case "variante" ->{
                 List<Variante> varianti = new ArrayList<>();
@@ -45,7 +45,7 @@ public class showTableServlet extends HttpServlet {
                 varianti = varianteDAO.doRetrieveAll();
                 request.setAttribute("tableVariante", varianti);
 
-                request.getRequestDispatcher("tableVariante.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableVariante.jsp").forward(request, response);
             }
             case "ordine" ->{
                 List<Ordine> ordini = new ArrayList<>();
@@ -54,7 +54,7 @@ public class showTableServlet extends HttpServlet {
                 ordini = ordineDao.doRetrieveAll();
                 request.setAttribute("tableOrdine", ordini);
 
-                request.getRequestDispatcher("tableOrdine.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableOrdine.jsp").forward(request, response);
             }case "dettaglioOrdine" ->{
                 List<DettaglioOrdine> dettaglioOrdini = new ArrayList<>();
                 DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
@@ -62,20 +62,20 @@ public class showTableServlet extends HttpServlet {
 
                 request.setAttribute("tableDettaglioOrdini", dettaglioOrdini);
 
-                request.getRequestDispatcher("tableDettaglioOrdini.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableDettaglioOrdini.jsp").forward(request, response);
             }case "gusto" ->{
                 GustoDAO gustoDAO = new GustoDAO();
                 List<Gusto> gusti = gustoDAO.doRetrieveAll();
 
                 request.setAttribute("tableGusto", gusti);
 
-                request.getRequestDispatcher("tableGusto.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableGusto.jsp").forward(request, response);
             }case "confezione" ->{
                 ConfezioneDAO confezioneDAO = new ConfezioneDAO();
                 List<Confezione> confezioni = confezioneDAO.doRetrieveAll();
 
                 request.setAttribute("tableConfezione", confezioni);
-                request.getRequestDispatcher("tableConfezione.jsp").forward(request, response);
+                request.getRequestDispatcher("WEB-INF/Admin/tableConfezione.jsp").forward(request, response);
             }
         }
 

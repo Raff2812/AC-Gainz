@@ -1,9 +1,9 @@
-<%@ page import="model.Prodotto" %>
+<%@ page import="model.Variante" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
   Date: 11/07/2024
-  Time: 16:32
+  Time: 16:41
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -14,7 +14,7 @@
     <style>
         table {
             border-collapse: collapse;
-            width: 100%;
+            width: 80%;
             margin: auto;
         }
 
@@ -30,6 +30,9 @@
         th {
             background-color: #04AA6D;
             color: white;
+        }
+        th a{
+            text-decoration: none;
         }
 
         .center {
@@ -110,59 +113,53 @@
             background-color: #0056b3;
         }
 
-        /* Centro il div contenente la tabella */
-        .tableContainer {
-            width: 80%;
-            margin: auto;
-            padding-top: 50px;
-        }
+
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
-    if (prodotti != null){
+<a href="admin">Torna indietro</a>
+    <% List<Variante> varianti = (List<Variante>) request.getAttribute("tableVariante");
+    if (varianti != null){
 %>
-<div class="tableContainer">
-    <table class="tableDB">
-        <tr>
-            <th>Id Prodotto</th>
-            <th>Nome</th>
-            <th>Descrizione</th>
-            <th>Categoria</th>
-            <th>Immagine</th>
-            <th>Calorie</th>
-            <th>Carboidrati</th>
-            <th>Proteine</th>
-            <th>Grassi</th>
-            <th>Azione</th>
-        </tr>
-        <% for (Prodotto p : prodotti) { %>
-        <tr>
-            <td><%= p.getIdProdotto() %></td>
-            <td><%= p.getNome() %></td>
-            <td><%= p.getDescrizione() %></td>
-            <td><%= p.getCategoria() %></td>
-            <td><%= p.getImmagine() %></td>
-            <td><%= p.getCalorie() %></td>
-            <td><%= p.getCarboidrati() %></td>
-            <td><%= p.getProteine() %></td>
-            <td><%= p.getGrassi() %></td>
-            <td class="center">
-                <button class="button" onclick="editTableRow('prodotto', '<%=p.getIdProdotto()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('prodotto', '<%=p.getIdProdotto()%>')">Elimina</button>
-            </td>
-        </tr>
-        <% } %>
-        <tr>
-            <td colspan="10" class="center">
-                <button class="add-button" onclick="addRow('prodotto')">+</button>
-            </td>
-        </tr>
-    </table>
-</div>
-<% } %>
-</body>
-</html>
+
+<table class="tableDB">
+    <tr>
+        <th>Id Variante</th>
+        <th><a href="showTable?tableName=prodotto">Id Prodotto Variante</a></th>
+        <th><a href="showTable?tableName=gusto">Id Gusto</a></th>
+        <th><a href="showTable?tableName=confezione">Id Confezione</a></th>
+        <th>Prezzo</th>
+        <th>Quantità</th>
+        <th>Sconto</th>
+        <th>Evidenza</th>
+        <th>Azione</th>
+    </tr>
+    <% for (Variante v: varianti) {
+        int evidence = 0;
+        if (v.isEvidenza()) evidence = 1;
+    %>
+    <tr>
+        <td><%= v.getIdVariante() %></td>
+        <td><%= v.getIdProdotto() %></td>
+        <td><%= v.getIdGusto() %></td>
+        <td><%= v.getIdConfezione() %></td>
+        <td><%= v.getPrezzo() %></td>
+        <td><%= v.getQuantita() %></td>
+        <td><%= v.getSconto() %></td>
+        <td><%= evidence %></td>
+        <td class="center">
+            <button class="button" onclick="editTableRow('variante', '<%=v.getIdVariante()%>')">Modifica</button>
+            <button class="button" onclick="deleteTableRow('variante', '<%=v.getIdVariante()%>')">Elimina</button>
+        </td>
+
+    </tr>
+    <% } %>
+    <tr>
+        <td colspan="8" class="center">
+            <button class="add-button" onclick="addRow('variante')">+</button>
+        </td>
+    </tr>
+</table>
+    <% } %>

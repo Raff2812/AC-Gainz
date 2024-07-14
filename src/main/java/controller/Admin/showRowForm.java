@@ -177,6 +177,7 @@ public class showRowForm extends HttpServlet {
     protected static JSONObject jsonUtenteHelper(Utente utente) {
         JSONObject userObject = new JSONObject();
         userObject.put("email", utente.getEmail());
+        userObject.put("password", utente.getPassword());
         userObject.put("nome", utente.getNome());
         userObject.put("cognome", utente.getCognome());
         userObject.put("codiceFiscale", utente.getCodiceFiscale());

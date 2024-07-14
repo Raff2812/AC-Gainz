@@ -1,24 +1,25 @@
-<%@ page import="model.DettaglioOrdine" %>
+<%@ page import="model.Prodotto" %>
 <%@ page import="java.util.List" %><%--
   Created by IntelliJ IDEA.
   User: raffa
-  Date: 13/07/2024
-  Time: 13:42
+  Date: 11/07/2024
+  Time: 16:32
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Title</title>
+
     <style>
         table {
             border-collapse: collapse;
-            width: 80%;
+            width: 100%;
             margin: auto;
         }
 
         th, td {
-            text-align: left;
+            text-align: center;
             padding: 8px;
         }
 
@@ -86,7 +87,7 @@
         }
         /* Stile degli input */
         .formUpdate input {
-            padding: 10px;
+            padding: 5px;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 16px;
@@ -115,60 +116,53 @@
             margin: auto;
             padding-top: 50px;
         }
-
-        /* Scrollable description if the content is too long */
-        .description-scroll {
-            max-width: 300px; /* Adjust as necessary */
-            max-height: 100px; /* Adjust as necessary */
-            overflow: auto;
-        <%--white-space: pre-wrap;--%> /* Preserve line breaks */
-        }
-        .description-scroll a{
-            text-decoration: none;
-
-        }
-
     </style>
 
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="AreaAdmin.jsp">Torna indietro</a>
-<% List<DettaglioOrdine> dettaglioOrdini = (List<DettaglioOrdine>) request.getAttribute("tableDettaglioOrdini");
-    if (dettaglioOrdini != null){
+<a href="admin">Torna indietro</a>
+<% List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
+    if (prodotti != null){
 %>
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th>Id Ordine</th>
             <th>Id Prodotto</th>
-            <th>Id Variante</th>
-            <th>Quantità</th>
-            <th>Prezzo</th>
+            <th>Nome</th>
+            <th>Descrizione</th>
+            <th>Categoria</th>
+            <th>Immagine</th>
+            <th>Calorie</th>
+            <th>Carboidrati</th>
+            <th>Proteine</th>
+            <th>Grassi</th>
             <th>Azione</th>
         </tr>
-        <% for (DettaglioOrdine d : dettaglioOrdini) {
-        %>
+        <% for (Prodotto p : prodotti) { %>
         <tr>
-            <td><%= d.getIdOrdine() %></td>
-            <td><%= d.getIdProdotto() %></td>
-            <td><%= d.getIdVariante() %></td>
-            <td><%= d.getQuantita() %></td>
-            <td><%= d.getPrezzo() %></td>
+            <td><%= p.getIdProdotto() %></td>
+            <td><%= p.getNome() %></td>
+            <td><%= p.getDescrizione() %></td>
+            <td><%= p.getCategoria() %></td>
+            <td><%= p.getImmagine() %></td>
+            <td><%= p.getCalorie() %></td>
+            <td><%= p.getCarboidrati() %></td>
+            <td><%= p.getProteine() %></td>
+            <td><%= p.getGrassi() %></td>
             <td class="center">
-                <button class="button" onclick="editTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('dettaglioOrdine', '<%= d.getIdOrdine() %>, <%=d.getIdProdotto()%>, <%=d.getIdVariante()%>')">Elimina</button>
+                <button class="button" onclick="editTableRow('prodotto', '<%=p.getIdProdotto()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('prodotto', '<%=p.getIdProdotto()%>')">Elimina</button>
             </td>
         </tr>
         <% } %>
         <tr>
-            <td colspan="7" class="center">
-                <button class="add-button" onclick="addRow('dettaglioOrdine')">+</button>
+            <td colspan="10" class="center">
+                <button class="add-button" onclick="addRow('prodotto')">+</button>
             </td>
         </tr>
     </table>
 </div>
 <% } %>
-
 </body>
 </html>
