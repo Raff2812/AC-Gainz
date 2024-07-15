@@ -120,8 +120,6 @@
 
 
 
-
-
 <div id="gr" class="content-group">
     <%
         List<Prodotto> products = null;
@@ -140,15 +138,13 @@
             <% if (variante.getSconto() > 0) { %>
             <span class="product-sconto"><%= variante.getSconto() %>% di Sconto</span>
             <% } %>
-            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>">
+            <form id="<%=p.getIdProdotto()%>" action="ProductInfo" method="post">
+                <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
+            </form>
+            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>" onclick="document.getElementById('<%=p.getIdProdotto()%>').submit();">
         </div>
         <div class="product-info">
-            <h2 class="product-info-name">
-                <form action="ProductInfo" method="post">
-                    <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
-                    <button type="submit" class="product-info-name-redirect"><%= p.getNome() %></button>
-                </form>
-            </h2>
+            <h2 class="product-info-name"><%= p.getNome() %></h2>
             <% if (variante.getSconto() > 0) {
                 float prezzoscontato = (variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100));
                 prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;

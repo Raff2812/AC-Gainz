@@ -63,36 +63,44 @@
     </div>
     <div class="prodotti-list">
         <%
-            List<Prodotto> products = (List<Prodotto>) application.getAttribute("Products");
+            List<Prodotto> products = null;
+            if (request.getAttribute("originalProducts") != null) {
+                products = (List<Prodotto>) request.getAttribute("originalProducts");
+            } else {
+                products = (List<Prodotto>) application.getAttribute("Products");
+            }
 
             if (products != null) {
-                for (Prodotto product : products) {
-                    Variante variante = product.getVarianti().get(0);
-                    if (variante.getSconto() > 0) {
-                        float prezzoScontato = Math.round((variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100)) * 100.0f) / 100.0f;
+                for (Prodotto p : products) {
+                    Variante variante = p.getVarianti().get(0);
         %>
         <div class="product-card">
             <div class="product-image">
+                <% if (variante.getSconto() > 0) { %>
                 <span class="product-sconto"><%= variante.getSconto() %>% di Sconto</span>
-                <img src="<%= product.getImmagine() %>" alt="<%= product.getNome() %>">
+                <% } %>
+                <form id="<%=p.getIdProdotto()%>" action="ProductInfo" method="post">
+                    <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
+                </form>
+                <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>" onclick="document.getElementById('<%=p.getIdProdotto()%>').submit();">
             </div>
             <div class="product-info">
-                <h2 class="product-info-name">
-                    <form action="ProductInfo" method="post">
-                        <input type="hidden" name="primaryKey" value="<%= product.getIdProdotto() %>">
-                        <input type="hidden" name="category" value="<%= product.getCategoria() %>">
-                        <button class="product-info-name-redirect"><%= product.getNome() %></button>
-                    </form>
-                </h2>
+                <h2 class="product-info-name"><%= p.getNome() %></h2>
+                <% if (variante.getSconto() > 0) {
+                    float prezzoscontato = (variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100));
+                    prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
+                %>
                 <span class="product-info-flavour"><%= variante.getGusto() %></span>
-                <span class="product-info-price-off"><%= prezzoScontato %>€</span>
-                <span class="product-info-price"><%= variante.getPrezzo() %>€</span>
-
+                <span class="product-info-price-off"><%= prezzoscontato %> €</span>
+                <span class="product-info-price"><%= variante.getPrezzo() %> €</span>
+                <% } else { %>
+                <span class="product-info-flavour"><%=variante.getGusto()%></span>
+                <span class="product-info-price-off"><%= variante.getPrezzo() %> €</span>
+                <% } %>
             </div>
-            <button class="cartAdd" onclick="optionsVarianti('<%= variante.getIdVariante() %>')">Aggiungi al Carrello</button>
+            <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
         </div>
         <%
-                    }
                 }
             }
         %>
@@ -106,32 +114,36 @@
     <div class="prodotti-list">
         <%
             if (products != null) {
-                for (Prodotto product : products) {
-                    Variante variante = product.getVarianti().get(0);
-                    if (variante.isEvidenza()) {
-                        float prezzoScontato = Math.round((variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100)) * 100.0f) / 100.0f;
+                for (Prodotto p : products) {
+                    Variante variante = p.getVarianti().get(0);
         %>
         <div class="product-card">
             <div class="product-image">
+                <% if (variante.getSconto() > 0) { %>
                 <span class="product-sconto"><%= variante.getSconto() %>% di Sconto</span>
-                <img src="<%= product.getImmagine() %>" alt="<%= product.getNome() %>">
+                <% } %>
+                <form id="<%=p.getIdProdotto()%>" action="ProductInfo" method="post">
+                    <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
+                </form>
+                <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>" onclick="document.getElementById('<%=p.getIdProdotto()%>').submit();">
             </div>
             <div class="product-info">
-                <h2 class="product-info-name">
-                    <form action="ProductInfo" method="post">
-                        <input type="hidden" name="primaryKey" value="<%= product.getIdProdotto() %>">
-                        <input type="hidden" name="category" value="<%= product.getCategoria() %>">
-                        <button class="product-info-name-redirect"><%= product.getNome() %></button>
-                    </form>
-                </h2>
+                <h2 class="product-info-name"><%= p.getNome() %></h2>
+                <% if (variante.getSconto() > 0) {
+                    float prezzoscontato = (variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100));
+                    prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
+                %>
                 <span class="product-info-flavour"><%= variante.getGusto() %></span>
-                <span class="product-info-price-off"><%= prezzoScontato %>€</span>
-                <span class="product-info-price"><%= variante.getPrezzo() %>€</span>
+                <span class="product-info-price-off"><%= prezzoscontato %> €</span>
+                <span class="product-info-price"><%= variante.getPrezzo() %> €</span>
+                <% } else { %>
+                <span class="product-info-flavour"><%=variante.getGusto()%></span>
+                <span class="product-info-price-off"><%= variante.getPrezzo() %> €</span>
+                <% } %>
             </div>
-            <button class="cartAdd" onclick="optionsVarianti('<%= variante.getIdVariante() %>')">Aggiungi al Carrello</button>
+            <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
         </div>
         <%
-                    }
                 }
             }
         %>

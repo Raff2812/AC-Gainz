@@ -376,9 +376,7 @@
                         <% } %>
 
                         <img src="<%= s.getImmagine() %>" alt="<%= s.getNome() %>">
-                        <button class="suggests-cartAdd" onclick="addCart('<%=s.getIdProdotto()%>')">Aggiungi al
-                            Carrello
-                        </button>
+                        <button class="suggests-cartAdd" onclick="addCart('<%=s.getIdProdotto()%>')">Aggiungi al Carrello</button>
                     </div>
                     <div class="suggests-product-info">
                         <form action="ProductInfo" method="post">
