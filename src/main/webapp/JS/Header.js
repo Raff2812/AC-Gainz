@@ -9,6 +9,7 @@ window.onload = function() {
 };
 
 
+
 /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
 function myFunction() {
     document.getElementById("myDropdown").classList.toggle("header-show");
@@ -16,18 +17,23 @@ function myFunction() {
 // chiudi il dropdown se l'utente clicca all'esterno del riquadro
 window.onclick = function(event) {
     if (!event.target.matches('.header-dropbutton')) {
-        var dropdowns = document.getElementsByClassName("header-dropdown-content");
-        var i;
+        let dropdowns = document.getElementsByClassName("header-dropdown-content");
+        let i;
         for (i = 0; i < dropdowns.length; i++) {
-            var openDropdown = dropdowns[i];
+            let openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('header-show')) {
                 openDropdown.classList.remove('header-show');
             }
         }
     }
 }
+
+
+
+
+
 function toggleMenu() {
-    var menu = document.getElementById("lista");
+    let menu = document.getElementById("lista");
     menu.classList.toggle("header-showlista");
 }
 

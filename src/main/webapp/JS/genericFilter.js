@@ -168,13 +168,3 @@ function resetProducts() {
 
 
 
-/*
-
-document.addEventListener("click", function (event) {
-    const divOption = document.querySelector(".centered-div");
-    if (divOption.style.display === "flex" && !divOption.contains(event.target) && !event.target.classList.contains('cartAdd')) {
-        divOption.style.display = "none";
-    }
-});
-
-*/

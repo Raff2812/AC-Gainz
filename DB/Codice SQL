@@ -172,71 +172,39 @@ END;
 
 
 CREATE TRIGGER aggiorna_descrizione_ordine
-AFTER INSERT ON dettaglio_ordine
+BEFORE DELETE ON prodotto
 FOR EACH ROW
 BEGIN
     DECLARE descrizioni TEXT;
 
-    -- Concatenate descriptions with line breaks for each product
+    -- Concatenate descriptions with line breaks for all products in the orders that contain the product being deleted
     SET descrizioni = (
         SELECT GROUP_CONCAT(
             CONCAT(
-                'Prodotto: ', p.nome,
-                ', Gusto: ', g.nomeGusto,
-                ', Confezione: ', c.peso,
-                ' Quantità: ', d.quantità,
-                ', Prezzo: ', FORMAT(d.prezzo, 2)
+                'Prodotto: ', p.nome, '\n',
+                '    Gusto: ', g.nomeGusto, '\n',
+                '    Confezione: ', c.peso, ' grammi\n',
+                '    Quantità: ', d.quantità, '\n',
+                '    Prezzo: ', FORMAT(d.prezzo, 2), ' €'
             ) SEPARATOR ';\n'
         )
         FROM dettaglio_ordine d
-        JOIN prodotto p ON d.id_prodotto = p.id_prodotto
+        JOIN prodotto p ON p.id_prodotto = d.id_prodotto
         JOIN variante v ON d.id_variante = v.id_variante
         JOIN gusto g ON v.id_gusto = g.id_gusto
         JOIN confezione c ON v.id_confezione = c.id_confezione
-        WHERE d.id_ordine = NEW.id_ordine
-    );
-
-    -- Update the ordine table with the concatenated descriptions
-    UPDATE ordine
-    SET descrizione = descrizioni
-    WHERE id_ordine = NEW.id_ordine;
-END;
-
-CREATE TRIGGER aggiorna_descrizione_ordine_OnUpdate
-AFTER UPDATE ON dettaglio_ordine
-FOR EACH ROW
-BEGIN
-    DECLARE descrizioni TEXT;
-
-    -- Concatenate descriptions with line breaks for each product
-    SET descrizioni = (
-        SELECT GROUP_CONCAT(
-            CONCAT(
-                'Prodotto: ', p.nome,
-                ', Gusto: ', g.nomeGusto,
-                ', Confezione: ', c.peso,
-                ' Quantità: ', d.quantità,
-                ', Prezzo: ', FORMAT(d.prezzo, 2)
-            ) SEPARATOR ';\n'
+        WHERE d.id_ordine IN (
+            SELECT id_ordine FROM dettaglio_ordine WHERE id_prodotto = OLD.id_prodotto
         )
-        FROM dettaglio_ordine d
-        JOIN prodotto p ON d.id_prodotto = p.id_prodotto
-        JOIN variante v ON d.id_variante = v.id_variante
-        JOIN gusto g ON v.id_gusto = g.id_gusto
-        JOIN confezione c ON v.id_confezione = c.id_confezione
-        WHERE d.id_ordine = NEW.id_ordine
     );
 
-    -- Update the ordine table with the concatenated descriptions
-    UPDATE ordine
-    SET descrizione = descrizioni
-    WHERE id_ordine = NEW.id_ordine;
+    -- Update the descrizione field in the ordine table
+    UPDATE ordine o
+    SET o.descrizione = descrizioni
+    WHERE o.id_ordine IN (
+        SELECT id_ordine FROM dettaglio_ordine WHERE id_prodotto = OLD.id_prodotto
+    );
 END;
-
-
-
-
-
 
 
 -- Indici sulla tabella prodotto
@@ -432,4 +400,3 @@ INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, pr
 INSERT INTO dettaglio_ordine (id_ordine, id_prodotto, id_variante, quantità, prezzo) VALUES (4, 'P001', 238, 4, 58.8);
 
 */
-

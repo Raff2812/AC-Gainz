@@ -2,6 +2,7 @@
 <%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="model.*" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -9,15 +10,7 @@
     <link rel="stylesheet" href="CSS/AreaUtenteCSS.css">
     <title>Area utente</title>
     <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
- <%--   <%
-        boolean isLoggedArea = (session.getAttribute("Utente") != null);
-    %>
-    <script>
-        const isLoggedNow = <%=isLoggedArea%>;
-        if (isLoggedNow === false)
-            window.location.href = "index.jsp";
-    </script>
-    --%>
+
 </head>
 <body>
 
@@ -27,10 +20,11 @@
 
 <div class="contenitore">
     <div class="tab">
-        <button class="tablinks" onclick="opentab(event, 'areautente')">Area Utente</button>
-        <button class="tablinks" onclick="opentab(event, 'areamodifiche')">Area Modifiche</button>
-        <button class="tablinks" onclick="opentab(event, 'areaordini')">Area Ordini</button>
+        <button class="tablinks" onclick="opentab(this, 'areautente')">Area Utente</button>
+        <button class="tablinks" onclick="opentab(this, 'areamodifiche')">Area Modifiche</button>
+        <button class="tablinks" onclick="opentab(this, 'areaordini')">Area Ordini</button>
     </div>
+
 
 
     <div id="areautente" class="tabcontent">
@@ -165,28 +159,51 @@
     </div>
 
     <div id="areaordini" class="tabcontent" style="display: none">
-        <h3>Dettagli Ordini</h3>
-        <%
-            if (utente != null) {
-                List<Ordine> ordini = (List<Ordine>) request.getAttribute("ordini");
-                if (!ordini.isEmpty()) {%>
-        <table>
-            <tr>
-                <th>Id Ordine</th>
-                <th>Data Ordine</th>
-                <th>Stato</th>
-                <th>Totale</th>
-            </tr>
-        <%for (Ordine order : ordini) {%>
-            <tr>
-                <td><%= order.getIdOrdine()%></td> <td><%= order.getDataOrdine()%></td> <td><%= order.getStato()%></td> <td><%=order.getTotale()%>€</td>
-            </tr>
-        <%}%>
-        </table>
-        <%}
-            }%>
+        <h3>Ordini Effettuati</h3>
+        <% if (utente != null) {
+            List<Ordine> ordini = (List<Ordine>) request.getAttribute("ordini");
+            HashMap<Integer, List<DettaglioOrdine>> dettaglioOrdini = (HashMap<Integer, List<DettaglioOrdine>>) request.getAttribute("dettaglioOrdini");
+            if (ordini != null && !ordini.isEmpty() && dettaglioOrdini != null) { %>
+        <div>
+            <% for (Ordine ordine : ordini) { %>
+            <div class="ordine" onclick="toggleDetails('<%= ordine.getIdOrdine() %>')">
+                <p>Id Ordine: <%= ordine.getIdOrdine() %></p>
+                <p>Data ordine: <%=ordine.getDataOrdine()%></p>
+                <p>Stato: <%= ordine.getStato() %></p>
+                <p>Totale: <%= ordine.getTotale() %> €</p>
+            </div>
+            <div id="dettagli-<%= ordine.getIdOrdine() %>" class="dettagli"> <%--Qui lo script prende l'id del div da mostrare--%>
+                <table>
+                    <tr>
+                        <th>Nome Prodotto</th>
+                        <th>Gusto</th>
+                        <th>Confezione</th>
+                        <th>Quantità</th>
+                        <th>Prezzo</th>
+                    </tr>
+                    <% List<DettaglioOrdine> dettagli = dettaglioOrdini.get(ordine.getIdOrdine());
+                        if (dettagli != null) {
+                            for (DettaglioOrdine dettaglio : dettagli) { %>
+                    <tr>
+                        <td><%= dettaglio.getNomeProdotto() %></td>
+                        <td><%= dettaglio.getGusto() %></td>
+                        <td><%= dettaglio.getPesoConfezione() %> grammi</td>
+                        <td><%= dettaglio.getQuantita() %></td>
+                        <td><%= dettaglio.getPrezzo() %> €</td>
+                    </tr>
+                    <% } } %>
+                </table>
+            </div>
+            <% } %>
+        </div>
+        <% } } %>
     </div>
+
+
+
 </div>
+
+
 
 <%
     String errorOld = (String) request.getAttribute("errorOld");

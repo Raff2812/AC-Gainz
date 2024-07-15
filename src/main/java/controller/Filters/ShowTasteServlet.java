@@ -33,14 +33,8 @@ public class ShowTasteServlet extends HttpServlet {
         Map<String, Integer> tasteCounts = new HashMap<>();
         VarianteDAO varianteDAO = new VarianteDAO();
 
-
-        /*List<Variante> varianti = new ArrayList<>();
-        for(Prodotto p: originalProducts){
-            Variante variante = p.getVarianti().get(0);
-            varianti.add(variante);
-        }*/
         // Raccogliere tutte le varianti dei prodotti filtrati in una singola query
-         List<Variante> varianti = varianteDAO.doRetrieveVariantiByProdotti(originalProducts);
+        List<Variante> varianti = varianteDAO.doRetrieveVariantiByProdotti(originalProducts);
 
         // Contare le occorrenze di ciascun gusto
         for (Variante v : varianti) {
