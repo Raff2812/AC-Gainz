@@ -17,12 +17,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const login = document.createElement("a");
             login.href = "Login.jsp";
             login.className = "login-link";
-            login.innerText = "Login";
+            login.innerText = "Effettua Login";
 
             const register = document.createElement("a");
             register.href = "Registrazione.jsp";
             register.className = "register-link";
-            register.innerText = "Register";
+            register.innerText = "Effettua Register";
 
             errorMessageContainer.appendChild(errorMessage);
             errorMessageContainer.appendChild(login);
@@ -153,7 +153,7 @@ function updateCartJSP(response) {
             const priceDiv = document.createElement("div");
             priceDiv.className = "price-div";
             const price = document.createElement("p");
-            price.innerText = `${cartItem.prezzo}`;
+            price.innerText = `${cartItem.prezzo}€`;
             priceDiv.appendChild(price);
 
             const rmvDiv = document.createElement("div");
@@ -181,8 +181,8 @@ function updateCartJSP(response) {
 
         const total = cartItems[cartItems.length - 1];
 
-        subtotalElement.innerText = `${total.totalPrice}`;
-        totalOrderElement.innerText = `${total.totalPrice}`;
+        subtotalElement.innerText = `${total.totalPrice}€`;
+        totalOrderElement.innerText = `${total.totalPrice}€`;
 
     } catch (error) {
         console.error("Error parsing JSON response:", error);

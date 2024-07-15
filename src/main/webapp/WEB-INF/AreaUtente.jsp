@@ -169,15 +169,22 @@
         <%
             if (utente != null) {
                 List<Ordine> ordini = (List<Ordine>) request.getAttribute("ordini");
-                if (!ordini.isEmpty()) {
-                    for (Ordine order : ordini) {
-        %>
-        <p><%= order.getIdOrdine() %> <%= order.getDataOrdine() %> <%= order.getStato() %> <%= order.getTotale() %></p> <br>
-        <%
-                    }
-                }
-            }
-        %>
+                if (!ordini.isEmpty()) {%>
+        <table>
+            <tr>
+                <th>Id Ordine</th>
+                <th>Data Ordine</th>
+                <th>Stato</th>
+                <th>Totale</th>
+            </tr>
+        <%for (Ordine order : ordini) {%>
+            <tr>
+                <td><%= order.getIdOrdine()%></td> <td><%= order.getDataOrdine()%></td> <td><%= order.getStato()%></td> <td><%=order.getTotale()%>€</td>
+            </tr>
+        <%}%>
+        </table>
+        <%}
+            }%>
     </div>
 </div>
 

@@ -92,13 +92,13 @@ function updateCartView(action, response) {
         for (let i = 0; i < cartItems.length - 1; i++) {
             const item = cartItems[i];
             const div = document.createElement("div");
-            div.innerText = `${item.nomeProdotto} ${item.quantity} ${item.prezzo}`;
+            div.innerText = `${item.nomeProdotto} ${item.quantity} ${item.prezzo}€`;
             const rmvButton = document.createElement("button");
 
             rmvButton.className = "rmvButton";
             rmvButton.innerText = "Rimuovi Elemento";
             rmvButton.style.display = "block";
-            rmvButton.style.color = "black";
+            rmvButton.style.color = "white";
             rmvButton.setAttribute("data-product-id", item.idProdotto);
             rmvButton.setAttribute("data-product-flavour", item.flavour);
             rmvButton.setAttribute("data-product-weight", item.weight);
@@ -125,7 +125,7 @@ function updateCartView(action, response) {
         cartElement.innerHTML = `Carrello (${totalQuantity})`;
 
         const totalPriceDiv = document.createElement("h3");
-        totalPriceDiv.innerText = `Totale carrello: ${totalPrice}`;
+        totalPriceDiv.innerText = `Totale carrello: ${totalPrice}€`;
         cartItemDiv.appendChild(totalPriceDiv);
 
 
