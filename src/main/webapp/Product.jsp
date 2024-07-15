@@ -276,8 +276,8 @@
     Variante v = null;
     List<String> tastes = (List<String>) request.getAttribute("allTastes");
     List<Integer> pesi = (List<Integer>) request.getAttribute("firstWeights");
-    if (request.getAttribute("prodotto") != null) {
-        p = (Prodotto) request.getAttribute("prodotto");
+    p = (Prodotto) request.getAttribute("prodotto");
+    if (p != null) {
         v = p.getVarianti().get(0);
     }
 %>
@@ -365,46 +365,51 @@
                         suggeriti = (List<Prodotto>) request.getAttribute("suggeriti");
                     }
                     if (suggeriti != null) {
-                        for (int i = 0; i < 3; i++) {
-                            Random random = new Random();
-                            Prodotto s = suggeriti.get(random.nextInt(0, suggeriti.size() - 1));
+                        List<Prodotto> alreadySuggested = new ArrayList<>();
+                        Random random = new Random();
+                        int count = 0;
+                        while (count < 3 && alreadySuggested.size() < suggeriti.size()) {
+                            int randomIndex = random.nextInt(suggeriti.size());
+                            Prodotto s = suggeriti.get(randomIndex);
+                            if (!alreadySuggested.contains(s)) {
+                                alreadySuggested.add(s);
+                                Variante z = s.getVarianti().get(0);
+                                count++;
                 %>
                 <div class="suggests-product-card">
                     <div class="suggests-product-image">
-                        <% if (v.getSconto() > 0) { %>
-                        <span class="suggests-product-sconto"><%= v.getSconto() %>% di Sconto</span>
+                        <% if (z.getSconto() > 0) { %>
+                        <span class="suggests-product-sconto"><%= z.getSconto() %>% di Sconto</span>
                         <% } %>
-
                         <img src="<%= s.getImmagine() %>" alt="<%= s.getNome() %>">
-                        <button class="suggests-cartAdd" onclick="addCart('<%=s.getIdProdotto()%>')">Aggiungi al Carrello</button>
+                        <button class="suggests-cartAdd" onclick="addCartVariant('<%=z.getIdProdotto()%>', '1', '<%=z.getGusto()%>', '<%=z.getPesoConfezione()%>')">Aggiungi al Carrello</button>
                     </div>
                     <div class="suggests-product-info">
                         <form action="ProductInfo" method="post">
                             <input type="hidden" name="primaryKey" value="<%=s.getIdProdotto()%>">
-                            <input type="hidden" name="category" value="<%=s.getCategoria()%>">
-                            <button class="suggests-product-info-name-redirect"><%= s.getNome() %>
-                            </button>
+                            <button class="suggests-product-info-name-redirect"><%= s.getNome() %></button>
                         </form>
-                        <% if (v.getSconto() > 0) {
-                            float prezzoscontato = (v.getPrezzo() - ((v.getPrezzo() * v.getSconto()) / 100));
+                        <% if (z.getSconto() > 0) {
+                            float prezzoscontato = (z.getPrezzo() - ((z.getPrezzo() * z.getSconto()) / 100));
                             prezzoscontato = Math.round(prezzoscontato * 100.0f) / 100.0f;
                         %>
                         <span class="suggests-product-info-costoattuale"><%=prezzoscontato%>€</span>
-                        <span class="suggests-product-info-costooriginale"><%=v.getPrezzo()%>€</span>
+                        <span class="suggests-product-info-costooriginale"><%=z.getPrezzo()%>€</span>
                         <% } else { %>
-                        <span class="suggests-product-info-costoattuale"><%=v.getPrezzo()%>€</span>
+                        <span class="suggests-product-info-costoattuale"><%=z.getPrezzo()%>€</span>
                         <% } %>
-                        <div class="suggests-product-info-flavour"><%= v.getGusto()%>
-                        </div>
-                        <div class="suggests-product-info-weight"><%=v.getPesoConfezione()%>gr.</div>
+                        <div class="suggests-product-info-flavour"><%= z.getGusto() %></div>
+                        <div class="suggests-product-info-weight"><%= z.getPesoConfezione() %>gr.</div>
                     </div>
                 </div>
                 <%
+                            }
                         }
                     }
                 %>
             </div>
         </div>
+
     </div>
 </div>
 <div class="product-description">

@@ -144,9 +144,15 @@ public class CarrelloServlet extends HttpServlet {
             String gusto = request.getParameter("gusto");
             String pesoConfezione = request.getParameter("pesoConfezione");
 
+
+            System.out.println(id);
+            System.out.println(gusto);
+            System.out.println(pesoConfezione);
+
             VarianteDAO varianteDAO = new VarianteDAO();
 
             Variante v = varianteDAO.doRetrieveVariantByFlavourAndWeight(id, gusto, Integer.parseInt(pesoConfezione)).get(0);
+            System.out.println(v.getIdVariante());
 
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
             if (cartItems == null) cartItems = new ArrayList<>();
