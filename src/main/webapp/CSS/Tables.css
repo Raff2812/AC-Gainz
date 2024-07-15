@@ -1,0 +1,142 @@
+table {
+    border-collapse: collapse;
+    width: 80%;
+    margin: auto;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+th {
+    background-color: #04AA6D;
+    color: white;
+}
+th a{
+    text-decoration: none;
+}
+
+.center {
+    text-align: center;
+}
+
+.button {
+    padding: 5px 10px;
+    background-color: #04AA6D;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+
+.add-button {
+    padding: 5px 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.add-button:hover {
+    background-color: #45a049;
+}
+
+.divForm {
+    margin: auto ;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 0 10px orangered;
+    border-radius: 10px;
+    width: 300px;
+}
+
+/* Stile del form */
+.formUpdate {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.formUpdate label {
+    margin-bottom: -10px;
+    font-weight: bold;
+}
+/* Stile degli input */
+.formUpdate input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* Stile del pulsante */
+.formUpdate button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* Stile del pulsante al passaggio del mouse */
+.formUpdate button:hover {
+    background-color: #0056b3;
+}
+
+/* Centro il div contenente la tabella */
+.tableContainer {
+    width: 80%;
+    margin: auto;
+    padding-top: 50px;
+}
+.nav-list-tables {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    width: 80%;
+    margin: 20px auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.nav-list-tables a {
+    text-decoration: none;
+    font-weight: bold;
+    color: orangered;
+    padding: 10px 20px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.nav-list-tables a:hover {
+    transition: 0.2s;
+    background-color: orangered;
+    color: white;
+    border-radius: 5px;
+}
+
+
+/* Scrollable description if the content is too long */
+.description-scroll {
+    max-width: 300px; /* Adjust as necessary */
+    max-height: 100px; /* Adjust as necessary */
+    overflow: auto;
+}
+.description-scroll a{
+    text-decoration: none;
+
+}
