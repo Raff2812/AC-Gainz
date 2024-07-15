@@ -47,7 +47,6 @@
                     }
                 }
             %>
-        <!-- Dynamic cart items will be appended here by updateCartJSP() -->
     </div>
 
 
