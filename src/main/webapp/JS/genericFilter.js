@@ -22,10 +22,7 @@ function genericFilter() {
     const params = new URLSearchParams();
 
 
-    //if (valueCategory !== "") params.append("categoryJS", valueCategory);
-    //if (price) params.append("price", price);
     if (taste) params.append("taste", taste);
-    //if (calories) params.append("calories", calories);
     if (sorting) params.append("sorting", sorting);
     if (weight) params.append("weight", weight);
 
