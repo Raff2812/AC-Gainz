@@ -63,7 +63,7 @@
         %>
     </div>
 
-    <div id="areamodifiche" class="tabcontent">
+    <div id="areamodifiche" class="tabcontent" style="display: none;">
         <h3>Area Modifiche</h3>
         <br><br>
         <button onclick="displayAll('passdiv')">Modifica Password</button>
@@ -164,7 +164,7 @@
         </div>
     </div>
 
-    <div id="areaordini" class="tabcontent">
+    <div id="areaordini" class="tabcontent" style="display: none">
         <h3>Dettagli Ordini</h3>
         <%
             if (utente != null) {
