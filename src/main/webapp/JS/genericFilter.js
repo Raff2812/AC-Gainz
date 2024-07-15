@@ -76,40 +76,34 @@ function genericFilter() {
             spanSconto.className = "product-sconto";
             spanSconto.innerText = `${prodottoFiltrato.sconto}% di Sconto`;
             divProductImage.appendChild(spanSconto);
-    }
+        }
 
-    const img = document.createElement("img");
-    img.src = prodottoFiltrato.immagine;
+        const form = document.createElement("form");
+        form.action = "ProductInfo";
+        form.method = "POST";
+        form.id=`${prodottoFiltrato.id}`
+        const input1 = document.createElement("input");
+        input1.type = "hidden";
+        input1.name = "primaryKey";
+        input1.value = `${prodottoFiltrato.id}`;
+        form.appendChild(input1);
+        divProductImage.appendChild(form);
+        const img = document.createElement("img");
+        img.src = prodottoFiltrato.immagine;
         img.alt = prodottoFiltrato.nome;
+        img.onclick = function (){
+            form.submit();
+        };
         divProductImage.appendChild(img);
-
         divProductCard.appendChild(divProductImage);
+
 
         const divProductInfo = document.createElement("div");
         divProductInfo.className = "product-info";
 
         const h2ProductName = document.createElement("h2");
         h2ProductName.className = "product-info-name";
-
-        const form = document.createElement("form");
-        form.action = "Product";
-        form.method = "POST";
-        const input1 = document.createElement("input");
-        input1.type = "hidden";
-        input1.name = "primarykey";
-        input1.value = `${prodottoFiltrato.id}`;
-        form.appendChild(input1);
-
-        const buttonForm = document.createElement("button");
-        buttonForm.type = "submit";
-        buttonForm.className = "product-info-name-redirect";
-        buttonForm.innerText = `${prodottoFiltrato.nome}`;
-
-        form.appendChild(buttonForm);
-
-        h2ProductName.appendChild(form);
-
-
+        h2ProductName.innerText= `${prodottoFiltrato.nome}`
         divProductInfo.appendChild(h2ProductName);
 
         if (prodottoFiltrato.sconto > 0) {
