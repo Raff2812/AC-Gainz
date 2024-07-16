@@ -73,14 +73,6 @@
             </select>
         </div>
 
-        <%-- <div class="filter">
-            <select id="prices" name="price" onchange="genericFilter()">
-                <option value="">Seleziona un range di prezzo</option>
-                <option value="0-30">0-30</option>
-                <option value="30-60">30-60</option>
-                <option value="60-100">60-100</option>
-            </select>
-        </div> --%>
         <div class="filter">
             <select id="weights" name="weights" onchange="genericFilter()">
                 <option value="">Seleziona un peso</option>
@@ -98,16 +90,6 @@
                 <option value="">Seleziona un gusto</option>
             </select>
         </div>
-
-        <%-- <div class="filter">
-            <select id="calories" name="calorie" onchange="genericFilter()">
-                <option value="">Seleziona un range di calorie</option>
-                <option value="0-100">0-100</option>
-                <option value="100-200">100-200</option>
-                <option value="200-300">200-300</option>
-                <option value="300-400">300-400</option>
-            </select>
-        </div> --%>
 
 
         <button id="reset-button" onclick="resetProducts()">Reset</button>

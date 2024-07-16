@@ -33,6 +33,8 @@ public class RegistrazioneServlet extends HttpServlet {
             return;
         }
 
+
+        //Controllo parametri form da fare --
         String password = request.getParameter("password");
         String nome = request.getParameter("nome");
         String cognome = request.getParameter("cognome");

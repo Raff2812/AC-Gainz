@@ -36,11 +36,6 @@ public class OrdineServlet extends HttpServlet {
 
             Ordine ordine = new Ordine();
             ordine.setEmailUtente(x.getEmail());
-            /*ordine.setDataOrdine(new Date());
-            ordine.setStato("In esecuzione");
-            ordine.setTotale(0);
-            /*ordine.setTotale(orderTotal);*/
-            //Ordine ordine = new Ordine(x.getEmail(), orderTotal);
 
 
             OrdineDao ordineDao = new OrdineDao();
@@ -57,11 +52,6 @@ public class OrdineServlet extends HttpServlet {
                 dettaglioOrdineItem.setIdVariante(cartItem.getIdVariante());
                 dettaglioOrdineItem.setIdProdotto(cartItem.getIdProdotto());
                 dettaglioOrdineItem.setQuantita(cartItem.getQuantita());
-                //dettaglioOrdineItem.setPrezzo(0);
-                //dettaglioOrdineItem.setPrezzo(cartItem.getPrezzo());
-                //dettaglioOrdineItem.setGusto(cartItem.getGusto());
-                //dettaglioOrdineItem.setPesoConfezione(cartItem.getPesoConfezione());
-
                 dettaglioOrdine.add(dettaglioOrdineItem);
             }
 

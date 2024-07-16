@@ -16,7 +16,7 @@
 <div id="checkOutContainer">
     <div id="checkOutItem">
         <%
-            @SuppressWarnings("unchecked")
+
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
             float total = 0;

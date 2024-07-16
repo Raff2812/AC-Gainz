@@ -174,57 +174,5 @@ public class DettaglioOrdineDAO {
 
 
 
-   /* public List<DettaglioOrdine> doRetrieveAll(){
 
-        ArrayList<DettaglioOrdine> dettagliordini = new ArrayList<>();
-
-        Statement st;
-
-        ResultSet rs;
-
-        DettaglioOrdine o;
-
-        try (Connection con = ConPool.getConnection()) {
-
-            st = con.createStatement();
-
-            rs = st.executeQuery("SELECT * FROM dettaglio_ordine");
-
-            while(rs.next()) {
-
-                o = new DettaglioOrdine();
-                o.setIdOrdine(rs.getInt("id_ordine"));
-                o.setIdProdotto(rs.getString("id_prodotto"));
-                o.setQuantita(rs.getInt("quantità"));
-                o.setPrezzo(rs.getFloat("prezzo"));
-
-                dettagliordini.add(o);
-            }
-
-            con.close();
-
-            return dettagliordini;
-        }
-
-        catch (SQLException e) {
-
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void doUpdateCustomer(DettaglioOrdine o){
-
-        try (Connection con = ConPool.getConnection()) {
-            Statement st = con.createStatement();
-            String query = "update dettaglio_ordine set id_ordine='" + o.getIdOrdine() +
-                    "', id_prodotto='" + o.getIdProdotto() +
-                    "', quantità='"+ o.getQuantita() +
-                    "', prezzo="+ o.getPrezzo()
-                    + " where id_ordine=" + o.getIdOrdine() + ";";
-            st.executeUpdate(query);
-        }
-        catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
 }

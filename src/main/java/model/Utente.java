@@ -104,22 +104,4 @@ public class Utente {
         this.poteri = poteri;
     }
 
-
-    public static void main(String[] args){
-        String password = "Admin10@";
-        try {
-            var digest =
-                    MessageDigest.getInstance("SHA-1");
-            digest.reset();
-            digest.update(password.getBytes(StandardCharsets.UTF_8));
-            password = String.format("%040x", new
-                    BigInteger(1, digest.digest()));
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
-
-        System.out.println(password);
-    }
-
-
 }

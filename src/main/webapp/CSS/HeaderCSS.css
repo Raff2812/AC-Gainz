@@ -296,8 +296,8 @@ header .header-lista ul li{
 
 /* Media Queries per la responsività */
 
-/* Schermi piccoli (max-width: 480px) */
-@media (max-width: 480px) {
+/* Schermi piccoli (max-width:515px) */
+@media (max-width: 515px) {
     header {
         height: auto;
         padding: 10px 0;
