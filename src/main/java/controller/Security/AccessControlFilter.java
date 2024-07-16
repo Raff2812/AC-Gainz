@@ -26,7 +26,6 @@ public class AccessControlFilter extends HttpFilter implements Filter {
         boolean isLogged = (utente != null);
         if (isLogged) {
             isAdmin = utente.getPoteri();
-            System.out.println(utente.getPassword());
         }
         System.out.println(isAdmin);
 

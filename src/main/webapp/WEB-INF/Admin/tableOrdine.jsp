@@ -15,10 +15,12 @@
 <body>
 <script src="JS/Tables.js"></script>
 <a href="admin">Torna indietro</a>
-<%  @SuppressWarnings("unchecked")
+<%
     List<Ordine> ordini = (List<Ordine>) request.getAttribute("tableOrdine");
-    if (ordini != null){
+
 %>
+
+
 
 <div class="nav-list-tables">
     <a href="showTable?tableName=dettaglioOrdine">Dettaglio Ordini</a>
@@ -40,34 +42,37 @@
             <th>Descrizione</th>
             <th>Azione</th>
         </tr>
-        <% for (Ordine o : ordini) {
-            String descrizione = o.getDescrizione();
+        <%
+            for (Ordine o : ordini) {
+                String descrizione = o.getDescrizione();
         %>
         <tr>
-            <td><%= o.getIdOrdine() %></td>
-            <td><%= o.getEmailUtente() %></td>
-            <td><%= o.getDataOrdine() %></td>
-            <td><%= o.getStato() %></td>
-            <td><%= o.getTotale() %></td>
+            <td><%=o.getIdOrdine()%></td>
+            <td><%=o.getEmailUtente()%></td>
+            <td><%=o.getDataOrdine()%></td>
+            <td><%=o.getStato()%></td>
+            <td><%=o.getTotale()%></td>
             <td class="description-scroll">
                 <%
-                    if ( descrizione == null || descrizione.isBlank()){
+                    if (descrizione == null || descrizione.isBlank()) {
                 %>
                 <a href="showTable?tableName=dettaglioOrdine">Dettaglio ordine</a>
                 <%
-                    }else{
+                } else {
                 %>
-                <%=descrizione%>
+                 <%=o.getDescrizione()%>
                 <%
                     }
                 %>
             </td>
             <td class="center">
-                <button class="button" onclick="editTableRow('ordine', '<%= o.getIdOrdine() %>')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('ordine', '<%= o.getIdOrdine() %>')">Elimina</button>
+                <button class="button" onclick="editTableRow('ordine', '${o.idOrdine}')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('ordine', '${o.idOrdine}')">Elimina</button>
             </td>
         </tr>
-        <% } %>
+        <%
+            }
+        %>
         <tr>
             <td colspan="7" class="center">
                 <button class="add-button" onclick="addRow('ordine')">+</button>
@@ -75,7 +80,6 @@
         </tr>
     </table>
 </div>
-<% } %>
 
 </body>
 </html>

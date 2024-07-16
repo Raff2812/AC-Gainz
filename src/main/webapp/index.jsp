@@ -64,21 +64,17 @@
     <div class="prodotti-list">
         <%
             List<Prodotto> products = null;
-            if (request.getAttribute("originalProducts") != null) {
-                products = (List<Prodotto>) request.getAttribute("originalProducts");
-            } else {
-                products = (List<Prodotto>) application.getAttribute("Products");
-            }
+            products = (List<Prodotto>) application.getAttribute("Products");
 
             if (products != null) {
                 for (Prodotto p : products) {
                     Variante variante = p.getVarianti().get(0);
+                    if(variante.getSconto() > 0){
         %>
         <div class="product-card">
             <div class="product-image">
-                <% if (variante.getSconto() > 0) { %>
                 <span class="product-sconto"><%= variante.getSconto() %>% di Sconto</span>
-                <% } %>
+
                 <form id="<%=p.getIdProdotto()%>" action="ProductInfo" method="post">
                     <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
                 </form>
@@ -101,6 +97,7 @@
             <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
         </div>
         <%
+                }
                 }
             }
         %>
@@ -116,6 +113,7 @@
             if (products != null) {
                 for (Prodotto p : products) {
                     Variante variante = p.getVarianti().get(0);
+                    if (variante.isEvidenza()){
         %>
         <div class="product-card">
             <div class="product-image">
@@ -144,6 +142,7 @@
             <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
         </div>
         <%
+                    }
                 }
             }
         %>
@@ -153,10 +152,10 @@
 
 <div class="centered-div">
     <span>
-        <h2 class="nome-div-options"></h2>
+        <span class="nome-div-options"></span>
     </span>
     <span class="price-span">
-        <h3 class="current-price"></h3>
+        <span class="current-price"></span>
     </span>
 
     <div class="flavour-container">

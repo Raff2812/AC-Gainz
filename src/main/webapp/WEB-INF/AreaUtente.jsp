@@ -47,7 +47,7 @@
         <p id="areautente-tags">Email:</p><%= utente.getEmail() %>
         <br><br><p id="areautente-tags">Password:</p><%= utente.getPassword() %>
         <br><br><p id="areautente-tags">Indirizzo:</p><%= utente.getIndirizzo() %>
-        <br><br><p id="areautente-tags">Nome:</p><%= utente.getNome() %>
+        <br><br><p id="areautente-tags">Nome:</p> ${Utente.nome}
         <br><br><p id="areautente-tags">Cognome:</p><%= utente.getCognome() %>
         <br><br><p id="areautente-tags">Codice fiscale:</p><%= utente.getCodiceFiscale() %>
         <br><br><p id="areautente-tags">Data di Nascita:</p><%= formattedDate %>

@@ -36,7 +36,7 @@
         .filter label {
             margin-bottom: 5px;
         }
-        .filter select, button, #reset-button {
+        .filter select, #reset-button {
             appearance: none;
             min-width: 150px;
             padding: 12px 15px;

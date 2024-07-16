@@ -16,7 +16,7 @@
 <body>
 <script src="JS/Tables.js"></script>
 <a href="admin">Torna indietro</a>
-<%  @SuppressWarnings("unchecked")
+<%
     List<Confezione> confezioni = (List<Confezione>) request.getAttribute("tableConfezione");
     if (confezioni != null){
 %>
