@@ -157,7 +157,7 @@
             <span class="product-info-price-off"><%= variante.getPrezzo() %> €</span>
             <% } %>
         </div>
-            <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
+        <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
     </div>
     <%
             }

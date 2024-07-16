@@ -15,7 +15,8 @@
 <body>
 <script src="JS/Tables.js"></script>
 <a href="admin">Torna indietro</a>
-<% List<Ordine> ordini = (List<Ordine>) request.getAttribute("tableOrdine");
+<%  @SuppressWarnings("unchecked")
+    List<Ordine> ordini = (List<Ordine>) request.getAttribute("tableOrdine");
     if (ordini != null){
 %>
 

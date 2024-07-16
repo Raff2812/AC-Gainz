@@ -73,7 +73,7 @@ public class UtenteDAO {
             PreparedStatement ps = con.prepareStatement(
                     "INSERT INTO utente (email,password,nome,cognome,codice_fiscale,data_di_nascita,indirizzo,numero_di_cellulare) VALUES(?,?,?,?,?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS);
-            /*utente.setPassword(utente.getPassword());*/
+
             ps.setString(1, utente.getEmail());
             ps.setString(2, utente.getPassword());
             ps.setString(3, utente.getNome());

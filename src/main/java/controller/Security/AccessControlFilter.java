@@ -24,9 +24,10 @@ public class AccessControlFilter extends HttpFilter implements Filter {
 
         boolean isAdmin = false;
         boolean isLogged = (utente != null);
-        if (isLogged)
-         isAdmin = utente.getPoteri();
-
+        if (isLogged) {
+            isAdmin = utente.getPoteri();
+            System.out.println(utente.getPassword());
+        }
         System.out.println(isAdmin);
 
         String path = httpServletRequest.getServletPath();

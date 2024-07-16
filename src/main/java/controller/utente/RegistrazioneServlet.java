@@ -55,6 +55,7 @@ public class RegistrazioneServlet extends HttpServlet {
         Utente x = new Utente();
         x.setEmail(email);
         x.setPassword(password);
+        x.hashPassword();
         x.setCodiceFiscale(codiceFiscale);
         x.setNome(nome);
         x.setCognome(cognome);

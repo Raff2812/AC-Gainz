@@ -1,6 +1,6 @@
 <%@ page import="java.util.List" %>
-<%@ page import="model.Prodotto" %>
 <%@ page import="model.Carrello" %>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -16,6 +16,7 @@
 <div id="checkOutContainer">
     <div id="checkOutItem">
         <%
+            @SuppressWarnings("unchecked")
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
             float total = 0;

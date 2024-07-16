@@ -4,9 +4,11 @@
     <option name="state">
       <map>
         <entry key="file://$PROJECT_DIR$/src/main/webapp/AreaUtente.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/Carrello.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/FilterProducts.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Header.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/Registrazione.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Admin/AreaAdmin.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Admin" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Admin/tableConfezione.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Admin/tableDettaglioOrdini.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/Admin/tableGusto.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
@@ -18,6 +20,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/AreaUtente.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/results/Login.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/results" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/results/Registrazione.jsp" value="file://$PROJECT_DIR$/src/main/webapp/WEB-INF/results" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/index.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/tableVariante.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
       </map>
     </option>

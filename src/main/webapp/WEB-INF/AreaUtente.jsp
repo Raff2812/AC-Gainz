@@ -62,8 +62,7 @@
         <br><br>
         <button onclick="displayAll('passdiv')">Modifica Password</button>
         <div id="passdiv" class="form-container" style="display: none">
-            <div id="error-message-pass" class="error"></div>
-            <div id="success-message-pass" class="success"></div>
+            <div id="message-password" class="message"></div>
             <form id="change-password-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="password">
                 <label for="current-password">Password Attuale</label>
@@ -82,8 +81,7 @@
         <br><br>
         <button onclick="displayAll('inddiv')">Modifica Indirizzo</button>
         <div id="inddiv" class="form-container" style="display: none">
-            <div id="error-message-ind" class="error"></div>
-            <div id="success-message-ind" class="success"></div>
+            <div id="message-address" class="message"></div>
             <form id="change-address-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="address">
                 <label for="street">Via</label>
@@ -95,8 +93,7 @@
         <br><br>
         <button onclick="displayAll('numteldiv')">Modifica Numero di Telefono</button>
         <div id="numteldiv" class="form-container" style="display: none">
-            <div id="error-message-numtel" class="error"></div>
-            <div id="success-message-numtel" class="success"></div>
+            <div id="message-phone" class="message"></div>
             <form id="change-phone-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="phone">
                 <label for="new-phone">Nuovo Numero di Telefono</label>
@@ -108,8 +105,7 @@
         <br><br>
         <button onclick="displayAll('codfisdiv')">Modifica Codice Fiscale</button>
         <div id="codfisdiv" class="form-container" style="display: none">
-            <div id="error-message-codfis" class="error"></div>
-            <div id="success-message-codfis" class="success"></div>
+            <div id="message-codice-fiscale" class="message"></div>
             <form id="change-codice-fiscale-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="codice-fiscale">
                 <label for="new-codice-fiscale">Nuovo Codice Fiscale</label>
@@ -121,8 +117,7 @@
         <br><br>
         <button onclick="displayAll('ddndiv')">Modifica Data di Nascita</button>
         <div id="ddndiv" class="form-container" style="display: none">
-            <div id="error-message-ddn" class="error"></div>
-            <div id="success-message-ddn" class="success"></div>
+            <div id="data-di-nascita" class="message"></div>
             <form id="change-birthdate-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="data-di-nascita">
                 <label for="new-birthdate">Nuova Data di Nascita</label>
@@ -134,8 +129,7 @@
         <br><br>
         <button onclick="displayAll('nomediv')">Modifica Nome</button>
         <div id="nomediv" class="form-container" style="display: none">
-            <div id="error-message-nome" class="error"></div>
-            <div id="success-message-nome" class="success"></div>
+            <div id="message-nome" class="message"></div>
             <form id="change-name-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="nome">
                 <label for="new-name">Nuovo Nome</label>
@@ -147,8 +141,7 @@
         <br><br>
         <button onclick="displayAll('cognomediv')">Modifica Cognome</button>
         <div id="cognomediv" class="form-container" style="display: none">
-            <div id="error-message-cognome" class="error"></div>
-            <div id="success-message-cognome" class="success"></div>
+            <div id="message-cognome" class="message"></div>
             <form id="change-surname-form" action="editServlet" method="post">
                 <input type="hidden" name="field" value="cognome">
                 <label for="new-surname">Nuovo Cognome</label>
@@ -205,56 +198,32 @@
 
 
 
-<%
-    String errorOld = (String) request.getAttribute("errorOld");
-    String errorMatching = (String) request.getAttribute("errorMatching");
-    String successPsw = (String) request.getAttribute("successPsw");
-    String successAdd = (String) request.getAttribute("successAdd");
-    String successTel = (String) request.getAttribute("successTel");
-    String successCf = (String) request.getAttribute("successCf");
-    String successDdn = (String) request.getAttribute("successDdn");
-    String successNa = (String) request.getAttribute("successNa");
-    String successSur = (String) request.getAttribute("successSur");
-    String errorMessage = (String) request.getAttribute("error");
-
-    boolean errorOLD = errorOld != null;
-    boolean errorMATCHING = errorMatching != null;
-    boolean success = successPsw != null || successAdd != null || successTel != null || successCf != null || successDdn != null || successNa != null || successSur != null;
-    boolean error = errorMessage != null;
-%>
-
 <script>
-    const displayMessage = (elementId, message, type) => {
-        const element = document.getElementById(elementId);
-        element.style.display = "block";
-        element.innerHTML = message;
-        element.className = type;
-    };
+    function handleMessages(type, message, field) {
+        let messageDiv = document.getElementById("message-" + field);
+        if (messageDiv) {
+            messageDiv.innerHTML = message;
+            messageDiv.className = "message " + type;
+            messageDiv.style.display = "block";
+        }
+    }
 
-    <% if (errorOLD) { %>
-    displayMessage("error-message-pass", "Password sbagliata", "error");
-    <% } else if (errorMATCHING) { %>
-    displayMessage("error-message-pass", "Le due password nuove non corrispondono", "error");
-    <% } else if (error) { %>
-    displayMessage("error-message-pass", "<%= errorMessage %>", "error");
-    <% } %>
+    let message = '<%= request.getAttribute("message") %>';
+    let messageType = '<%= request.getAttribute("messageType") %>';
+    let field = '<%= request.getAttribute("field") %>';
 
-    <% if (successPsw != null) { %>
-    displayMessage("success-message-pass", "<%= successPsw %>", "success");
-    <% } else if (successAdd != null) { %>
-    displayMessage("success-message-ind", "<%= successAdd %>", "success");
-    <% } else if (successTel != null) { %>
-    displayMessage("success-message-numtel", "<%= successTel %>", "success");
-    <% } else if (successCf != null) { %>
-    displayMessage("success-message-codfis", "<%= successCf %>", "success");
-    <% } else if (successDdn != null) { %>
-    displayMessage("success-message-ddn", "<%= successDdn %>", "success");
-    <% } else if (successNa != null) { %>
-    displayMessage("success-message-nome", "<%= successNa %>", "success");
-    <% } else if (successSur != null) { %>
-    displayMessage("success-message-cognome", "<%= successSur %>", "success");
-    <% } %>
+    console.log(message);
+    console.log(messageType);
+    console.log(field);
+
+    if (message && messageType && field) {
+        handleMessages(messageType, message, field);
+    }
 </script>
+
+
+
+
 
 <%@ include file="Footer.jsp" %>
 </body>

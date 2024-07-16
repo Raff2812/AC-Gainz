@@ -32,18 +32,21 @@ public class Utente {
 
 
 
-    public void setPassword(String password) {   // password
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void hashPassword() {
         try {
-            var digest =
-                    MessageDigest.getInstance("SHA-1");
+            var digest = MessageDigest.getInstance("SHA-1");
             digest.reset();
-            digest.update(password.getBytes(StandardCharsets.UTF_8));
-            this.password = String.format("%040x", new
-                    BigInteger(1, digest.digest()));
+            digest.update(this.password.getBytes(StandardCharsets.UTF_8));
+            this.password = String.format("%040x", new BigInteger(1, digest.digest()));
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
+
 
     public String getNome() {
         return nome;

@@ -16,7 +16,8 @@
 <body>
 <script src="JS/Tables.js"></script>
 <a href="admin">Torna indietro</a>
-<% List<Gusto> gusti = (List<Gusto>) request.getAttribute("tableGusto");
+<%  @SuppressWarnings("unchecked")
+    List<Gusto> gusti = (List<Gusto>) request.getAttribute("tableGusto");
     if (gusti != null){
 %>
 

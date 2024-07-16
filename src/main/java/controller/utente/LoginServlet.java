@@ -91,6 +91,7 @@ public class LoginServlet extends HttpServlet {
 
         // Inserisco nella sessione l'oggetto contenente l'utente vero e proprio
         session.setAttribute("Utente", x);
+        System.out.println(x.getPassword());
 
 
         CarrelloDAO carrelloDAO = new CarrelloDAO();

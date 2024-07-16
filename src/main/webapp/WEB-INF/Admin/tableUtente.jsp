@@ -16,7 +16,8 @@
 <body>
 <script src="JS/Tables.js"></script>
 <a href="admin">Torna indietro</a>
-<% List<Utente> utenti = (List<Utente>) request.getAttribute("tableUtente");
+<%
+  List<Utente> utenti = (List<Utente>) request.getAttribute("tableUtente");
   if (utenti != null){
 %>
 

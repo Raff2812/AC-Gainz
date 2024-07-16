@@ -74,51 +74,68 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String confirmPassword = request.getParameter("confirm-password");
 
         if (currentPassword == null || newPassword == null || confirmPassword == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "password");
             requestDispatcher.forward(request, response);
             return;
         }
-
 
         String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$";
         Pattern passwordRegex = Pattern.compile(passwordPattern);
 
         Matcher newPasswordMatcher = passwordRegex.matcher(newPassword);
         if (!newPasswordMatcher.matches()) {
-            request.setAttribute("errorPattern", "Pattern non rispettato");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Pattern non rispettato");
+            request.setAttribute("field", "password");
             requestDispatcher.forward(request, response);
             return;
         }
 
         Matcher confirmPasswordMatcher = passwordRegex.matcher(confirmPassword);
         if (!confirmPasswordMatcher.matches()) {
-            request.setAttribute("errorPattern", "Pattern non rispettato");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Pattern non rispettato");
+            request.setAttribute("field", "password");
             requestDispatcher.forward(request, response);
             return;
         }
 
-
-
-
         String hashedCurrentPassword = sha1(currentPassword);
 
+        System.out.println("Hashed current password: " + hashedCurrentPassword);
+        System.out.println("Stored password: " + utente.getPassword());
+
         if (!hashedCurrentPassword.equals(utente.getPassword())) {
-            request.setAttribute("errorOld", "Password attuale non corretta");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Password attuale non corretta");
+            request.setAttribute("field", "password");
             requestDispatcher.forward(request, response);
             return;
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("errorMatching", "Le password non corrispondono");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Le password non corrispondono");
+            request.setAttribute("field", "password");
             requestDispatcher.forward(request, response);
             return;
         }
 
-        utente.setPassword(newPassword);
-        request.getSession().setAttribute("Utente", utente);
-        utenteDAO.doUpdateCustomerGeneric(utente, "password", sha1(newPassword));
 
-        request.setAttribute("successPsw", "Password modificata con successo");
+        utente.setPassword(newPassword);
+        utente.hashPassword();
+
+        System.out.println(utente.getPassword());
+
+        request.getSession().setAttribute("Utente", utente);
+
+        utenteDAO.doUpdateCustomerGeneric(utente, "password", utente.getPassword());
+        System.out.println("Password Cambiata con: " + utente.getPassword());
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Password modificata con successo");
+        request.setAttribute("field", "password");
         requestDispatcher.forward(request, response);
     }
 
@@ -128,7 +145,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String indirizzo = request.getParameter("street");
 
         if (indirizzo == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "address");
             requestDispatcher.forward(request, response);
             return;
         }
@@ -137,7 +156,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         request.getSession().setAttribute("Utente", utente);
         utenteDAO.doUpdateCustomerGeneric(utente, "indirizzo", indirizzo);
 
-        request.setAttribute("successAdd", "Indirizzo modificato con successo");
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Indirizzo modificato con successo");
+        request.setAttribute("field", "address");
         requestDispatcher.forward(request, response);
     }
 
@@ -147,29 +168,32 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String telefono = request.getParameter("new-phone");
 
         if (telefono == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "address");
             requestDispatcher.forward(request, response);
             return;
         }
-
 
         String phonePattern = "^3[0-9]{8,9}$";
         Pattern phoneRegex = Pattern.compile(phonePattern);
 
         Matcher phoneMatcher = phoneRegex.matcher(telefono);
         if (!phoneMatcher.matches()) {
-            request.setAttribute("errorPattern", "Pattern non rispettato");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Pattern non rispettato");
+            request.setAttribute("field", "phone");
             requestDispatcher.forward(request, response);
             return;
         }
-
-
 
         utente.setTelefono(telefono);
         request.getSession().setAttribute("Utente", utente);
         utenteDAO.doUpdateCustomerGeneric(utente, "numero_di_cellulare", telefono);
 
-        request.setAttribute("successTel", "Numero di telefono modificato con successo");
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Numero di telefono modificato con successo");
+        request.setAttribute("field", "phone");
         requestDispatcher.forward(request, response);
     }
 
@@ -179,7 +203,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String codFiscale = request.getParameter("new-codice-fiscale");
 
         if (codFiscale == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "codice-fiscale");
             requestDispatcher.forward(request, response);
             return;
         }
@@ -189,18 +215,20 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         Matcher codFiscaleMatcher = codFiscaleRegex.matcher(codFiscale);
 
         if (!codFiscaleMatcher.matches()) {
-            request.setAttribute("errorPattern", "Pattern non rispettato");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Pattern non rispettato");
+            request.setAttribute("field", "codice-fiscale");
             requestDispatcher.forward(request, response);
             return;
         }
-
-
 
         utente.setCodiceFiscale(codFiscale);
         request.getSession().setAttribute("Utente", utente);
         utenteDAO.doUpdateCustomerGeneric(utente, "codice_fiscale", codFiscale);
 
-        request.setAttribute("successCf", "Codice fiscale modificato con successo");
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Codice fiscale modificato con successo");
+        request.setAttribute("field", "codice-fiscale");
         requestDispatcher.forward(request, response);
     }
 
@@ -210,24 +238,23 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String ddn = request.getParameter("new-birthdate");
 
         if (ddn == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "data-di-nascita");
             requestDispatcher.forward(request, response);
             return;
         }
-
-        System.out.println(ddn);
 
         String[] fieldsDate = ddn.split("-");
-
         int flag = Integer.parseInt(fieldsDate[0]);
 
-        if(flag < 1900){
-            request.setAttribute("errorPattern", "Anno minimo non rispettato");
+        if (flag < 1900) {
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Anno minimo non rispettato");
+            request.setAttribute("field", "data-di-nascita");
             requestDispatcher.forward(request, response);
             return;
         }
-
-
 
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -236,7 +263,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
             request.getSession().setAttribute("Utente", utente);
             utenteDAO.doUpdateCustomerGeneric(utente, "data_di_nascita", ddn);
 
-            request.setAttribute("successDdn", "Data di nascita modificata con successo");
+            request.setAttribute("messageType", "success");
+            request.setAttribute("message", "Data di nascita modificata con successo");
+            request.setAttribute("field", "data-di-nascita");
             requestDispatcher.forward(request, response);
         } catch (ParseException e) {
             throw new ServletException("Errore nel parsing della data di nascita", e);
@@ -249,7 +278,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String nome = request.getParameter("new-name");
 
         if (nome == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "nome");
             requestDispatcher.forward(request, response);
             return;
         }
@@ -258,7 +289,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         request.getSession().setAttribute("Utente", utente);
         utenteDAO.doUpdateCustomerGeneric(utente, "nome", nome);
 
-        request.setAttribute("successNa", "Nome modificato con successo");
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Nome modificato con successo");
+        request.setAttribute("field", "nome");
         requestDispatcher.forward(request, response);
     }
 
@@ -268,7 +301,9 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         String cognome = request.getParameter("new-surname");
 
         if (cognome == null) {
-            request.setAttribute("error", "Missing parameters");
+            request.setAttribute("messageType", "error");
+            request.setAttribute("message", "Missing parameters");
+            request.setAttribute("field", "cognome");
             requestDispatcher.forward(request, response);
             return;
         }
@@ -277,10 +312,11 @@ public class ModificaDatiUtenteServlet extends HttpServlet {
         request.getSession().setAttribute("Utente", utente);
         utenteDAO.doUpdateCustomerGeneric(utente, "cognome", cognome);
 
-        request.setAttribute("successSur", "Cognome modificato con successo");
+        request.setAttribute("messageType", "success");
+        request.setAttribute("message", "Cognome modificato con successo");
+        request.setAttribute("field", "cognome");
         requestDispatcher.forward(request, response);
     }
-
 
     public String sha1(String pass) {
         try {

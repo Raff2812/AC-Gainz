@@ -91,6 +91,7 @@
         <div class="container-data-list">
             <%
                 Ordine ordine = (Ordine) request.getAttribute("order");
+                @SuppressWarnings("unchecked")
                 List<DettaglioOrdine> dettaglioOrdine = (List<DettaglioOrdine>) request.getAttribute("orderDetails");
                 if (dettaglioOrdine != null && !dettaglioOrdine.isEmpty()){
                     for (DettaglioOrdine item: dettaglioOrdine){
