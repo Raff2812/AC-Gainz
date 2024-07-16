@@ -6,17 +6,16 @@
 <head>
     <title>Header</title>
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
-    <% Utente utente = (Utente) session.getAttribute("Utente");
+    <%
+        Utente utente = (Utente) session.getAttribute("Utente");
         boolean isLogged = (utente != null);
-
     %>
     <script>
-        const Logged= <%= isLogged%>
+        const Logged = <%= isLogged %>;
     </script>
     <script src="JS/Header.js" defer></script>
 </head>
 <body>
-
 <script src="JS/CartPopUp.js" defer></script>
 <script src="JS/SearchBar.js"></script>
 <script src="JS/genericFilter.js"></script>
@@ -29,7 +28,7 @@
             <div class="header-line"></div>
         </div>
         <div class="header-logo">
-            <a href="index.jsp" >AC-Gainz</a>
+            <a href="index.jsp">AC-Gainz</a>
         </div>
         <div class="header-search-bar">
             <label>
@@ -39,9 +38,9 @@
         </div>
         <div class="header-carrello">
             <div id="cart">Carrello (0)</div>
-        <div id="listCart" class="hidden">
-            <!-- Il contenuto del carrello sarà qui -->
-        </div>
+            <div id="listCart" class="hidden">
+                <!-- Il contenuto del carrello sarà qui -->
+            </div>
         </div>
         <div class="header-utente" id="utente">
             <button onclick="myFunction()" class="header-dropbutton">Utente</button>
@@ -52,14 +51,12 @@
         </div>
     </div>
 
-
-
     <div class="header-lista" id="lista">
         <ul>
             <li>
                 <form action="categories" method="get">
                     <input type="hidden" name="category" value="tutto">
-                    <button type="submit" value="proteine">Store</button>
+                    <button type="submit">Store</button>
                 </form>
             </li>
             <li>
@@ -83,7 +80,5 @@
         </ul>
     </div>
 </header>
-
-
 </body>
 </html>

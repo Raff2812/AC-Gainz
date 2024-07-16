@@ -12,7 +12,6 @@
     box-sizing: border-box;
 }
 
-
 /*sfondo dell'header*/
 header {
     height: 130px;
@@ -44,7 +43,6 @@ header .header-container{
 .header-logo a:hover{
     color: orangered;
 }
-
 
 /*forma della barra di ricerca*/
 .header-search-bar{
@@ -154,9 +152,6 @@ header .header-container{
     border: black;
 }
 
-
-
-
 /* il container dove andra il contenuto del dropdown */
 .header-utente{
     position: relative;
@@ -207,7 +202,6 @@ header .header-container{
     display: block;
 }
 
-
 header .header-carrello{
     display: flex;
     align-items: center;
@@ -226,10 +220,8 @@ header .header-carrello{
     color: black;
 }
 
-
 header .header-lista{
     margin-top: -10px;
-
 }
 /*gestione della lista*/
 header .header-lista ul{
@@ -293,9 +285,6 @@ header .header-lista ul li{
     background: orangered;
 }
 
-
-
-
 /* Stile per il burger menu */
 .header-burger-menu {
     display: none;
@@ -306,13 +295,69 @@ header .header-lista ul li{
 }
 
 /* Media Queries per la responsività */
+
+/* Schermi piccoli (max-width: 480px) */
+@media (max-width: 480px) {
+    header {
+        height: auto;
+        padding: 10px 0;
+    }
+    .header-logo a {
+        font-size: 15px;
+    }
+    .header-search-bar {
+        padding: 10px 20px;
+        margin: 10px 0;
+        width: 100%;
+    }
+    .header-search-bar input[type="search"] {
+        width: 100%;
+        font-size: 14px;
+    }
+    .header-carrello {
+        margin: 5px 0;
+        padding: 1px;
+    }
+    .header-utente{
+        margin: 2px;
+        padding: 4px;
+    }
+    .header-dropbutton{
+        padding: 8px;
+        font-size: 17px;
+    }
+    .header-dropdown-content{
+        top: 45px;
+        right: 8px;
+    }
+    .header-carrello #cart {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    .header-lista ul {
+        flex-direction: column;
+        margin: 10px 0;
+    }
+    .header-lista ul li {
+        margin: 10px 0;
+    }
+    .header-lista ul li button, .header-lista ul li a {
+        margin: 5px 0;
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+    .header-burger-menu {
+        display: block;
+    }
+}
+
 /* Schermi piccoli (smartphone) */
 @media (max-width: 950px) {
-    header{
+    header {
         height: 80px;
     }
-    .header-logo a{
-        font-size: 25px;
+    .header-logo a {
+        font-size: 30px;
         margin-left: 10px;
     }
     .header-search-bar {
@@ -326,10 +371,10 @@ header .header-lista ul li{
         margin-right: 20px;
         margin-left: 0;
     }
-    .header-carrello a {
+    .header-carrello #cart {
         padding: 5px 10px;
     }
-    .header-lista{
+    .header-lista {
         background-color: var(--backgroud-color-header);
     }
     .header-lista ul {
@@ -345,24 +390,23 @@ header .header-lista ul li{
     .header-burger-menu {
         display: block; /* Mostra il burger menu */
     }
-    .header-burger-menu .header-line{
+    .header-burger-menu .header-line {
         border-radius: 10px;
         width: 25px;
         height: 6px;
         background: black;
-        margin: 2px 0  0  10px;
+        margin: 2px 0 0 10px;
     }
     .header-showburger {
         display: flex; /* Mostra il menu quando il burger menu è cliccato */
         flex-direction: column;
     }
-    .header-lista
-    {
+    .header-lista {
         display: none;
         opacity: 0;
         position: relative;
     }
-    .header-showlista{
+    .header-showlista {
         display: block;
         opacity: 1;
     }
@@ -370,7 +414,7 @@ header .header-lista ul li{
 
 /* Schermi medi (tablet) */
 @media (min-width: 951px) and (max-width: 1320px) {
-    .header-logo a{
+    .header-logo a {
         font-size: 40px;
         margin-left: 10px;
     }
@@ -385,7 +429,7 @@ header .header-lista ul li{
         margin-right: 50px;
         margin-left: 0;
     }
-    .header-carrello a {
+    .header-carrello #cart {
         padding: 5px 15px;
     }
     .header-lista ul {
