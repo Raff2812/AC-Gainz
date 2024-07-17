@@ -1,4 +1,4 @@
-/*css di ogni product card*/
+/* css di ogni card*/
 
 .product-card {
     width: 20%;
@@ -14,8 +14,8 @@
 .product-info-name {
     padding: 10px;
     text-align: center;
-    font-size: 28px;
-    font-weight: 390;
+    font-size: 20px;
+    font-weight: 500;
 }
 
 .product-info-price {
@@ -53,6 +53,7 @@
     cursor: pointer;
     border-top-right-radius: 20px;
 }
+
 .product-sconto {
     position: absolute;
     background-color: #ffffff;
@@ -183,5 +184,5 @@
 @media only screen and (max-width: 550px) {
     .product-card{
         width: 100%;
-    }
+}
 }

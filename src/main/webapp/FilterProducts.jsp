@@ -149,10 +149,10 @@
 
 <div class="centered-div">
     <span>
-        <h2 class="nome-div-options"></h2>
+        <span class="nome-div-options"></span>
     </span>
     <span class="price-span">
-        <h3 class="current-price"></h3>
+        <span class="current-price"></span>
     </span>
 
     <div class="flavour-container">

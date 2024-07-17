@@ -29,12 +29,12 @@
         </div>
         <div class="header-search-bar">
             <label>
-                <input type="search" id="search-input" placeholder="Search..">
+                <input type="search" id="search-input" placeholder="Search.." tabindex="0">
             </label>
             <img id="search-img" src="Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
-            <div id="cart">Carrello (0)</div>
+            <div id="cart" tabindex="0" onkeydown="">Carrello (0)</div>
             <div id="listCart" class="hidden">
                 <!-- Il contenuto del carrello sarà qui -->
             </div>

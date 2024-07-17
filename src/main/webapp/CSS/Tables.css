@@ -13,7 +13,7 @@
     font-size: 19px;
     color: white;
     background-color: orangered;
-    padding: 9px 14px;
+    padding: 9px 10px;
     margin-left: 10px;
     position: sticky;
     top: 5px;
@@ -129,6 +129,8 @@ th a{
     width: 80%;
     margin: 20px auto;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
 }
 
 .nav-list-tables a {
@@ -155,4 +157,37 @@ th a{
 .description-scroll a{
     text-decoration: none;
 
+}
+
+
+
+@media (max-width: 768px) {
+    .nav-list-tables a {
+        margin: 3px;
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+    .tableDB th, .tableDB td {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    .add-button, .button {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+}
+@media (max-width: 515px) {
+    .nav-list-tables a {
+        margin: 2px;
+        padding: 6px 8px;
+        font-size: 8px;
+    }
+    .tableDB th, .tableDB td {
+        padding: 4px 6px;
+        font-size: 10px;
+    }
+    .add-button, .button {
+        font-size: 10px;
+        padding: 4px 6px;
+    }
 }

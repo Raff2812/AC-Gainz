@@ -36,8 +36,17 @@ public class RegistrazioneServlet extends HttpServlet {
 
         //Controllo parametri form da fare --
         String password = request.getParameter("password");
+
+
+
+
+
         String nome = request.getParameter("nome");
+
+
         String cognome = request.getParameter("cognome");
+
+
         String codiceFiscale = request.getParameter("codiceFiscale");
 
 

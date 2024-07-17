@@ -68,6 +68,13 @@ header .header-container{
     font-size: 20px;
     color: black;
 }
+.header-search-bar:focus{
+    font-size: 21px;
+}
+.header-search-bar input[type="search"]:focus{
+    font-size: 21px;
+}
+
 .header-search-bar img{
     position: absolute;
     top: 50%;
@@ -83,6 +90,7 @@ header .header-container{
     align-items: center;
 }
 
+
 .header-carrello #cart{
     color: white;
     padding: 10px 20px;
@@ -91,6 +99,9 @@ header .header-container{
     background-color: orangered;
     border-color: transparent;
     font-size: 15px;
+}
+.header-carrello #cart:focus{
+    font-size: 16px;
 }
 
 .header-carrello #cart:hover {
@@ -114,6 +125,9 @@ header .header-container{
     position: absolute; /* Posizione assoluta */
     top: 100%; /* Posiziona sotto il pulsante */
     left: 0; /* Allinea a sinistra */
+}
+#listCart:focus{
+    font-weight: bold;
 }
 
 #listCart div {

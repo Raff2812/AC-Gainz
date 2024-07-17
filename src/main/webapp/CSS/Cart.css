@@ -104,15 +104,22 @@
 }
 
 @media (max-width: 768px) {
+
     .product {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .product img {
+        width: 150px;
+        margin: auto;
+    }
     .product-info {
         width: 100%;
+        text-align: center;
     }
-    .quantity-div, .price-div, .rmv-div {
-        flex-direction: row;
+    .quantity-div, .rmv-div{
+        flex-direction: column;
         justify-content: space-between;
         width: 100%;
         margin-top: 10px;
@@ -127,7 +134,8 @@
 
 @media (max-width: 515px) {
     .product img {
-        width: 80px;
+        width: 100px;
+        margin: auto;
     }
     .quantity-div input {
         width: 40%;
@@ -139,4 +147,14 @@
         padding: 10px 15px;
         font-size: 13px;
     }
+    .quantity-div, .rmv-div{
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100%;
+        margin-top: 10px;
+    }
+    .product-info {
+        text-align: center;
+    }
+
 }
