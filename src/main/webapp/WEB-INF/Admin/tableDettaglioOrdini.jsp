@@ -14,7 +14,7 @@
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="admin">Torna indietro</a>
+<a class="backbutton" href="admin">Torna indietro</a>
 <%   @SuppressWarnings("unchecked")
      List<DettaglioOrdine> dettaglioOrdini = (List<DettaglioOrdine>) request.getAttribute("tableDettaglioOrdini");
     if (dettaglioOrdini != null){

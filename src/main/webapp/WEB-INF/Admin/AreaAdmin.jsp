@@ -20,17 +20,18 @@
         }
         #listTables button{
             padding: 20px 0;
-            width: 200px;
+            width: 270px;
             border: none;
-            border-radius: 10px;
-            font-size: 12px;
-            font-weight: bold;
-            color: #222;
-            font-style: italic;
+            border-radius: 15px;
+            font-size: 25px;
+            font-weight: 450;
+            background-color: orangered;
+            color: white;
+            transition: 0.3s;
+
         }
         #listTables button:hover{
-            background-color: orangered;
-            transition: 0.5s background-color ease-in-out;
+            color: black;
             cursor: pointer;
         }
 

@@ -15,9 +15,12 @@
             position: relative;
             width: 90%;
             margin: 0 auto;
+            align-items: center;
         }
         .main-img, .secondary-img {
             width: 100%;
+            max-width: 100%;
+            height: auto;
             border-radius: 20px;
         }
         .text-overlay {
@@ -26,7 +29,7 @@
             left: 27%;
             transform: translate(-50%, -50%);
             color: white;
-            font-size: 35px;
+            font-size: 2.5vw;
             padding: 5px;
             font-weight: 550;
             text-align: left;
@@ -36,7 +39,7 @@
             box-sizing: border-box;
         }
         .prodotti-phrase {
-            font-size: 30px;
+            font-size: 2vw;
             color: black;
             font-weight: 450;
             margin: 10px 0 5px 0;
@@ -48,6 +51,42 @@
             align-items: center;
             justify-content: center;
             gap: 15px;
+        }
+        @media (max-width: 1320px) {
+            .text-overlay {
+                font-size: 2vw;
+                top: 25%;
+                left: 33%;
+                transform: translate(-50%, -50%);
+                max-width: 60%;
+            }
+            .prodotti-phrase {
+                font-size: 2.5vw;
+            }
+        }
+        @media (max-width: 768px) {
+            .text-overlay {
+                font-size: 2.5vw;
+                top: 25%;
+                left: 35%;
+                transform: translate(-50%, -50%);
+                max-width: 80%;
+            }
+            .prodotti-phrase {
+                font-size: 3vw;
+            }
+        }
+        @media (max-width: 515px) {
+            .text-overlay {
+                font-size: 2.7vw;
+                top: 27%;
+                left: 36%;
+                transform: translate(-50%, -50%);
+                max-width: 90%;
+            }
+            .prodotti-phrase {
+                font-size: 4vw;
+            }
         }
     </style>
 </head>
@@ -97,7 +136,7 @@
             <button class="cartAdd"  onclick="optionsVarianti('<%=variante.getIdVariante()%>')">Aggiungi al Carrello</button>
         </div>
         <%
-                }
+                    }
                 }
             }
         %>

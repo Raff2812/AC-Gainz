@@ -14,7 +14,7 @@
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="admin">Torna indietro</a>
+<a class="backbutton" href="admin">Torna indietro</a>
     <%
      List<Variante> varianti = (List<Variante>) request.getAttribute("tableVariante");
     if (varianti != null){

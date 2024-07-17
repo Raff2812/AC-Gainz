@@ -127,3 +127,27 @@ div .ordine{
 div .dettagli{
     display: none;
 }
+
+#areaAdmin{
+    font-size: 15px;
+    color: white;
+    background-color: orangered;
+    border-radius: 8px;
+    padding: 4px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+.logOut{
+    width:fit-content;
+    margin-top: 8px;
+    font-size: 15px;
+    text-decoration: none;
+    background-color: orangered;
+    border-radius: 8px;
+    padding: 4px;
+    transition: 0.3s;
+    cursor: pointer;
+}
+#areaAdmin:hover, .logOut:hover{
+    color: black;
+}

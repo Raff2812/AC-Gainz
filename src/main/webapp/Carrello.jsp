@@ -30,14 +30,13 @@
                 <h3><%= cartItem.getNomeProdotto() %></h3>
                 <p><%= cartItem.getGusto() %></p>
                 <p><%= cartItem.getPesoConfezione() %> grammi</p>
+                <p><%= Math.round(cartItem.getPrezzo() * 100.0f) / 100.0f %></p>
+
             </div>
             <div class="quantity-div">
                 <input class="inputQuantity" type="number" value="<%= cartItem.getQuantita() %>">
                 <button data-product-id = '<%=cartItem.getIdProdotto()%>' data-product-taste = '<%=cartItem.getGusto()%>' data-product-weight = '<%=cartItem.getPesoConfezione()%>'
                          class="modifyQuantity">Modifica</button>
-            </div>
-            <div class="price-div">
-                <p><%= Math.round(cartItem.getPrezzo() * 100.0f) / 100.0f %></p>
             </div>
             <div class="rmv-div">
                 <button class="rmvButton" data-product-id = '<%=cartItem.getIdProdotto()%>' data-product-taste = '<%=cartItem.getGusto()%>' data-product-weight = '<%=cartItem.getPesoConfezione()%>'

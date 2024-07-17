@@ -15,7 +15,7 @@
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="admin">Torna indietro</a>
+<a class="backbutton" href="admin">Torna indietro</a>
 <%
     List<Confezione> confezioni = (List<Confezione>) request.getAttribute("tableConfezione");
     if (confezioni != null){

@@ -37,7 +37,9 @@
                 boolean powers = utente.getPoteri();
                 if (powers) {
         %>
-        <a href="admin" id="areaAdmin">Area Admin</a>
+        <div style="margin-top: 4px">
+            <a href="admin" id="areaAdmin">Area Admin</a>
+        </div>
         <%
             }
         %>

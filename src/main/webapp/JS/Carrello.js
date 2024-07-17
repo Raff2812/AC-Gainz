@@ -131,9 +131,14 @@ function updateCartJSP(response) {
             const productWeight = document.createElement("p");
             productWeight.innerText = `${cartItem.weight} grammi`;
 
+            const price = document.createElement("p");
+            price.innerText = `${cartItem.prezzo}€`;
+
             productInfoDiv.appendChild(productName);
             productInfoDiv.appendChild(productFlavour);
             productInfoDiv.appendChild(productWeight);
+            productInfoDiv.appendChild(price);
+
 
             const quantityDiv = document.createElement("div");
             quantityDiv.className = "quantity-div";
@@ -150,19 +155,12 @@ function updateCartJSP(response) {
             quantityDiv.appendChild(quantity);
             quantityDiv.appendChild(updateQuantities);
 
-            const priceDiv = document.createElement("div");
-            priceDiv.className = "price-div";
-            const price = document.createElement("p");
-            price.innerText = `${cartItem.prezzo}€`;
-            priceDiv.appendChild(price);
-
             const rmvDiv = document.createElement("div");
             rmvDiv.className = "rmv-div";
             const rmvButton = document.createElement("button");
             rmvButton.className = "rmvButton";
             rmvButton.innerText = "Rimuovi Elemento";
-            rmvButton.style.display = "block";
-            rmvButton.style.color = "black";
+            rmvButton.style.backgroundColor = "orangered"
 
             rmvButton.onclick = function () {
                 removeItemVariant(cartItem.idProdotto, cartItem.flavour, cartItem.weight);
@@ -172,7 +170,6 @@ function updateCartJSP(response) {
             productDiv.appendChild(img);
             productDiv.appendChild(productInfoDiv);
             productDiv.appendChild(quantityDiv);
-            productDiv.appendChild(priceDiv);
             productDiv.appendChild(rmvDiv);
 
             checkOutItemContainer.appendChild(productDiv);

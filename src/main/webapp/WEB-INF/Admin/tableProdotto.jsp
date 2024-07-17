@@ -14,7 +14,7 @@
 </head>
 <body>
 <script src="JS/Tables.js"></script>
-<a href="admin">Torna indietro</a>
+<a class="backbutton" href="admin">Torna indietro</a>
 <%  @SuppressWarnings("unchecked")
     List<Prodotto> prodotti = (List<Prodotto>) request.getAttribute("tableProdotto");
     if (prodotti != null){
