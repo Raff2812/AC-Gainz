@@ -55,11 +55,10 @@ function showUpdateForm(dataTable, nameTable, primaryKey) {
 
     // Aggiungi campi al form
     fields.forEach(field => {
-        if (field.type !== "textarea" ) {
+        if (field.type !== "textarea" && field.type !== "password") {
             // Crea un elemento input per altri tipi
-            let input = document.createElement("input"); // Dichiarazione con let
+            let input = document.createElement("input");
             if (field.type === "file") input.type = "text";
-            //input.type = field.type === "file" ? "file" : field.type;
             input.name = field.id;
             input.placeholder = field.label;
 

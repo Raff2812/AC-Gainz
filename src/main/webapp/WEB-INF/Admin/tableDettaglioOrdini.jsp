@@ -31,9 +31,9 @@
 <div class="tableContainer">
     <table class="tableDB">
         <tr>
-            <th><a href="showTable/tableName=ordine">Id Ordine</a></th>
-            <th><a href="showTable/tableName=prodotto">Id Prodotto</a></th>
-            <th><a href="showTable/tableName=variante">Id Variante</a></th>
+            <th><a href="showTable?tableName=ordine">Id Ordine</a></th>
+            <th><a href="showTable?tableName=prodotto">Id Prodotto</a></th>
+            <th><a href="showTable?tableName=variante">Id Variante</a></th>
             <th>Quantità</th>
             <th>Prezzo</th>
             <th>Azione</th>

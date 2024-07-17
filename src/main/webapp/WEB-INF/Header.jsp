@@ -6,12 +6,9 @@
 <head>
     <title>Header</title>
     <link rel="stylesheet" href="CSS/HeaderCSS.css">
-    <%
-        Utente utente = (Utente) session.getAttribute("Utente");
-        boolean isLogged = (utente != null);
-    %>
+
     <script>
-        const Logged = <%= isLogged %>;
+        const Logged = <%= (session.getAttribute("Utente") != null) %>;
     </script>
     <script src="JS/Header.js" defer></script>
 </head>

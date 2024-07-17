@@ -27,6 +27,7 @@ public class showRowForm extends HttpServlet {
         JSONArray jsonArray = new JSONArray();
         resp.setContentType("application/json");
 
+        System.out.println(tableName + " ShowRowForm");
         // Controlla se i parametri tableName e primaryKey sono validi
         if (tableName != null && !tableName.isBlank() && primaryKey != null && !primaryKey.isBlank()) {
             // Determina quale tabella mostrare
@@ -70,9 +71,9 @@ public class showRowForm extends HttpServlet {
     private void showDettaglioOrdineRowTable(String primaryKey, JSONArray jsonArray) {
         DettaglioOrdineDAO dettaglioOrdineDAO = new DettaglioOrdineDAO();
         String[] keys = primaryKey.split(", ");
-        if (keys.length == 2) {
+        if (keys.length == 3) {
             int idOrdine = Integer.parseInt(keys[0]);
-            int idVariante = Integer.parseInt(keys[1]);
+            int idVariante = Integer.parseInt(keys[2]);
             DettaglioOrdine dettaglioOrdine = dettaglioOrdineDAO.doRetrieveByIdOrderAndIdVariant(idOrdine, idVariante);
             if (dettaglioOrdine != null) {
                 jsonArray.add(dettaglioOrdineHelper(dettaglioOrdine));
@@ -84,6 +85,7 @@ public class showRowForm extends HttpServlet {
         OrdineDao ordineDao = new OrdineDao();
         Ordine ordine = ordineDao.doRetrieveById(Integer.parseInt(primaryKey));
         if (ordine != null) {
+            System.out.println(ordine.getIdOrdine() + " OOOOKKK");
             jsonArray.add(jsonOrdineHelper(ordine));
         }
     }

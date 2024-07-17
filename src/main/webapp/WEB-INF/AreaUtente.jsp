@@ -30,6 +30,7 @@
     <div id="areautente" class="tabcontent">
         <h3>Dettagli Utente</h3>
         <%
+            Utente utente = (Utente) session.getAttribute("Utente");
             if (utente != null) {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
                 String formattedDate = simpleDateFormat.format(utente.getDataNascita());
@@ -44,14 +45,14 @@
             <a href="logOut">LogOut</a>
         </div>
 
-        <p id="areautente-tags">Email:</p><%= utente.getEmail() %>
-        <br><br><p id="areautente-tags">Password:</p><%= utente.getPassword() %>
-        <br><br><p id="areautente-tags">Indirizzo:</p><%= utente.getIndirizzo() %>
+        <p id="areautente-tags">Email:</p> ${Utente.email}
+       <%-- <br><br><p id="areautente-tags">Password:</p> ${Utente.password} --%>
+        <br><br><p id="areautente-tags">Indirizzo:</p> ${Utente.indirizzo}
         <br><br><p id="areautente-tags">Nome:</p> ${Utente.nome}
-        <br><br><p id="areautente-tags">Cognome:</p><%= utente.getCognome() %>
-        <br><br><p id="areautente-tags">Codice fiscale:</p><%= utente.getCodiceFiscale() %>
+        <br><br><p id="areautente-tags">Cognome:</p> ${Utente.cognome}
+        <br><br><p id="areautente-tags">Codice fiscale:</p> ${Utente.codiceFiscale}
         <br><br><p id="areautente-tags">Data di Nascita:</p><%= formattedDate %>
-        <br><br><p id="areautente-tags">Telefono:</p><%= utente.getTelefono() %>
+        <br><br><p id="areautente-tags">Telefono:</p> ${Utente.telefono}
         <%
             }
         %>

@@ -159,9 +159,10 @@ public class editRowServlet extends HttpServlet {
         String dataStr = req.getParameter("data");
         String stato = req.getParameter("stato");
         String totaleStr = req.getParameter("totale");
-        String descrizione = req.getParameter("descrizione");
 
-        if (isValid(List.of(idOrdine, emailUtente, dataStr, stato, totaleStr, descrizione))) {
+
+        // Validate if all parameters are valid
+        if (isValid(List.of(idOrdine, emailUtente, dataStr, stato, totaleStr))) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             Date data;
             try {
@@ -171,24 +172,42 @@ public class editRowServlet extends HttpServlet {
                 return false;
             }
 
-            float totale = Float.parseFloat(totaleStr);
-            if (totale < 0) return false;
+            float totale;
+            try {
+                totale = Float.parseFloat(totaleStr);
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            if (totale < 0) {
+                return false;
+            }
 
             Ordine ordine = new Ordine();
-            ordine.setIdOrdine(Integer.parseInt(idOrdine));
+            try {
+                ordine.setIdOrdine(Integer.parseInt(idOrdine));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return false;
+            }
+
             ordine.setStato(stato);
             ordine.setEmailUtente(emailUtente);
             ordine.setTotale(totale);
             ordine.setDataOrdine(data);
-            ordine.setDescrizione(descrizione);
 
             OrdineDao ordineDao = new OrdineDao();
-            ordineDao.doUpdateOrder(ordine, Integer.parseInt(primaryKey));
+            try {
+                ordineDao.doUpdateOrder(ordine, Integer.parseInt(primaryKey));
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return false;
+            }
             return true;
         }
         return false;
     }
-
     private boolean editDettaglioOrdine(HttpServletRequest req, String primaryKey) {
         String idOrdine = req.getParameter("idOrdine");
         String idVariante = req.getParameter("idVariante");

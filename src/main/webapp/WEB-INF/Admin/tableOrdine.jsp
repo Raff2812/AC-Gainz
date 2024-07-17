@@ -66,8 +66,8 @@
                 %>
             </td>
             <td class="center">
-                <button class="button" onclick="editTableRow('ordine', '${o.idOrdine}')">Modifica</button>
-                <button class="button" onclick="deleteTableRow('ordine', '${o.idOrdine}')">Elimina</button>
+                <button class="button" onclick="editTableRow('ordine', '<%=o.getIdOrdine()%>')">Modifica</button>
+                <button class="button" onclick="deleteTableRow('ordine', '<%=o.getIdOrdine()%>')">Elimina</button>
             </td>
         </tr>
         <%
