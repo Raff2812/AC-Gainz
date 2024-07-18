@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @WebServlet(value = "/showOptions")
@@ -68,8 +69,10 @@ public class ShowOptions extends HttpServlet {
                             }
                         }
 
+                        List<String> alreadySentTastes = new ArrayList<>();
                         for (Variante y: variantiAll){
-                            if (y.getIdVariante() != v.getIdVariante() && !y.getGusto().equals(v.getGusto())) {
+                            if (y.getIdVariante() != v.getIdVariante() && !y.getGusto().equals(v.getGusto()) && !alreadySentTastes.contains(y.getGusto())) {
+                                alreadySentTastes.add(y.getGusto());
                                 JSONObject jsonObject3 = new JSONObject();
                                 jsonObject3.put("gusto", y.getGusto());
                                 jsonArray.add(jsonObject3);
@@ -95,7 +98,16 @@ public class ShowOptions extends HttpServlet {
             for (Variante v: varianti)
                 pesi.add(v.getPesoConfezione());
 
+            pesi.sort(new Comparator<Integer>() {
+                @Override
+                public int compare(Integer o1, Integer o2) {
+                    return Integer.compare(o1, o2);
+                }
+            });
+
+
             for (Integer x: pesi) {
+                System.out.println(x);
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("peso", x);
                 jsonArray.add(jsonObject);

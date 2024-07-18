@@ -310,8 +310,6 @@ function updateProductView(table, data) {
         idProductCell.innerText = product.idProdotto ?? 'undefined';
         let nomeCell = row.insertCell();
         nomeCell.innerText = product.nome ?? 'undefined';
-        let descrizioneCell = row.insertCell();
-        descrizioneCell.innerText = product.descrizione ?? 'undefined';
         let categoriaCell = row.insertCell();
         categoriaCell.innerText = product.categoria ?? 'undefined';
         let immmagineCell = row.insertCell();

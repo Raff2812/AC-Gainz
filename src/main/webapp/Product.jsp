@@ -248,7 +248,9 @@
             background-color: white;
             overflow: hidden;
         }
-
+        .product-description-panel p{
+            max-width: 500px;
+        }
         table {
             width: 50%;
             border: 1px solid lightgray;

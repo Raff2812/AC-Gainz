@@ -44,8 +44,8 @@ public class ShowTasteServlet extends HttpServlet {
 
         // Creare il JSONArray per la risposta
         JSONArray jsonArray = new JSONArray();
-        for (Map.Entry<String, Integer> entry : tasteCounts.entrySet()) {
-            String tasteWithCount = entry.getKey() + " (" + entry.getValue() + ")";
+        for (String key : tasteCounts.keySet()) {
+            String tasteWithCount = key + " (" + tasteCounts.get(key) + ")";
             jsonArray.add(tasteWithCount);
         }
 

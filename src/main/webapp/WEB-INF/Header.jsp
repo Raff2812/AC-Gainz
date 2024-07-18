@@ -70,8 +70,8 @@
             </li>
             <li>
                 <form action="categories" method="get">
-                    <input type="hidden" name="category" value="salse">
-                    <button type="submit">Salse</button>
+                    <input type="hidden" name="category" value="barrette">
+                    <button type="submit">Barrette</button>
                 </form>
             </li>
         </ul>

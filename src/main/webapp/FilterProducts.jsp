@@ -75,11 +75,12 @@
         <div class="filter">
             <select id="weights" name="weights" onchange="genericFilter()">
                 <option value="">Seleziona un peso</option>
-                <option value="50">50 grammi</option>
                 <option value="100">100 grammi</option>
-                <option value="200">200 grammi</option>
+                <option value="250">250 grammi</option>
                 <option value="500">500 grammi</option>
                 <option value="1000">1 kg</option>
+                <option value="1500">1,5 kg</option>
+                <option value="2000">2 kg</option>
             </select>
         </div>
 
