@@ -56,16 +56,19 @@ function showUpdateForm(dataTable, nameTable, primaryKey) {
     // Aggiungi campi al form
     fields.forEach(field => {
         if (field.type !== "textarea" && field.type !== "password") {
+            let label = document.createElement("label");
+            label.htmlFor = field.id;
+            label.innerText = field.label;
+            form.appendChild(label);
+
             // Crea un elemento input per altri tipi
             let input = document.createElement("input");
             if (field.type === "file") input.type = "text";
             input.name = field.id;
-            input.placeholder = field.label;
 
-                input.onfocus = function () {
-                        input.value = dataTable[field.id];
-                };
-
+            input.onfocus = function () {
+                input.value = dataTable[field.id];
+            };
 
             form.appendChild(input);
         }
@@ -394,6 +397,15 @@ function addRow(tableName) {
     form.action = "insertRow";
     form.method = "POST";
     form.enctype = "multipart/form-data";
+
+
+    // Crea il pulsante "Go Back"
+    const goBackButton = document.createElement("button");
+    goBackButton.innerText = "Go Back";
+    goBackButton.onclick = function () {
+        window.location.href = "showTable?tableName=" + tableName;
+    };
+    divForm.appendChild(goBackButton);
 
     const nameTable = document.createElement("input");
     nameTable.type = "hidden";

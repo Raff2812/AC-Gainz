@@ -121,6 +121,15 @@
     margin: 0;
 }
 
+.product-info-name-redirect {
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+    background: black;
+    color: white;
+    cursor: pointer;
+}
+
 .original-price {
     color: #666;
     text-decoration: line-through;

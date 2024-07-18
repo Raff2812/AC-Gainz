@@ -1,19 +1,6 @@
 function genericFilter() {
     console.log("Calling genericFilter");
 
-  /*  const category = window.location.search;
-    let valueCategory = "";
-    if (category.includes("category")){
-
-
-        valueCategory = category.split("=")[1].toString();
-        console.log(valueCategory);
-    }*/
-
-
-    //const calories = document.getElementById("calories").value;
-    //const price = document.getElementById("prices").value;
-
     const taste = document.getElementById("tastes").value;
     const sorting = document.getElementById("sorting").value;
     const weight = document.getElementById("weights").value;

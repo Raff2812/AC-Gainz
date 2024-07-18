@@ -31,6 +31,13 @@ table {
     margin: auto;
 }
 
+th {
+    background-color: orangered;
+    color: white;
+    position: sticky;
+    top: 65px;
+}
+
 th, td {
     text-align: center;
     padding: 8px;
