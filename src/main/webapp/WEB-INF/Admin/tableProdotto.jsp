@@ -33,7 +33,6 @@
         <tr>
             <th>Id Prodotto</th>
             <th>Nome</th>
-            <th>Descrizione</th>
             <th>Categoria</th>
             <th>Immagine</th>
             <th>Calorie</th>
@@ -46,7 +45,6 @@
         <tr>
             <td><%= p.getIdProdotto() %></td>
             <td><%= p.getNome() %></td>
-            <td><%= p.getDescrizione() %></td>
             <td><%= p.getCategoria() %></td>
             <td><%= p.getImmagine() %></td>
             <td><%= p.getCalorie() %></td>

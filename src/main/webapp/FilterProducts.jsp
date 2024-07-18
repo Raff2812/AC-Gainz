@@ -1,5 +1,4 @@
 <%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="model.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -116,16 +115,16 @@
                 Variante variante = p.getVarianti().get(0);
     %>
     <div class="product-card">
-        <div class="product-image">
+        <div class="product-image" tabindex="0" onkeydown="">
             <% if (variante.getSconto() > 0) { %>
             <span class="product-sconto"><%= variante.getSconto() %>% di Sconto</span>
             <% } %>
             <form id="<%=p.getIdProdotto()%>" action="ProductInfo" method="post">
                 <input type="hidden" name="primaryKey" value="<%=p.getIdProdotto()%>">
             </form>
-            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>" onclick="document.getElementById('<%=p.getIdProdotto()%>').submit();">
+            <img src="<%= p.getImmagine() %>" alt="<%= p.getNome() %>" tabindex="0" onkeydown="" onclick="document.getElementById('<%=p.getIdProdotto()%>').submit();">
         </div>
-        <div class="product-info">
+            <div class="product-info">
             <h2 class="product-info-name"><%= p.getNome() %></h2>
             <% if (variante.getSconto() > 0) {
                 float prezzoscontato = (variante.getPrezzo() - ((variante.getPrezzo() * variante.getSconto()) / 100));

@@ -1,6 +1,5 @@
 package controller.utente;
 
-import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,73 +13,132 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-
-
-//controllo dei field del form
 @WebServlet("/register")
 public class RegistrazioneServlet extends HttpServlet {
+
+    private static final String EMAIL_PATTERN = "^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}$";
+    private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$";
+    private static final String COD_FISCALE_PATTERN = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
+    private static final String PHONE_PATTERN = "^3[0-9]{8,9}$";
+    private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-      super.doGet(request, response);
+        doPost(request, response); // Delegate GET requests to doPost
     }
+
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String email = request.getParameter("email");
-        UtenteDAO utenteDAO = new UtenteDAO();
-        if(utenteDAO.doRetrieveByEmail(email) != null){
-            // Se l'utente esiste già, reindirizza alla pagina di registrazione con un messaggio di errore
-            request.setAttribute("errorMessage", "Email già registrata.");
+        String password = request.getParameter("password");
+        String nome = request.getParameter("nome");
+        String cognome = request.getParameter("cognome");
+        String codiceFiscale = request.getParameter("codiceFiscale");
+        String dateString = request.getParameter("dataDiNascita");
+        String indirizzo = request.getParameter("indirizzo");
+        String numCellulare = request.getParameter("numCellulare");
+
+        // Validate email
+        if (!isValidEmail(email)) {
+            request.setAttribute("error", "Pattern email non rispettato");
             request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
             return;
         }
 
-
-        //Controllo parametri form da fare --
-        String password = request.getParameter("password");
-
-
-
-
-
-        String nome = request.getParameter("nome");
-
-
-        String cognome = request.getParameter("cognome");
-
-
-        String codiceFiscale = request.getParameter("codiceFiscale");
-
-
-        String dateString = request.getParameter("dataDiNascita");
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        Date dataDiNascita = null;
-        try {
-            dataDiNascita = formatter.parse(dateString);
-        } catch (ParseException e) {
-            e.printStackTrace();
+        // Check if email already exists
+        UtenteDAO utenteDAO = new UtenteDAO();
+        if (utenteDAO.doRetrieveByEmail(email) != null) {
+            request.setAttribute("error", "Email già registrata.");
+            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            return;
         }
 
-        String indirizzo = request.getParameter("indirizzo");
-        String numCellulare = request.getParameter("numCellulare");
+        // Validate password
+        if (!isValidPassword(password)) {
+            request.setAttribute("error", "Pattern password non rispettato");
+            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            return;
+        }
 
-        Utente x = new Utente();
-        x.setEmail(email);
-        x.setPassword(password);
-        x.hashPassword();
-        x.setCodiceFiscale(codiceFiscale);
-        x.setNome(nome);
-        x.setCognome(cognome);
-        x.setIndirizzo(indirizzo);
-        x.setTelefono(numCellulare);
-        x.setDataNascita(dataDiNascita);
+        // Validate codice fiscale
+        if (!isValidCodiceFiscale(codiceFiscale)) {
+            request.setAttribute("error", "Pattern codice fiscale non rispettato");
+            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            return;
+        }
 
-        utenteDAO.doSave(x);
+        // Parse date of birth
+        Date dataDiNascita = parseDate(dateString);
+        if (dataDiNascita == null) {
+            request.setAttribute("error", "Pattern data non rispettato");
+            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            return;
+        }
 
+        // Validate phone number
+        if (!isValidPhone(numCellulare)) {
+            request.setAttribute("error", "Pattern numero di telefono non rispettato");
+            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            return;
+        }
 
-        //Stessa cosa fatta su LoginServlet
+        // If all validations pass, create Utente object and save to database
+        Utente utente = new Utente();
+        utente.setEmail(email);
+        utente.setPassword(password);
+        utente.hashPassword();
+        utente.setCodiceFiscale(codiceFiscale);
+        utente.setNome(nome);
+        utente.setCognome(cognome);
+        utente.setIndirizzo(indirizzo);
+        utente.setTelefono(numCellulare);
+        utente.setDataNascita(dataDiNascita);
+
+        utenteDAO.doSave(utente);
+
+        // Store user in session and forward to index.jsp
         HttpSession session = request.getSession();
-        session.setAttribute("Utente", x);
-        RequestDispatcher requestDispatcher = request.getRequestDispatcher("index.jsp");
-        requestDispatcher.forward(request, response);
+        session.setAttribute("Utente", utente);
+        response.sendRedirect("index.jsp");
+    }
+
+
+
+    // Method to validate email
+    private boolean isValidEmail(String email) {
+        Pattern emailRegex = Pattern.compile(EMAIL_PATTERN);
+        Matcher emailMatcher = emailRegex.matcher(email);
+        return emailMatcher.matches();
+    }
+
+    // Method to validate password
+    private boolean isValidPassword(String password) {
+        Pattern passwordRegex = Pattern.compile(PASSWORD_PATTERN);
+        Matcher passwordMatcher = passwordRegex.matcher(password);
+        return passwordMatcher.matches();
+    }
+
+    // Method to validate codice fiscale
+    private boolean isValidCodiceFiscale(String codiceFiscale) {
+        Pattern codFiscaleRegex = Pattern.compile(COD_FISCALE_PATTERN);
+        Matcher codFiscaleMatcher = codFiscaleRegex.matcher(codiceFiscale);
+        return codFiscaleMatcher.matches();
+    }
+
+    // Method to parse date
+    private Date parseDate(String dateString) {
+        try {
+            return DATE_FORMATTER.parse(dateString);
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
+    // Method to validate phone number
+    private boolean isValidPhone(String numCellulare) {
+        Pattern phoneRegex = Pattern.compile(PHONE_PATTERN);
+        Matcher phoneMatcher = phoneRegex.matcher(numCellulare);
+        return phoneMatcher.matches();
     }
 }
