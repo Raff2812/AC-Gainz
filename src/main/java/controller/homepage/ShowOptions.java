@@ -19,7 +19,6 @@ import java.util.Comparator;
 import java.util.List;
 
 @WebServlet(value = "/showOptions")
-@SuppressWarnings("unchecked")
 public class ShowOptions extends HttpServlet {
 
     @Override
@@ -61,8 +60,10 @@ public class ShowOptions extends HttpServlet {
                         jsonObject1.put("cheapestDiscount", v.getSconto());
                         jsonArray.add(jsonObject1);
 
+                        List<Integer> alreadySentWeights = new ArrayList<>();
                         for (Integer z: pesi){
-                            if (z != v.getPesoConfezione()) {
+                            if (z != v.getPesoConfezione() && !alreadySentWeights.contains(z)) {
+                                alreadySentWeights.add(z);
                                 JSONObject jsonObject2 = new JSONObject();
                                 jsonObject2.put("cheapestWeightOptions", z);
                                 jsonArray.add(jsonObject2);
