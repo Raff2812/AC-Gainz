@@ -24,6 +24,8 @@ public class GenericFilterServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
 
+        synchronized (session) { // race condition sulle sessioni possibile dato che si usa ajax
+
         String nameForm = req.getParameter("nameForm");
         if (nameForm != null){
             try {
@@ -35,36 +37,38 @@ public class GenericFilterServlet extends HttpServlet {
         }
 
 
+            String category = (String) session.getAttribute("categoria");
+            String nameFilter = "";
+            if (session.getAttribute("searchBarName") != null)
+                nameFilter = (String) session.getAttribute("searchBarName");
+            String weightFilter = req.getParameter("weight");
+            String tasteFilter = req.getParameter("taste");
+            String sortingFilter = req.getParameter("sorting");
 
-        String category = (String) session.getAttribute("categoria");
-        String nameFilter = "";
-        if(session.getAttribute("searchBarName") != null) nameFilter = (String) session.getAttribute("searchBarName");
-        String weightFilter = req.getParameter("weight");
-        String tasteFilter = req.getParameter("taste");
-        String sortingFilter = req.getParameter("sorting");
+            System.out.println("NameFilter:" + nameFilter);
+            System.out.println("weightFilter:" + weightFilter);
+            System.out.println("tasteFilter:" + tasteFilter);
+            System.out.println("sortingFilter:" + sortingFilter);
+            System.out.println("category:" + category);
 
-        System.out.println("NameFilter:" + nameFilter);
-        System.out.println("weightFilter:" + weightFilter);
-        System.out.println("tasteFilter:" + tasteFilter);
-        System.out.println("sortingFilter:" + sortingFilter);
-        System.out.println("category:" + category);
+            List<Prodotto> filteredProducts = new ArrayList<>();
+            ProdottoDAO prodottoDAO = new ProdottoDAO();
 
-        List<Prodotto> filteredProducts = new ArrayList<>();
-        ProdottoDAO prodottoDAO = new ProdottoDAO();
+            if (session.getAttribute("searchBarName") != null)
+                nameFilter = (String) session.getAttribute("searchBarName");
 
-        if (session.getAttribute("searchBarName") != null) nameFilter = (String) session.getAttribute("searchBarName");
+            try {
+                filteredProducts = prodottoDAO.filterProducts(category, sortingFilter, weightFilter, tasteFilter, nameFilter);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
 
-        try {
-            filteredProducts = prodottoDAO.filterProducts(category, sortingFilter, weightFilter, tasteFilter, nameFilter);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // Aggiornare la lista di prodotti filtrati nella sessione
+            session.setAttribute("filteredProducts", filteredProducts);
+
+            // Inviare la risposta JSON al client
+            sendJsonResponse(resp, filteredProducts);
         }
-
-        // Aggiornare la lista di prodotti filtrati nella sessione
-        session.setAttribute("filteredProducts", filteredProducts);
-
-        // Inviare la risposta JSON al client
-        sendJsonResponse(resp, filteredProducts);
     }
 
     private void handleNameForm(String nameForm, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException, SQLException {
