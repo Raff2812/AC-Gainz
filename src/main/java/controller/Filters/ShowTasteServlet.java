@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet("/showTastes")
-@SuppressWarnings("unchecked")
 public class ShowTasteServlet extends HttpServlet {
 
     @Override

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @WebServlet("/genericFilter")
-@SuppressWarnings("unchecked")
 public class GenericFilterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

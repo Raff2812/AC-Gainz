@@ -16,8 +16,6 @@ import java.util.List;
 
 @WebServlet(value = "/categories")
 public class CategoriesServlet extends HttpServlet {
-
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String filter = req.getParameter("category");

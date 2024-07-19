@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.List;
 
 @WebServlet(value = "/orderServlet")
-@SuppressWarnings("unchecked")
 
 public class OrdineServlet extends HttpServlet {
     @Override
