@@ -20,10 +20,12 @@
             flex-wrap: wrap;
         }
 
+        .info-left, .info-right {
+            margin: 20px;
+        }
+
         .info-right {
-            width: 50%;
-            height: auto;
-            margin: 0 0 0 30px;
+            flex: 1;
         }
 
         .info-right-name {
@@ -39,8 +41,7 @@
             margin-top: 10px;
             border-radius: 20px;
             padding: 15px 20px;
-            width: 80%;
-
+            width: 100%;
         }
 
         .product-info-risparmio {
@@ -94,10 +95,9 @@
             cursor: pointer;
         }
 
-
         .product-suggests {
             background-color: #f5f5f5;
-            width: 90%;
+            width: 100%;
             border-radius: 20px;
             margin-top: 5px;
         }
@@ -105,11 +105,11 @@
         .suggests-product-container {
             display: flex;
             flex-wrap: wrap;
-            height: auto;
+            justify-content: space-around;
         }
 
         .suggests-product-card {
-            margin: 10px 15px 10px 15px;
+            margin: 10px 15px;
             border-radius: 20px;
             transition: .3s;
         }
@@ -200,18 +200,15 @@
             text-transform: capitalize;
         }
 
-
         .info-left {
             width: 40%;
-            height: 100%;
         }
 
         .info-left img {
             width: 100%;
-            height: 100%;
+            height: auto;
             border-radius: 20px;
         }
-
 
         .product-description {
             margin-top: 20px;
@@ -219,40 +216,46 @@
         }
 
         .product-description-accordion {
-            background-color: #eee;
-            color: #444;
+            background-color: #f0f0f0;
+            color: #333;
             cursor: pointer;
-            padding: 18px;
-            width: 70%;
-            border-radius: 20px;
+            padding: 15px;
+            width: 100%;
+            border-radius: 10px;
             margin-bottom: 5px;
-            border: none;
+            border: 1px solid #ccc;
             text-align: left;
             outline: none;
-            font-size: 15px;
-            transition: 0.4s;
+            font-size: 16px;
+            transition: background-color 0.4s, border-color 0.4s;
         }
 
-        .product-description-accordion:last-child {
-            margin-bottom: 25px;
-        }
-
-        .active, .product-description-accordion:hover {
-            background-color: #ccc;
+        .product-description-accordion:hover, .product-description-accordion.active {
+            background-color: #ddd;
+            border-color: #999;
         }
 
         .product-description-panel {
-            padding: 0 18px;
-            margin-bottom: 15px;
+            padding: 15px;
+            margin: 5px 0;
             display: none;
-            background-color: white;
+            background-color: #fff;
             overflow: hidden;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 100%;
         }
-        .product-description-panel p{
-            max-width: 500px;
+
+        .product-description-panel p {
+            margin: 0;
+            line-height: 1.6;
+            font-size: 14px;
+            color: #555;
         }
+
         table {
-            width: 50%;
+            width: 100%;
             border: 1px solid lightgray;
         }
 
@@ -263,6 +266,49 @@
 
         tr:nth-child(even) {
             background-color: #f5f5f5;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .info-left, .info-right {
+                width: 100%;
+            }
+
+            .product-info-quantita #quantitynumber{
+                width: 30%;
+                margin-top: 5px;
+            }
+
+            .product-info {
+                width: 100%;
+            }
+
+            .cartAddProduct {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .product-info-gusto, .product-info-peso, .product-info-quantita {
+                font-size: 16px;
+            }
+
+            .product-info-costoattuale, .product-info-costooriginale {
+                font-size: 18px;
+            }
+
+            .cartAddProduct {
+                font-size: 18px;
+                margin-top: 30px;
+            }
+
+            .product-description-accordion {
+                font-size: 14px;
+            }
+
+            .product-description-panel p {
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -370,7 +416,7 @@
                         List<Prodotto> alreadySuggested = new ArrayList<>();
                         Random random = new Random();
                         int count = 0;
-                        while (count < 3 && alreadySuggested.size() < suggeriti.size()) {
+                        while (count < 2 && alreadySuggested.size() < suggeriti.size()) {
                             int randomIndex = random.nextInt(suggeriti.size());
                             Prodotto s = suggeriti.get(randomIndex);
                             if (!alreadySuggested.contains(s)) {

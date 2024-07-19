@@ -24,23 +24,19 @@ public class CarrelloServlet extends HttpServlet {
 
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         HttpSession session = req.getSession();
+        synchronized (session) { //uso di synchronized per race conditions su session tramite ajax
+            resp.setContentType("application/json");
+            PrintWriter out = resp.getWriter();
 
-        resp.setContentType("application/json");
-        PrintWriter out = resp.getWriter();
 
+            switch (action) {
+                case "show" -> handleShowAction(session, prodottoDAO, out);
+                case "addVariant" -> handleAddVariantAction(req, session, prodottoDAO, out);
+                case "removeVariant" -> handleRemoveVariantAction(req, session, prodottoDAO, out);
+                case "quantityVariant" -> handleQuantityVariantAction(req, session, prodottoDAO, out);
+            }
 
-        switch (action) {
-            case "show" ->
-                    handleShowAction(session, prodottoDAO, out);
-            case "addVariant" ->
-                handleAddVariantAction(req, session, prodottoDAO,  out);
-            case "removeVariant" ->
-                handleRemoveVariantAction(req, session, prodottoDAO, out);
-            case "quantityVariant" ->
-                handleQuantityVariantAction(req, session, prodottoDAO, out);
         }
-
-
     }
 
 
@@ -91,6 +87,8 @@ public class CarrelloServlet extends HttpServlet {
                                 break;
                             }
                         }
+
+                        session.setAttribute("cart", cartItems);
                         writeCartItemsToResponse(cartItems, prodottoDAO, out);
                     }
                 }

@@ -28,41 +28,39 @@ public class SearchBarServlet extends HttpServlet {
         String name = req.getParameter("name");
         HttpSession session = req.getSession();
 
-        List<Prodotto> products = new ArrayList<>();
-        VarianteDAO varianteDAO = new VarianteDAO();
-        String categoria = (String) session.getAttribute("categoriaRecovery");
-        System.out.println("categoriaSearch:"  + categoria);
-        ProdottoDAO prodottoDAO = new ProdottoDAO();
+        synchronized (session) { //uso di synchronized per race conditions su session tramite ajax
+            List<Prodotto> products = new ArrayList<>();
+            VarianteDAO varianteDAO = new VarianteDAO();
+            String categoria = (String) session.getAttribute("categoriaRecovery");
+            System.out.println("categoriaSearch:" + categoria);
+            ProdottoDAO prodottoDAO = new ProdottoDAO();
 
-        if (name != null && !name.isEmpty()) {
-            session.removeAttribute("categoria");  //per applicare i filtri
+            if (name != null && !name.isEmpty()) {
+                session.removeAttribute("categoria");  //per applicare i filtri
 
-            try {
-                products = prodottoDAO.filterProducts("", "", "", "", name);
-                session.setAttribute("searchBarName", name);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+                try {
+                    products = prodottoDAO.filterProducts("", "", "", "", name);
+                    session.setAttribute("searchBarName", name);
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                session.removeAttribute("searchBarName");
+                session.setAttribute("categoria", categoria);
+                try {
+                    products = prodottoDAO.filterProducts(categoria, "", "", "", "");
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
-        } else {
-            session.removeAttribute("searchBarName");
-            session.setAttribute("categoria", categoria);
-            try {
-                products = prodottoDAO.filterProducts(categoria, "", "", "", "");
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
+
+            // Save search results in originalProducts and products for further filtering
+            session.setAttribute("filteredProducts", products);
+            session.setAttribute("products", products);
+
+            addToJson(products, session, req, resp);
         }
-
-
-
-
-
-
-        // Save search results in originalProducts and products for further filtering
-        session.setAttribute("filteredProducts", products);
-        session.setAttribute("products", products);
-
-        addToJson(products, session, req, resp);
     }
 
     private void addToJson(List<Prodotto> products, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

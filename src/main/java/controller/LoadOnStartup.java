@@ -1,4 +1,4 @@
-package controller.homepage;
+package controller;
 
 import jakarta.servlet.ServletConfig;
 import jakarta.servlet.ServletException;
