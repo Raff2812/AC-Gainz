@@ -11,6 +11,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
+<!DOCTYPE html>
 <html>
 <head>
     <title>Product Page</title>

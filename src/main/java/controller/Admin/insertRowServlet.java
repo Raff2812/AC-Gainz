@@ -61,7 +61,7 @@ public class insertRowServlet extends HttpServlet {
         if (success) {
             req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
         } else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid input data.");
+            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Invalid input data.");
         }
     }
 
@@ -164,12 +164,14 @@ public class insertRowServlet extends HttpServlet {
         String sconto = req.getParameter("sconto");
         String evidenza = req.getParameter("evidenza");
 
-        if (isValid(List.of(idProdottoVariante, idGusto, idConfezione, prezzo, quantity, sconto, evidenza))) {
+        if (isValid(List.of(idProdottoVariante, idGusto, idConfezione, prezzo, quantity, sconto))) {
             float price = Float.parseFloat(prezzo);
             int q = Integer.parseInt(quantity);
             int discount = Integer.parseInt(sconto);
-            boolean evidence = Integer.parseInt(evidenza) == 1;
-
+            boolean evidence = false;
+            if (evidenza != null && !evidenza.isEmpty()) {
+                evidence = Integer.parseInt(evidenza) == 1;
+            }
             if (price > 0 && q > 0 && discount >= 0 && discount <= 100) {
                 Variante v = new Variante();
                 v.setIdProdotto(idProdottoVariante);

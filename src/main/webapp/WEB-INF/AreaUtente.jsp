@@ -4,6 +4,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <script src="JS/AreaUtente.js"></script>

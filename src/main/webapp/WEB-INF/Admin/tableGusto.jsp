@@ -7,9 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Gusti</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <link rel="stylesheet" href="CSS/Tables.css">
 </head>
 

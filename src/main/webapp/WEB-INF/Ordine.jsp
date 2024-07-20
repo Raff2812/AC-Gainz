@@ -7,9 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Ordine</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <style>
         .container {
             width: 70%;

@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JSP Error</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <style>
         .error-container {
             display: flex;

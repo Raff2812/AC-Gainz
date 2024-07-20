@@ -11,6 +11,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Page not found</title>
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <style>
         .error-container {
             display: flex;

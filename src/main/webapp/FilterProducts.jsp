@@ -2,7 +2,7 @@
 <%@ page import="model.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-
+<!DOCTYPE html>
 <html lang="it">
 <head>
     <meta charset="UTF-8">

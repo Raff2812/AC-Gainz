@@ -314,17 +314,17 @@ INSERT INTO final_tsw_db.confezione (id_confezione, peso) VALUES (6, 2000);
 INSERT INTO final_tsw_db.confezione (id_confezione, peso) VALUES (7, 2500);
 
 
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (1, 'P001', 1, 4, 35, 144, 15, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (2, 'P002', 1, 5, 35, 112, 10, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (1, 'P001', 1, 4, 35, 138, 15, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (2, 'P002', 1, 5, 35, 99, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (3, 'P003', 1, 6, 45, 100, 10, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (4, 'P004', 1, 4, 20, 200, 0, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (4, 'P004', 1, 4, 20, 197, 0, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (5, 'P005', 1, 7, 55, 120, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (6, 'CRT001', 5, 3, 15, 250, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (7, 'CRT002', 5, 4, 22, 150, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (8, 'CRT003', 5, 3, 24.5, 110, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (9, 'CRT004', 2, 3, 15, 115, 0, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (10, 'CRT005', 2, 5, 24, 210, 15, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (12, 'S001', 6, 2, 5.5, 210, 10, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (12, 'S001', 6, 2, 5.5, 170, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (13, 'S002', 7, 2, 5.5, 200, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (17, 'PW001', 10, 4, 20, 150, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (18, 'PW002', 11, 4, 12, 100, 5, 0);
@@ -332,13 +332,13 @@ INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, 
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (20, 'PSW001', 2, 7, 20, 55, 5, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (21, 'PSW002', 5, 7, 24, 50, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (22, 'PSW003', 1, 4, 28.5, 120, 10, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (23, 'P001', 1, 3, 27, 80, 5, 0);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (24, 'P001', 1, 5, 45.99, 60, 10, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (23, 'P001', 1, 3, 27, 75, 5, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (24, 'P001', 1, 5, 45.99, 55, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (25, 'CRE001', 12, 4, 9.99, 200, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (28, 'CRE002', 13, 4, 9.99, 150, 20, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (29, 'CRE003', 14, 3, 7.99, 50, 15, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (30, 'B001', 15, 2, 8.99, 350, 10, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (31, 'B002', 16, 1, 5.99, 150, 20, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (31, 'B002', 16, 1, 5.99, 148, 20, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (32, 'B003', 1, 1, 5.99, 500, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (33, 'B004', 1, 1, 6.99, 250, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (34, 'B004', 12, 1, 4.99, 100, 20, 1);
@@ -347,14 +347,14 @@ INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, 
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (37, 'P006', 5, 4, 27.5, 150, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (38, 'P007', 11, 4, 32, 75, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (39, 'B006', 19, 2, 5.99, 125, 20, 1);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (40, 'P001', 14, 3, 22, 55, 5, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (40, 'P001', 14, 3, 22, 45, 5, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (41, 'P001', 14, 4, 31, 45, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (42, 'P002', 1, 4, 32.5, 40, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (43, 'P002', 1, 6, 42.5, 50, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (44, 'P003', 1, 4, 30.5, 45, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (46, 'P003', 3, 4, 29.9, 100, 10, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (47, 'P003', 3, 5, 35.9, 45, 0, 0);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (48, 'P004', 1, 5, 24.5, 60, 15, 1);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (48, 'P004', 1, 5, 24.5, 55, 15, 1);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (49, 'P004', 1, 6, 40.99, 45, 5, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (50, 'P005', 1, 6, 40.5, 30, 5, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (51, 'P006', 5, 5, 30, 45, 5, 0);
@@ -372,13 +372,16 @@ INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, 
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (64, 'B006', 19, 3, 12.5, 40, 15, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (65, 'CRE001', 12, 5, 15.5, 80, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (66, 'CRE002', 13, 5, 13.5, 50, 5, 0);
-INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (67, 'CRE003', 19, 3, 8.5, 43, 5, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (67, 'CRE003', 19, 3, 8.5, 41, 5, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (68, 'PSW001', 2, 6, 19.99, 65, 5, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (69, 'PSW002', 2, 6, 23.5, 50, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (70, 'PSW003', 1, 5, 29.99, 35, 7, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (71, 'PW001', 10, 5, 23.5, 30, 10, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (72, 'PW002', 11, 5, 17.5, 42, 0, 0);
 INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (73, 'PW003', 11, 6, 29.99, 40, 5, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (82, 'P002', 3, 4, 22.5, 40, 0, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (83, 'P002', 3, 5, 28.5, 35, 10, 0);
+INSERT INTO final_tsw_db.variante (id_variante, id_prodotto_variante, id_gusto, id_confezione, prezzo, quantità, sconto, evidenza) VALUES (84, 'P006', 10, 4, 19.99, 55, 15, 1);
 
 
 INSERT INTO final_tsw_db.ordine (id_ordine, email_utente, data, stato, totale, descrizione) VALUES (1, 'raffaelecoppola603@gmail.com', '2024-07-17', 'in esecuzione', 209.25, null);

@@ -274,11 +274,8 @@ header .header-lista ul li{
     cursor: pointer;
     margin-right: 20px;
 }
-
-/* Media Queries per la responsività */
-
-/* Schermi piccoli (max-width:500px) */
-@media (max-width: 500px) {
+/* Schermi molto piccoli (smartphone piccoli, max-width: 630px) */
+@media (max-width: 630px) {
     header {
         height: auto;
         padding: 10px 0;
@@ -300,10 +297,10 @@ header .header-lista ul li{
         margin: 5px 0;
         padding: 1px;
     }
-    .header-carrello #listCart{
+    .header-carrello #listCart {
         left: -122px;
     }
-    .header-utente, .header-custom_button{
+    .header-utente, .header-custom_button {
         margin: 2px;
         padding: 4px;
     }
@@ -354,9 +351,8 @@ header .header-lista ul li{
     }
 }
 
-
-/* Schermi piccoli (smartphone) */
-@media (max-width: 950px) and (min-width: 501px) {
+/* Schermi piccoli (smartphone, 631px - 950px) */
+@media (min-width: 631px) and (max-width: 950px) {
     header {
         height: 80px;
     }
@@ -371,18 +367,18 @@ header .header-lista ul li{
         width: 150px;
         font-size: 14px;
     }
-    .header-utente, .header-custom_button{
+    .header-utente, .header-custom_button {
         margin-right: 20px;
         margin-left: 0;
     }
-    div#myDropdown{
+    div#myDropdown {
         right: -19px;
     }
     .header-carrello #cart {
         padding: 5px 10px;
         margin: 12px;
     }
-    .header-carrello #listCart{
+    .header-carrello #listCart {
         left: -70px;
     }
     .header-lista {
@@ -424,7 +420,7 @@ header .header-lista ul li{
     }
 }
 
-/* Schermi medi (tablet) */
+/* Schermi medi (tablet, 951px - 1320px) */
 @media (min-width: 951px) and (max-width: 1320px) {
     .header-logo a {
         font-size: 40px;
@@ -437,11 +433,11 @@ header .header-lista ul li{
         width: 300px;
         font-size: 18px;
     }
-    .header-utente, .header-custom_button{
+    .header-utente, .header-custom_button {
         margin-right: 50px;
         margin-left: 0;
     }
-    div#myDropdown{
+    div#myDropdown {
         right: -19px;
     }
     .header-carrello #cart {

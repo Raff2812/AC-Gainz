@@ -2,6 +2,7 @@
 <%@ page import="model.*" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ include file="WEB-INF/Header.jsp"%>
+<!DOCTYPE html>
 <html>
 <head>
     <title>AC-Gainz HomePage</title>

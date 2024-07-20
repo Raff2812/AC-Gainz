@@ -1,9 +1,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!DOCTYPE html>
 <html>
 <head>
     <title>Header</title>
     <link rel="stylesheet" href="CSS/Header.css">
-
+    <link rel="icon" type="image/x-icon" href="Immagini/favicon.ico">
     <script>
         const Logged = <%= (session.getAttribute("Utente") != null) %>;
     </script>

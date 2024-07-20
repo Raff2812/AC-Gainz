@@ -132,7 +132,7 @@
     }
 }
 
-@media (max-width: 515px) {
+@media (max-width: 500px) {
     .product img {
         width: 100px;
         margin: auto;
