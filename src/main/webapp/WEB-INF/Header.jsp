@@ -1,11 +1,8 @@
-<%@ page import="model.Utente" %>
-<%@ page import="model.Carrello" %>
-<%@ page import="java.util.ArrayList" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Header</title>
-    <link rel="stylesheet" href="CSS/HeaderCSS.css">
+    <link rel="stylesheet" href="CSS/Header.css">
 
     <script>
         const Logged = <%= (session.getAttribute("Utente") != null) %>;
@@ -34,7 +31,7 @@
             <img id="search-img" src="Immagini/search.png" alt="search-img">
         </div>
         <div class="header-carrello">
-            <div id="cart" tabindex="0" onkeydown="">Carrello (0)</div>
+            <div id="cart" tabindex="0">Carrello (0)</div>
             <div id="listCart" class="hidden">
                 <!-- Il contenuto del carrello sarà qui -->
             </div>

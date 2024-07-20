@@ -95,9 +95,9 @@
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: 55%; /* Posiziona l'elemento al 55% dall'alto della finestra del browser. */
+    left: 50%; /* Posiziona l'elemento al 50% da sinistra della finestra del browser. */
+    transform: translate(-50%, -50%); /* Sposta l'elemento del 50% verso sinistra e verso l'alto, centrando così l'elemento esattamente nel centro della finestra. */
     box-sizing: border-box;
 }
 

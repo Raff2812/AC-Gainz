@@ -12,14 +12,13 @@ window.onload = function() {
 
 /* quando viene cliccato il bottone, si apre e si toglie il contenuto del dropdown */
 function myFunction() {
-    document.getElementById("myDropdown").classList.toggle("header-show");
+    document.getElementById("myDropdown").classList.toggle("header-show"); //header-show ha come style display:block
 }
 // chiudi il dropdown se l'utente clicca all'esterno del riquadro
 window.onclick = function(event) {
     if (!event.target.matches('.header-dropbutton')) {
         let dropdowns = document.getElementsByClassName("header-dropdown-content");
-        let i;
-        for (i = 0; i < dropdowns.length; i++) {
+        for (let i = 0; i < dropdowns.length; i++) {
             let openDropdown = dropdowns[i];
             if (openDropdown.classList.contains('header-show')) {
                 openDropdown.classList.remove('header-show');
@@ -34,7 +33,7 @@ window.onclick = function(event) {
 
 function toggleMenu() {
     let menu = document.getElementById("lista");
-    menu.classList.toggle("header-showlista");
+    menu.classList.toggle("header-showlista"); //display:block
 }
 
 

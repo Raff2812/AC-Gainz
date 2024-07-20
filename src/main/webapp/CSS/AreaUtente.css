@@ -151,3 +151,82 @@ div .dettagli{
 #areaAdmin:hover, .logOut:hover{
     color: black;
 }
+
+
+@media (max-width: 767px) {
+    .contenitore {
+        display: block;  /*Imposta display: block per .contenitore e .tabcontent,
+                            garantendo che gli elementi si dispongano verticalmente.*/
+    }
+
+    .tab {
+        width: 100%;
+    }
+
+    .tabcontent {
+        width: 100%;
+    }
+
+    div.ordine {
+        flex-direction: column;
+    }
+
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .contenitore {
+        display: block;
+    }
+
+    .tab {
+        width: 100%;
+    }
+
+    .tabcontent {
+        width: 100%;
+    }
+
+    div.ordine {
+        flex-direction: column;
+    }
+
+}
+
+@media (min-width: 1024px) and (max-width: 1279px) {
+    .contenitore {
+        display: flex;
+    }
+
+    .tab {
+        width: 30%;
+    }
+
+    .tabcontent {
+        width: 70%;
+    }
+
+    div.ordine {
+        flex-direction: row;
+    }
+
+
+}
+
+@media (min-width: 1280px) {
+    .contenitore {
+        display: flex;
+    }
+
+    .tab {
+        width: 25%;
+    }
+
+    .tabcontent {
+        width: 75%;
+    }
+
+    div.ordine {
+        flex-direction: row;
+    }
+
+}

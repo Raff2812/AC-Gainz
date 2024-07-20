@@ -164,7 +164,7 @@
         <select class="weight-select"></select>
     </div>
     <select class="quantity-select">
-        <% for(int i = 1; i < 10; i++){ %>
+        <% for(int i = 1; i <= 10; i++){ %>
         <option value="<%=i%>"><%=i%></option>
         <%
             }

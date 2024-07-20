@@ -44,6 +44,7 @@ header .header-container{
     color: black;
     text-decoration: none;
     transition: 0.3s;
+    white-space: nowrap; /* evita che la scritta vada a capo*/
 }
 
 .header-logo a:hover{
@@ -68,12 +69,7 @@ header .header-container{
     font-size: 20px;
     color: black;
 }
-.header-search-bar:focus{
-    font-size: 21px;
-}
-.header-search-bar input[type="search"]:focus{
-    font-size: 21px;
-}
+
 
 .header-search-bar img{
     position: absolute;
@@ -100,9 +96,10 @@ header .header-container{
     border-color: transparent;
     font-size: 15px;
 }
+/*
 .header-carrello #cart:focus{
     font-size: 16px;
-}
+}*/
 
 .header-carrello #cart:hover {
     transition: 0.2s;
@@ -110,7 +107,7 @@ header .header-container{
     cursor: pointer;
 }
 
-#listCart {
+#listCart { /*contenitore principale*/
     max-height: 300px; /* Altezza massima */
     overflow-y: auto; /* Scroll verticale */
     padding: 10px;
@@ -124,11 +121,11 @@ header .header-container{
     z-index: 1; /*fai comparire sugli altri elementi*/
     position: absolute; /* Posizione assoluta */
     top: 100%; /* Posiziona sotto il pulsante */
-    left: 0; /* Allinea a sinistra */
+    left: -55px;
 }
 
 
-#listCart div {
+#listCart div { /*eventuali figli*/
     padding: 5px;
     border-bottom: 1px solid #ddd;
     margin-bottom: 5px;
@@ -267,38 +264,7 @@ header .header-lista ul li{
     background-color: orangered;
     color: black;
 }
-.header-lista ul li a{
-    background-color: #fefefe;
-    text-decoration: none;
-    color: black;
-    font-size: 15px;
-    padding: 5px 20px;
-    border-radius: 30px;
-    transition: 0.2s;
-    margin-left: 70px;
-    margin-right: 70px;
-    border-color: transparent;
-}
-.header-lista ul li a:hover{
-    color: black;
-    background: orangered;
-}
-.goBACK{
-    background-color: #fefefe;
-    text-decoration: none;
-    color: black;
-    font-size: 15px;
-    padding: 5px 20px;
-    border-radius: 30px;
-    transition: 0.2s;
-    margin-left: 70px;
-    margin-right: 70px;
-    border-color: transparent;
-}
-.goBACK:hover{
-    color: black;
-    background: orangered;
-}
+
 
 /* Stile per il burger menu */
 .header-burger-menu {
@@ -318,7 +284,8 @@ header .header-lista ul li{
         padding: 10px 0;
     }
     .header-logo a {
-        font-size: 15px;
+        font-size: 20px;
+        margin-right: 16px;
     }
     .header-search-bar {
         padding: 10px 20px;
@@ -332,6 +299,9 @@ header .header-lista ul li{
     .header-carrello {
         margin: 5px 0;
         padding: 1px;
+    }
+    .header-carrello #listCart{
+        left: -122px;
     }
     .header-utente, .header-custom_button{
         margin: 2px;
@@ -392,7 +362,7 @@ header .header-lista ul li{
     }
     .header-logo a {
         font-size: 30px;
-        margin-left: 10px;
+        margin: 10px;
     }
     .header-search-bar {
         padding: 10px 30px;
@@ -405,8 +375,15 @@ header .header-lista ul li{
         margin-right: 20px;
         margin-left: 0;
     }
+    div#myDropdown{
+        right: -19px;
+    }
     .header-carrello #cart {
         padding: 5px 10px;
+        margin: 12px;
+    }
+    .header-carrello #listCart{
+        left: -70px;
     }
     .header-lista {
         background-color: var(--backgroud-color-header);
@@ -463,6 +440,9 @@ header .header-lista ul li{
     .header-utente, .header-custom_button{
         margin-right: 50px;
         margin-left: 0;
+    }
+    div#myDropdown{
+        right: -19px;
     }
     .header-carrello #cart {
         padding: 5px 15px;

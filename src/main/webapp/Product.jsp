@@ -1,7 +1,8 @@
 <%@ page import="model.Prodotto" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Random" %>
-<%@ page import="model.Variante" %><%--
+<%@ page import="model.Variante" %>
+<%@ page import="java.util.ArrayList" %><%--
   Created by IntelliJ IDEA.
   User: luigiauriemma
   Date: 27/06/24

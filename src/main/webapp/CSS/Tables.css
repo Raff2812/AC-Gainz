@@ -158,8 +158,8 @@ th a{
 
 /* Scrollable description if the content is too long */
 .description-scroll {
-    max-width: 300px; /* Adjust as necessary */
-    max-height: 100px; /* Adjust as necessary */
+    max-width: 200px;
+    max-height: 75px;
     overflow: auto;
 }
 .description-scroll a{

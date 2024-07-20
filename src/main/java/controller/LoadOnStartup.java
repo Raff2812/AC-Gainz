@@ -9,7 +9,7 @@ import model.ProdottoDAO;
 
 import java.util.List;
 
-@WebServlet(value = "/loadOnStartUp", loadOnStartup = 1)
+@WebServlet(value = "/loadOnStartUp", loadOnStartup = 0)
 public class LoadOnStartup extends HttpServlet {
 
     @Override

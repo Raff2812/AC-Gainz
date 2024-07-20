@@ -17,15 +17,19 @@ document.addEventListener("DOMContentLoaded", function () {
             const login = document.createElement("a");
             login.href = "Login.jsp";
             login.className = "login-link";
-            login.innerText = "Effettua Login";
+            login.innerText = "Effettua il Login";
+
+            const br = document.createElement("br");
+
 
             const register = document.createElement("a");
             register.href = "Registrazione.jsp";
             register.className = "register-link";
-            register.innerText = "Effettua Register";
+            register.innerText = "Registrati";
 
             errorMessageContainer.appendChild(errorMessage);
             errorMessageContainer.appendChild(login);
+            errorMessageContainer.appendChild(br);
             errorMessageContainer.appendChild(register);
 
             const summary = document.querySelector(".summary");
@@ -187,90 +191,6 @@ function updateCartJSP(response) {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-function updateQuantity(idProdotto, taste, weight, quantity) {
-    const form = document.createElement("form");
-    form.action = "cartServlet";
-    form.method = "GET";
-
-    const actionInput = document.createElement("input");
-    actionInput.type = "hidden";
-    actionInput.name = "action";
-    actionInput.value = "quantityVariant";
-
-    const idInput = document.createElement("input");
-    idInput.type = "hidden";
-    idInput.name = "id";
-    idInput.value = idProdotto;
-
-    const tasteInput = document.createElement("input");
-    tasteInput.type = "hidden";
-    tasteInput.name = "gusto";
-    tasteInput.value = taste;
-
-    const weightInput = document.createElement("input");
-    weightInput.type = "hidden";
-    weightInput.name = "pesoConfezione";
-    weightInput.value = weight;
-
-    const quantityInput = document.createElement("input");
-    quantityInput.type = "hidden";
-    quantityInput.name = "quantity";
-    quantityInput.value = quantity;
-
-    const reloadInput = document.createElement("input");
-    reloadInput.type = "hidden";
-    reloadInput.name = "reload";
-    reloadInput.value = "true";
-
-    form.append(actionInput, idInput, tasteInput, weightInput, quantityInput, reloadInput);
-
-    document.body.appendChild(form);
-    form.submit();
-}
-
-*/
 
 
 
