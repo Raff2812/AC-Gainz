@@ -30,7 +30,6 @@ public class SearchBarServlet extends HttpServlet {
 
         synchronized (session) { //uso di synchronized per race conditions su session tramite ajax
             List<Prodotto> products = new ArrayList<>();
-            VarianteDAO varianteDAO = new VarianteDAO();
             String categoria = (String) session.getAttribute("categoriaRecovery");
             System.out.println("categoriaSearch:" + categoria);
             ProdottoDAO prodottoDAO = new ProdottoDAO();

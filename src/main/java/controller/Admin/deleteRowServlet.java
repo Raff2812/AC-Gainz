@@ -17,7 +17,7 @@ import java.util.List;
 import static controller.Admin.showRowForm.*;
 
 @WebServlet(value = "/deleteRow")
-@SuppressWarnings("unchecked")
+
 public class deleteRowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,7 +29,7 @@ public class deleteRowServlet extends HttpServlet {
 
         JSONArray jsonArray = null;
         boolean success = switch (tableName) {
-            case "utente" -> handleRemoveRowFromUtente(primaryKey, utente);
+            case "utente" -> handleRemoveRowFromUtente(primaryKey);
             case "prodotto" -> handleRemoveRowFromProdotto(primaryKey);
             case "variante" -> handleRemoveRowFromVariante(primaryKey);
             case "ordine" -> handleRemoveRowFromOrdine(primaryKey);
@@ -133,7 +133,7 @@ public class deleteRowServlet extends HttpServlet {
         return false;
     }
 
-    private boolean handleRemoveRowFromUtente(String primaryKey, Utente utente) throws IOException {
+    private boolean handleRemoveRowFromUtente(String primaryKey){
         if (primaryKey != null && !primaryKey.isBlank()) {
             UtenteDAO utenteDAO = new UtenteDAO();
             Utente u = utenteDAO.doRetrieveByEmail(primaryKey);
@@ -146,24 +146,16 @@ public class deleteRowServlet extends HttpServlet {
     }
 
     private JSONArray getJsonArrayForTable(String tableName) {
-        switch (tableName) {
-            case "utente":
-                return getAllUtentiJsonArray(new UtenteDAO());
-            case "prodotto":
-                return getAllProdottiJsonArray(new ProdottoDAO());
-            case "variante":
-                return getAllVariantiJsonArray(new VarianteDAO());
-            case "ordine":
-                return getAllOrdiniJsonArray(new OrdineDao());
-            case "dettaglioOrdine":
-                return getAllDettagliOrdiniJsonArray(new DettaglioOrdineDAO());
-            case "gusto":
-                return getAllGustiJsonArray(new GustoDAO());
-            case "confezione":
-                return getAllConfezioniJsonArray(new ConfezioneDAO());
-            default:
-                return null;
-        }
+        return switch (tableName) {
+            case "utente" -> getAllUtentiJsonArray(new UtenteDAO());
+            case "prodotto" -> getAllProdottiJsonArray(new ProdottoDAO());
+            case "variante" -> getAllVariantiJsonArray(new VarianteDAO());
+            case "ordine" -> getAllOrdiniJsonArray(new OrdineDao());
+            case "dettaglioOrdine" -> getAllDettagliOrdiniJsonArray(new DettaglioOrdineDAO());
+            case "gusto" -> getAllGustiJsonArray(new GustoDAO());
+            case "confezione" -> getAllConfezioniJsonArray(new ConfezioneDAO());
+            default -> null;
+        };
     }
 
     private static JSONArray getAllUtentiJsonArray(UtenteDAO utenteDAO) {

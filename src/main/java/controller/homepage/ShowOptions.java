@@ -99,12 +99,7 @@ public class ShowOptions extends HttpServlet {
             for (Variante v: varianti)
                 pesi.add(v.getPesoConfezione());
 
-            pesi.sort(new Comparator<Integer>() {
-                @Override
-                public int compare(Integer o1, Integer o2) {
-                    return Integer.compare(o1, o2);
-                }
-            });
+            pesi.sort(Comparator.comparingInt(o2 -> o2));
 
 
             for (Integer x: pesi) {

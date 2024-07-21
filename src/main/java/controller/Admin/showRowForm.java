@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 
 @WebServlet(value = "/showRowForm")
-@SuppressWarnings("unchecked")
 public class showRowForm extends HttpServlet {
 
     @Override

@@ -54,7 +54,7 @@ public class CarrelloServlet extends HttpServlet {
     }
 
 
-    public void handleQuantityVariantAction(HttpServletRequest request,  HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException, ServletException {
+    public void handleQuantityVariantAction(HttpServletRequest request,  HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         String idProdotto = request.getParameter("id");
         String gusto = request.getParameter("gusto");
         int pesoConfezione = Integer.parseInt(request.getParameter("pesoConfezione"));

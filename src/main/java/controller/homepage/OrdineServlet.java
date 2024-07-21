@@ -10,7 +10,6 @@ import model.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @WebServlet(value = "/orderServlet")
@@ -28,9 +27,6 @@ public class OrdineServlet extends HttpServlet {
 
         if (!cart.isEmpty() && session.getAttribute("Utente") != null){
             Utente x = (Utente) session.getAttribute("Utente");
-            float orderTotal = 0;
-            for (Carrello cartItem: cart) orderTotal += cartItem.getPrezzo();
-
 
 
             Ordine ordine = new Ordine();
@@ -54,7 +50,6 @@ public class OrdineServlet extends HttpServlet {
                 dettaglioOrdine.add(dettaglioOrdineItem);
             }
 
-            System.out.println(dettaglioOrdine.size());
 
             session.removeAttribute("cart");
             CarrelloDAO carrelloDAO = new CarrelloDAO();
@@ -71,7 +66,6 @@ public class OrdineServlet extends HttpServlet {
 
             List<DettaglioOrdine> dettaglioOrdini1 = new ArrayList<>();
             dettaglioOrdini1 = dettaglioOrdineDAO.doRetrieveById(ordine1.getIdOrdine());
-            System.out.println(dettaglioOrdini1.size());
             req.setAttribute("order", ordine1);
             req.setAttribute("orderDetails", dettaglioOrdini1);
 
