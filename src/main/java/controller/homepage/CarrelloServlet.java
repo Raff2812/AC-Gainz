@@ -40,6 +40,7 @@ public class CarrelloServlet extends HttpServlet {
     }
 
 
+    //metodo che permette di visualizzare i prodotti all'interno del carrello
     private void handleShowAction(HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
         List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
@@ -54,7 +55,9 @@ public class CarrelloServlet extends HttpServlet {
     }
 
 
+    //metodo che viene usato quando viene modificata la quantita di un prodotto nel carrello
     public void handleQuantityVariantAction(HttpServletRequest request,  HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
+        //prende i dati del prodotto nel carrello dalla request
         String idProdotto = request.getParameter("id");
         String gusto = request.getParameter("gusto");
         int pesoConfezione = Integer.parseInt(request.getParameter("pesoConfezione"));
@@ -66,12 +69,15 @@ public class CarrelloServlet extends HttpServlet {
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
             if (v != null && cartItems != null){
                 String quantity = request.getParameter("quantity");
+                //controlla che la quantita passata sia corretta e che sia inferiore alla quantita presente nel DB
                 if (quantity != null && !quantity.isBlank() && Integer.parseInt(quantity) < v.getQuantita()){
                     int q = Integer.parseInt(quantity);
+                    //nel caso in cui non si rimuova il prodotto
                     if (q < 0) {
                         handleRemoveVariantAction(request, session, prodottoDAO, out);
                     }
                     else {
+                        //aggiorna il prezzo in base alla nuova quantità contando ovviamente lo sconto
                         float price = v.getPrezzo();
                         if (v.getSconto() > 0){
                             price = price * (1 - (float) v.getSconto() / 100);
@@ -80,6 +86,7 @@ public class CarrelloServlet extends HttpServlet {
 
                         price *= q;
 
+                        //aggiorna il prodotto nel carrello con la nuova quantita e il nuovo prezzo
                         for (Carrello c: cartItems){
                             if (c.getIdVariante() == v.getIdVariante()){
                                 c.setQuantita(q);
@@ -99,7 +106,9 @@ public class CarrelloServlet extends HttpServlet {
 
 
 
+    //metodo che viene usato per rimuovere un prodotto dal carrello
     public void handleRemoveVariantAction(HttpServletRequest request, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
+        //prendo i dati del prodotto nel carrello passati dalla request
         String idToRemove = request.getParameter("id");
         String gusto = request.getParameter("gusto");
         int pesoConfezione = Integer.parseInt(request.getParameter("pesoConfezione"));
@@ -112,7 +121,7 @@ public class CarrelloServlet extends HttpServlet {
             if (v != null){
                 List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
 
-
+                //elimina il prodotto dal carrello
                 if (cartItems != null) {
                     cartItems.removeIf(item -> item.getIdVariante()  == v.getIdVariante());
                     session.setAttribute("cart", cartItems);
@@ -126,18 +135,21 @@ public class CarrelloServlet extends HttpServlet {
 
 
 
-
+    //metodo che aggiunge al carrello un nuovo prodotto
     private void handleAddVariantAction(HttpServletRequest request, HttpSession session, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException {
+        //prendo il prodotto
         String id = request.getParameter("id");
         Prodotto p = prodottoDAO.doRetrieveById(id);
         if (p != null) {
             int quantity = 1;
 
+            //setto la quantita desiderata dall'utente
             if (request.getParameter("quantity") != null) {
                 int x = Integer.parseInt(request.getParameter("quantity"));
                 if (x > 0) quantity = x;
             }
 
+            //prendo altri dati relativi al prodotto
             String gusto = request.getParameter("gusto");
             String pesoConfezione = request.getParameter("pesoConfezione");
 
@@ -162,6 +174,8 @@ public class CarrelloServlet extends HttpServlet {
                     price = Math.round(price * 100.0f) / 100.0f;
                 }
 
+                //controllo che il prodotto da aggiungere non fosse gia presente nel carrello
+                //nel caso lo fosse sommo le due quantita e aggiorno ovviamente il prezzo
                 boolean itemExists = false;
                 if (!cartItems.isEmpty()) {
                     for (Carrello item : cartItems) {
@@ -177,6 +191,7 @@ public class CarrelloServlet extends HttpServlet {
                     }
                 }
 
+                //se il prodotto non è presente nel carrello lo aggiungo
                 if (!itemExists && quantity <= v.getQuantita()) {
                     Carrello c = new Carrello();
                     c.setIdProdotto(id);
@@ -200,11 +215,8 @@ public class CarrelloServlet extends HttpServlet {
 
 
 
-
-
-
-
-
+    //metodo che per ogni prodotto nel carrello crea un oggetto JSON e lo inserisce in un JSONArray
+    //metodo che crea quindi il carrello effettivo
     private void writeCartItemsToResponse(List<Carrello> cartItems, ProdottoDAO prodottoDAO, PrintWriter out) throws IOException{
         JSONArray jsonArray = new JSONArray();
         float totalPrice = 0;
@@ -212,20 +224,21 @@ public class CarrelloServlet extends HttpServlet {
         for (Carrello item: cartItems){
             Prodotto p = prodottoDAO.doRetrieveById(item.getIdProdotto());
             JSONObject jsonObject = new JSONObject();
-
+            //crea l'oggetto JSON con tutti i valori del prodotto
             jsonObject.put("idProdotto", item.getIdProdotto());
             jsonObject.put("idVariante", item.getIdVariante());
             jsonObject.put("nomeProdotto", p.getNome());
             jsonObject.put("imgSrc", p.getImmagine());
             jsonObject.put("flavour", item.getGusto());
             jsonObject.put("weight", item.getPesoConfezione());
-
             jsonObject.put("quantity", item.getQuantita());
 
+            //prezzo in base allo sconto che presenta il prodotto
             float itemPrice = item.getPrezzo();
             itemPrice = Math.round(itemPrice * 100.0f) / 100.0f;
             jsonObject.put("prezzo", itemPrice);
 
+            //prezzo totale del carrello
             totalPrice += item.getPrezzo();
 
             jsonArray.add(jsonObject);

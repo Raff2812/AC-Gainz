@@ -18,7 +18,7 @@ public class LoadOnStartup extends HttpServlet {
         ProdottoDAO prodottoDAO = new ProdottoDAO();
         List<Prodotto> prodottoList = prodottoDAO.doRetrieveAll();
 
-        // Save products in application context
+        // Salva i prodotti nel servletContext
         getServletContext().setAttribute("Products", prodottoList);
     }
 }

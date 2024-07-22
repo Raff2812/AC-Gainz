@@ -21,10 +21,12 @@ import static controller.Admin.showRowForm.*;
 public class deleteRowServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //prendiamo i dati dalla request
         String tableName = req.getParameter("tableName");
         String primaryKey = req.getParameter("primaryKey");
-        Utente utente = (Utente) req.getSession().getAttribute("Utente"); // usato per controllare se admin cancella il suo stesso profilo
+        Utente utente = (Utente) req.getSession().getAttribute("Utente");
 
+        // usato per controllare se admin cancella il suo stesso profilo
         boolean isTheSame = false;
 
         JSONArray jsonArray = null;
@@ -38,6 +40,7 @@ public class deleteRowServlet extends HttpServlet {
             case "confezione" -> handleRemoveRowFromConfezione(primaryKey);
             default -> false;
         };
+
 
         if (success && tableName.equals("utente")) {
             isTheSame = checkIfAdminDeletingSelf(primaryKey, utente);
@@ -90,6 +93,7 @@ public class deleteRowServlet extends HttpServlet {
         return false;
     }
 
+    //metodo che rimuove la tupla dalla tabella dettaglio ordine(presenta 2 chiavi primarie)
     private boolean handleRemoveRowFromDettaglioOrdine(String primaryKey) {
         if (primaryKey != null && !primaryKey.isBlank()) {
             String[] primaryKeys = primaryKey.split(", ");
@@ -145,6 +149,7 @@ public class deleteRowServlet extends HttpServlet {
         return false;
     }
 
+    //metodo che in base a tableName prende tutte le tuple e le inserisce in un JSONArray
     private JSONArray getJsonArrayForTable(String tableName) {
         return switch (tableName) {
             case "utente" -> getAllUtentiJsonArray(new UtenteDAO());
@@ -232,6 +237,8 @@ public class deleteRowServlet extends HttpServlet {
         return primaryKey != null && !primaryKey.isBlank() && Integer.parseInt(primaryKey) > 0;
     }
 
+
+    //metodo che crea un oggetto JSON dell'utente
     protected static JSONObject jsonHelperHere(Utente x) {
         JSONObject userObject = new JSONObject();
         userObject.put("email", x.getEmail());

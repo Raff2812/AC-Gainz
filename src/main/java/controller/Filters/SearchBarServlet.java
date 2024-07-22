@@ -29,11 +29,14 @@ public class SearchBarServlet extends HttpServlet {
         HttpSession session = req.getSession();
 
         synchronized (session) { //uso di synchronized per race conditions su session tramite ajax
+
             List<Prodotto> products = new ArrayList<>();
             String categoria = (String) session.getAttribute("categoriaRecovery");
             System.out.println("categoriaSearch:" + categoria);
             ProdottoDAO prodottoDAO = new ProdottoDAO();
 
+
+            //prendiamo i prodotti in base a name
             if (name != null && !name.isEmpty()) {
                 session.removeAttribute("categoria");  //per applicare i filtri
 
@@ -43,7 +46,9 @@ public class SearchBarServlet extends HttpServlet {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-            } else {
+            }
+            //prendiamo i prodotti in base alla categoria
+            else {
                 session.removeAttribute("searchBarName");
                 session.setAttribute("categoria", categoria);
                 try {
@@ -65,6 +70,7 @@ public class SearchBarServlet extends HttpServlet {
     private void addToJson(List<Prodotto> products, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         JSONArray jsonArray = new JSONArray();
 
+        //prendiamo la lista di prodotti e li insieriamo in un JSONArray
         for (Prodotto p: products) {
             JSONObject jsonObject = getJsonObject(p);
             jsonArray.add(jsonObject);

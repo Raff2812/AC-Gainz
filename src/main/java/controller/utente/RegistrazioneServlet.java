@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 @WebServlet("/register")
 public class RegistrazioneServlet extends HttpServlet {
 
+    //definiamo i pattern da dover rispettare
     private static final String EMAIL_PATTERN = "^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}$";
     private static final String PASSWORD_PATTERN = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$";
     private static final String COD_FISCALE_PATTERN = "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$";
@@ -30,6 +31,7 @@ public class RegistrazioneServlet extends HttpServlet {
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        //prendiamo i dati dal form
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String nome = request.getParameter("nome");
@@ -39,14 +41,14 @@ public class RegistrazioneServlet extends HttpServlet {
         String indirizzo = request.getParameter("indirizzo");
         String numCellulare = request.getParameter("numCellulare");
 
-        // Validate email
+        // Validifichiamo l'email
         if (!isValidEmail(email)) {
             request.setAttribute("error", "Pattern email non rispettato");
             request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
             return;
         }
 
-        // Check if email already exists
+        // Controlliamo se l'email non sia gia presente
         UtenteDAO utenteDAO = new UtenteDAO();
         if (utenteDAO.doRetrieveByEmail(email) != null) {
             request.setAttribute("error", "Email già registrata.");
@@ -54,21 +56,21 @@ public class RegistrazioneServlet extends HttpServlet {
             return;
         }
 
-        // Validate password
+        // Validifichiamo la password
         if (!isValidPassword(password)) {
             request.setAttribute("error", "Pattern password non rispettato");
             request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
             return;
         }
 
-        // Validate codice fiscale
+        // Validifichiamo il codice fiscale
         if (!isValidCodiceFiscale(codiceFiscale)) {
             request.setAttribute("error", "Pattern codice fiscale non rispettato");
             request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
             return;
         }
 
-        // Parse date of birth
+        // Parse della data di nascita
         Date dataDiNascita = parseDate(dateString);
         if (dataDiNascita == null) {
             request.setAttribute("error", "Pattern data non rispettato");
@@ -76,14 +78,14 @@ public class RegistrazioneServlet extends HttpServlet {
             return;
         }
 
-        // Validate phone number
+        // Validifichiamo il numero di telefono
         if (!isValidPhone(numCellulare)) {
             request.setAttribute("error", "Pattern numero di telefono non rispettato");
             request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
             return;
         }
 
-        // If all validations pass, create Utente object and save to database
+        // Dopo aver passato tutte le validificazioni creiamo l'oggetto utente da salvare nel DB
         Utente utente = new Utente();
         utente.setEmail(email);
         utente.setPassword(password);
@@ -105,28 +107,28 @@ public class RegistrazioneServlet extends HttpServlet {
 
 
 
-    // Method to validate email
+    // Metodo per validificare l'email
     private boolean isValidEmail(String email) {
         Pattern emailRegex = Pattern.compile(EMAIL_PATTERN);
         Matcher emailMatcher = emailRegex.matcher(email);
         return emailMatcher.matches();
     }
 
-    // Method to validate password
+    // Metodo per validificare la password
     private boolean isValidPassword(String password) {
         Pattern passwordRegex = Pattern.compile(PASSWORD_PATTERN);
         Matcher passwordMatcher = passwordRegex.matcher(password);
         return passwordMatcher.matches();
     }
 
-    // Method to validate codice fiscale
+    // Metodo per validificare codice fiscale
     private boolean isValidCodiceFiscale(String codiceFiscale) {
         Pattern codFiscaleRegex = Pattern.compile(COD_FISCALE_PATTERN);
         Matcher codFiscaleMatcher = codFiscaleRegex.matcher(codiceFiscale);
         return codFiscaleMatcher.matches();
     }
 
-    // Method to parse date
+    // Metodo per il parse della data
     private Date parseDate(String dateString) {
         try {
             return DATE_FORMATTER.parse(dateString);
@@ -135,7 +137,7 @@ public class RegistrazioneServlet extends HttpServlet {
         }
     }
 
-    // Method to validate phone number
+    // Method to validificare il numero di telefono
     private boolean isValidPhone(String numCellulare) {
         Pattern phoneRegex = Pattern.compile(PHONE_PATTERN);
         Matcher phoneMatcher = phoneRegex.matcher(numCellulare);
