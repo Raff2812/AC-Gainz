@@ -184,6 +184,14 @@ header .header-container{
     border: none;
     border-radius: 35px;
 }
+.header-custom_button{
+    background-color: orangered;
+    color: white;
+    padding: 10px 20px 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 35px;
+}
 .header-dropbutton:hover {
     transition: 0.2s;
     color: black;
@@ -221,7 +229,7 @@ header .header-carrello{
     display: flex;
     align-items: center;
 }
-.header-carrello a, .header-custom_button{
+.header-carrello a{
     color: white;
     padding: 10px 20px;
     text-decoration: none;
@@ -367,9 +375,13 @@ header .header-lista ul li{
         width: 150px;
         font-size: 14px;
     }
-    .header-utente, .header-custom_button {
+    .header-utente{
         margin-right: 20px;
         margin-left: 0;
+    }
+    .header-custom_button{
+        margin-left: 20px;
+        padding: 4px;
     }
     div#myDropdown {
         right: -19px;
@@ -433,9 +445,13 @@ header .header-lista ul li{
         width: 300px;
         font-size: 18px;
     }
-    .header-utente, .header-custom_button {
+    .header-utente{
         margin-right: 50px;
         margin-left: 0;
+    }
+    .header-custom_button {
+        margin-right: -30px;
+        margin-left: 10px;
     }
     div#myDropdown {
         right: -19px;
@@ -452,5 +468,14 @@ header .header-lista ul li{
         font-size: 14px;
         padding: 5px 15px;
         margin: 5px 0;
+    }
+
+
+}
+
+@media (min-width: 1321px) {
+    .header-custom_button {
+        margin-left: 97px;
+        margin-right: -65px;
     }
 }

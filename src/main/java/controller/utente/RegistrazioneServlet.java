@@ -44,7 +44,7 @@ public class RegistrazioneServlet extends HttpServlet {
         // Validifichiamo l'email
         if (!isValidEmail(email)) {
             request.setAttribute("error", "Pattern email non rispettato");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 
@@ -52,21 +52,21 @@ public class RegistrazioneServlet extends HttpServlet {
         UtenteDAO utenteDAO = new UtenteDAO();
         if (utenteDAO.doRetrieveByEmail(email) != null) {
             request.setAttribute("error", "Email già registrata.");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 
         // Validifichiamo la password
         if (!isValidPassword(password)) {
             request.setAttribute("error", "Pattern password non rispettato");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 
         // Validifichiamo il codice fiscale
         if (!isValidCodiceFiscale(codiceFiscale)) {
             request.setAttribute("error", "Pattern codice fiscale non rispettato");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 
@@ -74,14 +74,14 @@ public class RegistrazioneServlet extends HttpServlet {
         Date dataDiNascita = parseDate(dateString);
         if (dataDiNascita == null) {
             request.setAttribute("error", "Pattern data non rispettato");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 
         // Validifichiamo il numero di telefono
         if (!isValidPhone(numCellulare)) {
             request.setAttribute("error", "Pattern numero di telefono non rispettato");
-            request.getRequestDispatcher("/WEB-INF/results/Registrazione.jsp").forward(request, response);
+            request.getRequestDispatcher("Registrazione.jsp").forward(request, response);
             return;
         }
 

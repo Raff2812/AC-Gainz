@@ -32,7 +32,7 @@ public class ShowOptions extends HttpServlet {
 
 
         if (action != null && idVariante != null){
-            if (action.equals("showFirst")){
+            if (action.equals("showFirst")){ //visualizza inzialmente la variante di costo minore, associando al gusto della variante di costo minore tutti i pesi associati
                 VarianteDAO varianteDAO = new VarianteDAO();
                 Variante v = varianteDAO.doRetrieveVarianteByIdVariante(Integer.parseInt(idVariante));
 
@@ -88,6 +88,7 @@ public class ShowOptions extends HttpServlet {
                 }
             }
         }
+        //quando avviene un cambiamento nella select del gusto, restituisce tutti i pesi al gusto associati
         if (action != null && idProdotto != null && action.equals("updateOptions") && req.getParameter("flavour") != null){
             String flavour = req.getParameter("flavour");
             ProdottoDAO prodottoDAO = new ProdottoDAO();
@@ -112,6 +113,7 @@ public class ShowOptions extends HttpServlet {
             o.println(jsonArray);
             o.flush();
         }
+        //quando seleziono effettivamente un altro peso restituisce il prezzo della combinazione data dal gusto + il peso
         if (action != null && idProdotto != null && req.getParameter("flavour") != null && req.getParameter("weight") != null && action.equals("updatePrice")) {
             String flavour = req.getParameter("flavour");
             int weight = Integer.parseInt(req.getParameter("weight"));
@@ -122,7 +124,7 @@ public class ShowOptions extends HttpServlet {
                 VarianteDAO varianteDAO = new VarianteDAO();
                 Variante v = varianteDAO.doRetrieveVariantByFlavourAndWeight(idProdotto, flavour, weight).get(0);
 
-                System.out.println(v.getIdVariante());
+                /*System.out.println(v.getIdVariante());*/
                 JSONObject jsonResponse = new JSONObject();
                 jsonResponse.put("prezzo", v.getPrezzo());
                 jsonResponse.put("sconto", v.getSconto());

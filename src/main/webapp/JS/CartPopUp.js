@@ -21,7 +21,7 @@ function toggleCartVisibility() {
 }
 
 function rmvClick() {
-    console.log("buttonRemove clicked");
+    /*console.log("buttonRemove clicked");*/
     const id = this.getAttribute("data-product-id");
     const flavour = this.getAttribute("data-product-flavour");
     const weight = this.getAttribute("data-product-weight");
@@ -61,7 +61,7 @@ function updateCartView(action, response) {
         }
         const cartItems = JSON.parse(response);
 
-        console.log(cartItems);
+        /*console.log(cartItems);*/
         const cartItemDiv = document.getElementById("listCart");
 
         if (!cartItemDiv) {
@@ -80,7 +80,7 @@ function updateCartView(action, response) {
             // Reset cart total to zero
             const cartElement = document.getElementById("cart");
 
-            cartElement.innerHTML = "Carrello (0)";
+            cartElement.innerText = "Carrello (0)";
 
             return; // Exit early if cart is empty
         }

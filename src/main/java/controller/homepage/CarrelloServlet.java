@@ -154,9 +154,6 @@ public class CarrelloServlet extends HttpServlet {
             String pesoConfezione = request.getParameter("pesoConfezione");
 
 
-            System.out.println(id);
-            System.out.println(gusto);
-            System.out.println(pesoConfezione);
 
             VarianteDAO varianteDAO = new VarianteDAO();
 

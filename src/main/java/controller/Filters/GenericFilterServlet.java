@@ -47,11 +47,11 @@ public class GenericFilterServlet extends HttpServlet {
             String tasteFilter = req.getParameter("taste");
             String sortingFilter = req.getParameter("sorting");
 
-            System.out.println("NameFilter:" + nameFilter);
+            /*System.out.println("NameFilter:" + nameFilter);
             System.out.println("weightFilter:" + weightFilter);
             System.out.println("tasteFilter:" + tasteFilter);
             System.out.println("sortingFilter:" + sortingFilter);
-            System.out.println("category:" + category);
+            System.out.println("category:" + category);*/
 
             List<Prodotto> filteredProducts = new ArrayList<>();
             ProdottoDAO prodottoDAO = new ProdottoDAO();
@@ -66,7 +66,7 @@ public class GenericFilterServlet extends HttpServlet {
                 throw new RuntimeException(e);
             }
 
-            // Aggiornare la lista di prodotti filtrati nella sessione
+            // Aggiornare la lista di prodotti filtrati nella sessione per visualizzare i gusti tramite showTasteServlet
             session.setAttribute("filteredProducts", filteredProducts);
 
             // Inviare la risposta JSON al client

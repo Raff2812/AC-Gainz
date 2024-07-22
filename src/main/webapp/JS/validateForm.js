@@ -1,8 +1,8 @@
 function validateForm(){
-    var email = document.getElementById("email").value;// Ottenere il valore dell'input email
+    let email = document.getElementById("email").value;// Ottenere il valore dell'input email
     console.log(email);
 
-    var password = document.getElementById("password").value;
+    let password = document.getElementById("password").value;
 
 
     if(document.getElementById("codiceFiscale")){
@@ -17,17 +17,17 @@ function validateForm(){
 
 
 
-    var emailPattern =/^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/;
+    let emailPattern =/^[\w.%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/;
 
 
-    var passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
+    let passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\w\s]).{8,}$/;
 
 
 
-    var cfPattern = /^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/;
+    let cfPattern = /^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/;
 
 
-    var cellularPattern = /^3\d{8,9}$/;
+    let cellularPattern = /^3\d{8,9}$/;
 
 
 
@@ -55,5 +55,5 @@ function validateForm(){
             return false;
         }
     }
-    return true; // Ritorna true se l'email è valida
+    return true;
 }

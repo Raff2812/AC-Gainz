@@ -1,11 +1,10 @@
 function togglePassword(idInput, idImg){
-        var passwordField = document.getElementById(idInput);
-        var imgPass = document.getElementById(idImg);
+        let passwordField = document.getElementById(idInput);
+        let imgPass = document.getElementById(idImg);
         if(passwordField.type === "password"){
             passwordField.type = "text";
             imgPass.src = "Immagini/visible.png"
-        }else
-        {
+        }else {
             passwordField.type = "password";
             imgPass.src = "Immagini/hide.png";
         }

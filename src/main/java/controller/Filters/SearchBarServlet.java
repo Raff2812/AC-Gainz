@@ -32,7 +32,6 @@ public class SearchBarServlet extends HttpServlet {
 
             List<Prodotto> products = new ArrayList<>();
             String categoria = (String) session.getAttribute("categoriaRecovery");
-            System.out.println("categoriaSearch:" + categoria);
             ProdottoDAO prodottoDAO = new ProdottoDAO();
 
 

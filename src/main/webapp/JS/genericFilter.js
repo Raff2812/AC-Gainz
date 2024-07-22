@@ -29,7 +29,7 @@ function genericFilter() {
             console.log(error);
         })
 
-    console.log("Calling genericFilter with URL: " + urlServlet);
+    /*console.log("Calling genericFilter with URL: " + urlServlet);*/
 }
 
 
@@ -65,7 +65,7 @@ function genericFilter() {
         const form = document.createElement("form");
         form.action = "ProductInfo";
         form.method = "POST";
-        form.id=`${prodottoFiltrato.id}`
+        form.id=`${prodottoFiltrato.id}`;   //${} template strings
         const input1 = document.createElement("input");
         input1.type = "hidden";
         input1.name = "primaryKey";
@@ -132,7 +132,7 @@ function genericFilter() {
 
 
 function resetProducts() {
-    console.log("Resetting products...");
+    /*console.log("Resetting products...");*/
     const selects = document.querySelectorAll('select');
     selects.forEach(select => {
         select.value = '';

@@ -42,7 +42,8 @@ public class CategoriesServlet extends HttpServlet {
         //metto nella sessione la categoria scelta
         session.setAttribute("categoria", filter);
         session.setAttribute("categoriaRecovery", filter);
-        //setto nella session per usare i filtri in ajax
+
+        //setto nella session per vedere i gusti disponibili tramite ajax in showTasteServlet
         session.setAttribute("filteredProducts", productsByCriteria);
 
 
