@@ -35,7 +35,7 @@ public class showTableServlet extends HttpServlet {
                 ProdottoDAO prodottoDAO = new ProdottoDAO();
 
                 prodotti = prodottoDAO.doRetrieveAll();
-                request.setAttribute("tableProdotto", prodotti);;
+                request.setAttribute("tableProdotto", prodotti);
                 request.getRequestDispatcher("WEB-INF/Admin/tableProdotto.jsp").forward(request, response);
             }
             case "variante" ->{
