@@ -97,6 +97,7 @@ public class insertRowServlet extends HttpServlet {
             Utente u = new Utente();
             u.setEmail(email);
             u.setPassword(password);
+            u.hashPassword();
             u.setNome(nome);
             u.setCognome(cognome);
             u.setCodiceFiscale(codiceFiscale);
