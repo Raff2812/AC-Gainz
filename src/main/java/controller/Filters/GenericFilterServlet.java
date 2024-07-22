@@ -22,10 +22,11 @@ import java.util.List;
 public class GenericFilterServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
 
+        HttpSession session = req.getSession();
         synchronized (session) { // race condition sulle sessioni possibile dato che si usa ajax
 
+        //Viene chiamato il metodo handleNameForm in base a nameForm passato da request
         String nameForm = req.getParameter("nameForm");
         if (nameForm != null){
             try {
@@ -37,6 +38,7 @@ public class GenericFilterServlet extends HttpServlet {
         }
 
 
+            //prende dalla sessione e dalla request i parametri per i campi dei vari filtri
             String category = (String) session.getAttribute("categoria");
             String nameFilter = "";
             if (session.getAttribute("searchBarName") != null)
@@ -57,6 +59,7 @@ public class GenericFilterServlet extends HttpServlet {
             if (session.getAttribute("searchBarName") != null)
                 nameFilter = (String) session.getAttribute("searchBarName");
 
+            //metodo che ritorna i prodotti filtrati in base a tutti i filtri
             try {
                 filteredProducts = prodottoDAO.filterProducts(category, sortingFilter, weightFilter, tasteFilter, nameFilter);
             } catch (SQLException e) {
@@ -71,6 +74,8 @@ public class GenericFilterServlet extends HttpServlet {
         }
     }
 
+
+    //metodo che in base al NameForm crea una lista di prodotti che rispettano tale NameForm
     private void handleNameForm(String nameForm, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws ServletException, IOException, SQLException {
         List<Prodotto> products = new ArrayList<>();
 
@@ -89,6 +94,7 @@ public class GenericFilterServlet extends HttpServlet {
         request.getRequestDispatcher("FilterProducts.jsp").forward(request, response);
     }
 
+
     // Metodo per inviare la risposta JSON al client
     private void sendJsonResponse(HttpServletResponse resp, List<Prodotto> resultProducts) throws IOException {
         resp.setContentType("application/json");
@@ -104,6 +110,8 @@ public class GenericFilterServlet extends HttpServlet {
         out.flush();
     }
 
+
+    //metodo che serve per creare un oggetto JSON del prodotto scelto
     public static JSONObject getJsonObject(Prodotto p) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("id", p.getIdProdotto());
@@ -112,23 +120,14 @@ public class GenericFilterServlet extends HttpServlet {
         jsonObject.put("calorie", p.getCalorie());
         jsonObject.put("immagine", p.getImmagine());
 
-
-
         Variante variante = p.getVarianti().get(0);
-
         jsonObject.put("idVariante", variante.getIdVariante());
-
         if (variante.getSconto() > 0){
             jsonObject.put("sconto", variante.getSconto());
         }
-
         jsonObject.put("prezzo", variante.getPrezzo());
-
         jsonObject.put("gusto", variante.getGusto());
-
         jsonObject.put("peso", variante.getPesoConfezione());
-
-
 
         return jsonObject;
     }

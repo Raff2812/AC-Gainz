@@ -19,25 +19,27 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //prendiamo dalla request la primarykey del prodotto cliccato
         String primaryKey = req.getParameter("primaryKey");
         System.out.println(primaryKey);
         if(primaryKey != null) {
+                //andiamo a prendere tutti i valori del prodotto selezionato
                 ProdottoDAO prodottoDAO = new ProdottoDAO();
                 Prodotto prodotto = prodottoDAO.doRetrieveById(primaryKey);
                 if(prodotto != null) {
                     ProdottoDAO suggeritiDAO = new ProdottoDAO();
 
+                    //prendiamo tutte le sue varianti
                     VarianteDAO varianteDAO = new VarianteDAO();
                     List<Variante> varianti = prodotto.getVarianti();
 
-
+                    //creiamo una lista di tutti i suoi gusti
                     List<String> gusti = new ArrayList<>();
                     for (Variante v: varianti){
                         if (!gusti.contains(v.getGusto())){
                             gusti.add(v.getGusto());
                         }
                     }
-
 
                     //Lista di pesi associati al gusto della variante di costo inferiore
                     List<Integer> pesi = new ArrayList<>();
@@ -50,8 +52,6 @@ public class ProductServlet extends HttpServlet {
 
                     req.setAttribute("allTastes", gusti);
                     req.setAttribute("firstWeights", pesi);
-
-
 
                     //sezione dei suggeriti
                     String category = prodotto.getCategoria();

@@ -18,13 +18,13 @@ import java.util.List;
 public class CategoriesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Prendo la categoria dalla request e prendo la sessione
         String filter = req.getParameter("category");
         ProdottoDAO prodottoDAO = new ProdottoDAO();
-
         HttpSession session = req.getSession();
-
         List<Prodotto> productsByCriteria = new ArrayList<>();
 
+        //In base alla categoria prendo,tramite metodo DAO,tutte le tuple che soddisfano tale categoria
         if(filter.equals("tutto")){
             productsByCriteria = prodottoDAO.doRetrieveAll();
         }else {
@@ -39,7 +39,7 @@ public class CategoriesServlet extends HttpServlet {
         req.setAttribute("originalProducts", productsByCriteria);
 
 
-
+        //metto nella sessione la categoria scelta
         session.setAttribute("categoria", filter);
         session.setAttribute("categoriaRecovery", filter);
         //setto nella session per usare i filtri in ajax

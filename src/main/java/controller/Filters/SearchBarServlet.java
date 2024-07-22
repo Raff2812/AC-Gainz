@@ -25,26 +25,30 @@ import static controller.Filters.GenericFilterServlet.getJsonObject;
 public class SearchBarServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //Prende dalla request il nome messo nella searchbar
         String name = req.getParameter("name");
         HttpSession session = req.getSession();
 
         synchronized (session) { //uso di synchronized per race conditions su session tramite ajax
             List<Prodotto> products = new ArrayList<>();
             VarianteDAO varianteDAO = new VarianteDAO();
+            //prende la vecchia categoria(Se c'è) dalla sessione
             String categoria = (String) session.getAttribute("categoriaRecovery");
             System.out.println("categoriaSearch:" + categoria);
             ProdottoDAO prodottoDAO = new ProdottoDAO();
 
             if (name != null && !name.isEmpty()) {
-                session.removeAttribute("categoria");  //per applicare i filtri
+                session.removeAttribute("categoria");  //rimuove la vecchia categoria per applicare i filtri
 
                 try {
+                    //prende la lista di tutti i prodotti in base al nome nella searchbar
                     products = prodottoDAO.filterProducts("", "", "", "", name);
                     session.setAttribute("searchBarName", name);
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
             } else {
+                //altrimenti mostra tutti i prodotti in base alla vecchia categoria gia presente
                 session.removeAttribute("searchBarName");
                 session.setAttribute("categoria", categoria);
                 try {
@@ -63,6 +67,7 @@ public class SearchBarServlet extends HttpServlet {
         }
     }
 
+    //metodo che trasforma i prodotti in JSONObject e aggiunge li aggiunge ad un JSONArray
     private void addToJson(List<Prodotto> products, HttpSession session, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         JSONArray jsonArray = new JSONArray();
 

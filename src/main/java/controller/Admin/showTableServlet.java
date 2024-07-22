@@ -21,6 +21,8 @@ public class showTableServlet extends HttpServlet {
     }
 
     private void showTable(String tableName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        //In base alla tabella scelta dall'admin e inoltrata tramite la request vengono mostrate le tuple della tabella
         switch (tableName) {
             case "utente" -> {
                 List<Utente> utenti = new ArrayList<>();

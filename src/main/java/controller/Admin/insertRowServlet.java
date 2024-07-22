@@ -36,6 +36,8 @@ public class insertRowServlet extends HttpServlet {
 
         boolean success = false;
 
+        //in base a quale tabella viene scelta viene chiamato un metodo
+        //se il nome della tabella è errato manda un errore
         switch (nameTable) {
             case "utente" ->
                 success = insertUtente(req);
@@ -58,6 +60,7 @@ public class insertRowServlet extends HttpServlet {
             }
         }
 
+        //se ha funzionato tutto correttamente mostra la tabella
         if (success) {
             req.getRequestDispatcher("showTable?tableName=" + nameTable).forward(req, resp);
         } else {
@@ -65,6 +68,8 @@ public class insertRowServlet extends HttpServlet {
         }
     }
 
+
+    //Controlla se i parametri sono validi
     private boolean isValid(List<String> params) {
         for (String param : params) {
             if (param == null || param.isBlank()) {
@@ -74,6 +79,10 @@ public class insertRowServlet extends HttpServlet {
         return true;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Utente avente quei parametri e poi tramite il DAO
+    //salva il nuovo Utente nel database tramite metodo DAO
     private boolean insertUtente(HttpServletRequest req) {
         String email = req.getParameter("email");
         String password = req.getParameter("password");
@@ -111,6 +120,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Prodotto avente quei parametri e poi tramite il DAO
+    //salva il nuovo Prodotto nel database tramite metodo DAO
     private boolean insertProdotto(HttpServletRequest req) throws IOException, ServletException {
         String idProdotto = req.getParameter("idProdotto");
         String nome = req.getParameter("nome");
@@ -118,6 +131,7 @@ public class insertRowServlet extends HttpServlet {
         String categoria = req.getParameter("categoria");
         Part filePart = req.getPart("immagine");
 
+        //Per l'immagine
         String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
         String destinazione = CARTELLA_UPLOAD + "/" + fileName;
         Path pathDestinazione = Paths.get(getServletContext().getRealPath(destinazione));
@@ -155,6 +169,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Variante avente quei parametri e poi tramite il DAO
+    //salva il nuovo Variante nel database tramite metodo DAO
     private boolean insertVariante(HttpServletRequest req) {
         String idProdottoVariante = req.getParameter("idProdottoVariante");
         String idGusto = req.getParameter("idGusto");
@@ -190,6 +208,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Ordine avente quei parametri e poi tramite il DAO
+    //salva il nuovo Ordine nel database tramite metodo DAO
     private boolean insertOrdine(HttpServletRequest req) {
         String emailUtente = req.getParameter("emailUtente");
         String stato = req.getParameter("stato");
@@ -223,6 +245,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto DettaglioOrdine avente quei parametri e poi tramite il DAO
+    //salva il nuovo DettaglioOrdine nel database tramite metodo DAO
     private boolean insertDettaglioOrdine(HttpServletRequest req) {
         String idOrdine = req.getParameter("idOrdine");
         String idProdotto = req.getParameter("idProdotto");
@@ -247,6 +273,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Gusto avente quei parametri e poi tramite il DAO
+    //salva il nuovo Gusto nel database tramite metodo DAO
     private boolean insertGusto(HttpServletRequest req) {
         String nomeGusto = req.getParameter("nomeGusto");
 
@@ -261,6 +291,10 @@ public class insertRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,controlla che siano validi,
+    //crea un oggetto Confezione avente quei parametri e poi tramite il DAO
+    //salva la nuova Confezione nel database tramite metodo DAO
     private boolean insertConfezione(HttpServletRequest req) {
         String peso = req.getParameter("pesoConfezione");
 
