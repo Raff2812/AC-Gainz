@@ -21,25 +21,28 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
+        //prendo l'utente corrente
         Utente x = (Utente) session.getAttribute("Utente");
 
         if (x != null){
         // Save cart into DB before logging out
         CarrelloDAO carrelloDAO = new CarrelloDAO();
+        //prendo il carrello corrente
         List<Carrello> cart = (List<Carrello>) session.getAttribute("cart");
 
         if (cart == null) cart = new ArrayList<>();
 
 
-        // Remove existing cart items for the user
+        //Rimuovi il carrello precedente nel DB
         carrelloDAO.doRemoveCartByUser(x.getEmail());
 
-        // Save the current session cart items to the database
+        // Salva il carrello della sessione attuale nel DB
         for (Carrello c : cart) {
             c.setEmailUtente(x.getEmail());
             carrelloDAO.doSave(c);
         }
 
+        //effettua il logout
         session.removeAttribute("Utente");
         req.getSession().invalidate();
 

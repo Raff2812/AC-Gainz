@@ -33,24 +33,28 @@ public class LoginServlet extends HttpServlet {
         System.out.println(password);
         UtenteDAO utenteDAO = new UtenteDAO();
 
+        //controlliamo che il pattern dell'email inserita sia corretto
         String emailPattern = "^[\\w.%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,8}$";
         Pattern emailRegex = Pattern.compile(emailPattern);
         Matcher emailMatcher = emailRegex.matcher(email);
 
-        if (!emailMatcher.matches()) {
 
+        //nel caso il pattern dell'email non fosse rispettato
+        if (!emailMatcher.matches()) {
             request.setAttribute("patternEmail", "Pattern email non rispettato!");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
             request.removeAttribute("patternEmail");
             return;
         }
 
+
+        //Controlliamo che il pattern della password inserita sia corretto
         String passwordPattern = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$";
         Pattern passwordRegex = Pattern.compile(passwordPattern);
         Matcher passwordMatcher = passwordRegex.matcher(password);
 
+        //nel caso il pattern della password non fosse rispettato
         if (!passwordMatcher.matches()) {
-
             request.setAttribute("patternPassword", "Pattern password non rispettato!");
             request.getRequestDispatcher("Login.jsp").forward(request, response);
             request.removeAttribute("patternPassword");
@@ -93,13 +97,17 @@ public class LoginServlet extends HttpServlet {
         System.out.println(x.getPassword());
 
 
+
+        //A questo punto controllo se l'utente ha un carrello nel DB altrimenti ne creo uno nuovo
         CarrelloDAO carrelloDAO = new CarrelloDAO();
         List<Carrello> dbCart = carrelloDAO.doRetrieveCartItemsByUser(x.getEmail());
         if (dbCart == null) dbCart = new ArrayList<>();
 
+        //controllo se l'utente ha un carrello nella sessione attuale
         List<Carrello> sessionCart = (List<Carrello>) session.getAttribute("cart");
         if (sessionCart == null) sessionCart = new ArrayList<>();
 
+        //Se è presente il carrello nel DB e anche nella sessione li unisco(sommo le quantità eventuali prodotti uguali)
         for (Carrello sessionCartEntry : sessionCart) {
             boolean found = false;
             for (Carrello dbCartEntry : dbCart) {

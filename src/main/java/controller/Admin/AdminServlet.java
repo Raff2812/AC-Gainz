@@ -14,6 +14,8 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        //prendiamo l'utente dalla sessione e controlliamo che abbia i poteri per accedere all'area admin
         Utente x = null;
         x = (Utente) req.getSession().getAttribute("Utente");
         if (x != null && x.getPoteri()) {

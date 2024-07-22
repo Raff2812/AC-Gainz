@@ -19,12 +19,15 @@ import java.util.List;
 public class editRowServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        //prende il nome della tabella e la primarykey dalla request
         String tableName = req.getParameter("tableName");
         System.out.println("tableName: " + tableName);
         String primaryKey = req.getParameter("primaryKey");
 
         boolean success = false;
 
+        //in base a quale tabella viene scelta viene chiamato un metodo
+        //se il nome della tabella è errato manda un errore
         switch (tableName) {
             case "utente" ->
                 success = editUtente(req, primaryKey);
@@ -44,6 +47,7 @@ public class editRowServlet extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid table name.");
         }
 
+        //se ha funzionato tutto correttamente mostra la tabella
         if (success) {
             req.getRequestDispatcher("showTable?tableName=" + tableName).forward(req, resp);
         } else {
@@ -51,6 +55,7 @@ public class editRowServlet extends HttpServlet {
         }
     }
 
+    //Controlla se i parametri sono validi
     private boolean isValid(List<String> params) {
         for (String param : params) {
             if (param == null || param.isBlank()) {
@@ -60,6 +65,9 @@ public class editRowServlet extends HttpServlet {
         return true;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Utente avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editUtente(HttpServletRequest req, String primaryKey) {
         String email = req.getParameter("email");
         String nome = req.getParameter("nome");
@@ -95,6 +103,9 @@ public class editRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Prodotto avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editProdotto(HttpServletRequest req, String primaryKey) {
         String idProdotto = req.getParameter("idProdotto");
         String nome = req.getParameter("nome");
@@ -125,6 +136,9 @@ public class editRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Variante avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editVariante(HttpServletRequest req, String primaryKey) {
         String idVariante = req.getParameter("idVariante");
         String idProdottoVariante = req.getParameter("idProdottoVariante");
@@ -153,6 +167,9 @@ public class editRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Ordine avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editOrdine(HttpServletRequest req, String primaryKey) {
         String idOrdine = req.getParameter("idOrdine");
         String emailUtente = req.getParameter("emailUtente");
@@ -208,6 +225,9 @@ public class editRowServlet extends HttpServlet {
         }
         return false;
     }
+
+    //prende i parametri dalla request,crea un oggetto DettaglioOrdine avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editDettaglioOrdine(HttpServletRequest req, String primaryKey) {
         String idOrdine = req.getParameter("idOrdine");
         String idVariante = req.getParameter("idVariante");
@@ -236,6 +256,9 @@ public class editRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Gusto avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editGusto(HttpServletRequest req, String primaryKey) {
         String idGusto = req.getParameter("idGusto");
         String nomeGusto = req.getParameter("nomeGusto");
@@ -252,6 +275,9 @@ public class editRowServlet extends HttpServlet {
         return false;
     }
 
+
+    //prende i parametri dalla request,crea un oggetto Confezione avente quei parametri e poi tramite il DAO
+    //aggiorna i parametri nel database
     private boolean editConfezione(HttpServletRequest req, String primaryKey) {
         String idConfezione = req.getParameter("idConfezione");
         String pesoConfezione = req.getParameter("pesoConfezione");

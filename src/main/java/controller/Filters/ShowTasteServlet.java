@@ -41,7 +41,7 @@ public class ShowTasteServlet extends HttpServlet {
             tasteCounts.put(gusto, tasteCounts.getOrDefault(gusto, 0) + 1);
         }
 
-        // Creare il JSONArray per la risposta
+        // Creare il JSONArray per la risposta contenente ogni varainte
         JSONArray jsonArray = new JSONArray();
         for (String key : tasteCounts.keySet()) {
             String tasteWithCount = key + " (" + tasteCounts.get(key) + ")";
