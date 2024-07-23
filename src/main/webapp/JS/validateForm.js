@@ -4,15 +4,12 @@ function validateForm(){
 
     let password = document.getElementById("password").value;
 
-
     if(document.getElementById("codiceFiscale")){
-        var cf = document.getElementById("codiceFiscale").value;
-        console.log(cf);
+        let cf = document.getElementById("codiceFiscale").value;
     }
 
     if(document.getElementById("numCellulare")) {
-        var numCellulare = document.getElementById("numCellulare").value;
-        console.log(numCellulare);
+        let numCellulare = document.getElementById("numCellulare").value;
     }
 
 

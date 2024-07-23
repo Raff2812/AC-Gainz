@@ -27,7 +27,7 @@ public class RegistrazioneServlet extends HttpServlet {
     private static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        doPost(request, response); // Delegate GET requests to doPost
+        this.doPost(request, response); // Delegate GET requests to doPost
     }
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {

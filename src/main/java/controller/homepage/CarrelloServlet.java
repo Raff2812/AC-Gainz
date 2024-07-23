@@ -149,6 +149,7 @@ public class CarrelloServlet extends HttpServlet {
                 if (x > 0) quantity = x;
             }
 
+
             //prendo altri dati relativi al prodotto
             String gusto = request.getParameter("gusto");
             String pesoConfezione = request.getParameter("pesoConfezione");

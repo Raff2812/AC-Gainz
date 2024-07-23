@@ -29,8 +29,7 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        System.out.println(email);
-        System.out.println(password);
+
         UtenteDAO utenteDAO = new UtenteDAO();
 
         //controlliamo che il pattern dell'email inserita sia corretto
@@ -94,7 +93,6 @@ public class LoginServlet extends HttpServlet {
 
         // Inserisco nella sessione l'oggetto contenente l'utente vero e proprio
         session.setAttribute("Utente", x);
-        System.out.println(x.getPassword());
 
 
 

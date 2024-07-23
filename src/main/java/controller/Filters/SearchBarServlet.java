@@ -60,7 +60,7 @@ public class SearchBarServlet extends HttpServlet {
 
             // Save search results in originalProducts and products for further filtering
             session.setAttribute("filteredProducts", products);
-            session.setAttribute("products", products);
+            /*session.setAttribute("products", products);*/
 
             addToJson(products, session, req, resp);
         }
