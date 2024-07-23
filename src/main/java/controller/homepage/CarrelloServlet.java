@@ -159,7 +159,6 @@ public class CarrelloServlet extends HttpServlet {
             VarianteDAO varianteDAO = new VarianteDAO();
 
             Variante v = varianteDAO.doRetrieveVariantByFlavourAndWeight(id, gusto, Integer.parseInt(pesoConfezione)).get(0);
-            System.out.println(v.getIdVariante());
 
             List<Carrello> cartItems = (List<Carrello>) session.getAttribute("cart");
             if (cartItems == null) cartItems = new ArrayList<>();

@@ -159,7 +159,7 @@ function addCartVariant(idProdotto, quantity, gusto, pesoConfezione){
         params.append("quantity", quantity);
 
     params.append("gusto", gusto);
-    params.append("pesoConfezione", pesoConfezione)
+    params.append("pesoConfezione", pesoConfezione);
 
     fetch("cartServlet?" + params.toString())
         .then(response => {

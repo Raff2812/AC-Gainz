@@ -42,9 +42,11 @@ public class ShowOptions extends HttpServlet {
                     if (p != null){
                         List<Variante> variantiAll = varianteDAO.doRetrieveVariantiByIdProdotto(p.getIdProdotto());
 
-                        String gusto = v.getGusto();
+                        String gusto = v.getGusto(); //gusto della variante attuale di costo minimo
 
                         List<Integer> pesi = new ArrayList<>();
+
+                        //prendo tutte le varianti del prodotto che sto aggiungendo al carrello che hanno il gusto della variante di costo inferiore
                         List<Variante> variantiByGusto = varianteDAO.doRetrieveVariantByCriteria(p.getIdProdotto(), "flavour", gusto);
 
                         for (Variante x: variantiByGusto){
@@ -82,8 +84,6 @@ public class ShowOptions extends HttpServlet {
 
                         o.println(jsonArray);
                         o.flush();
-
-
                     }
                 }
             }

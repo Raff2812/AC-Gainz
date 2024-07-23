@@ -54,7 +54,6 @@ public class AreaPersonaleServlet extends HttpServlet {
 
     //metodo usato per creare un oggetto dettaglioOrdine dalla descrizione dell'ordine
     private static List<DettaglioOrdine> parseDescrizione(String descrizione) {
-        System.out.println(descrizione);
         List<DettaglioOrdine> dettagli = new ArrayList<>();
         //suddividiamo i prodotti nella descrizione
         String[] prodotti = descrizione.split(";");

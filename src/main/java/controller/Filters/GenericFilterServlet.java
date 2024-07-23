@@ -47,17 +47,11 @@ public class GenericFilterServlet extends HttpServlet {
             String tasteFilter = req.getParameter("taste");
             String sortingFilter = req.getParameter("sorting");
 
-            /*System.out.println("NameFilter:" + nameFilter);
-            System.out.println("weightFilter:" + weightFilter);
-            System.out.println("tasteFilter:" + tasteFilter);
-            System.out.println("sortingFilter:" + sortingFilter);
-            System.out.println("category:" + category);*/
+
 
             List<Prodotto> filteredProducts = new ArrayList<>();
             ProdottoDAO prodottoDAO = new ProdottoDAO();
 
-            if (session.getAttribute("searchBarName") != null)
-                nameFilter = (String) session.getAttribute("searchBarName");
 
             //metodo che ritorna i prodotti filtrati in base a tutti i filtri
             try {

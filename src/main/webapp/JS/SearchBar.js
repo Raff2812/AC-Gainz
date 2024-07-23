@@ -3,10 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     input.addEventListener("input", function () {
         const inputValue = this.value;
-        if (window.location.pathname.includes("categories") || window.location.pathname.includes("FilterProducts"))
+        if (window.location.pathname.includes("categories"))
             searchBar(inputValue);
     });
 
+
+    //non ajax
     input.addEventListener("keypress", function (e) {
         if (e.key === 'Enter') {
             const inputValue = this.value;
